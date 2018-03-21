@@ -3,6 +3,39 @@
     "invocationName": "stuff locator",
     "intents": [
       {
+        "name": "FindIntent",
+        "slots": [
+          {
+            "name" : "Item",
+            "type": "LIST_OF_ITEMS"
+          }
+        ]
+      },
+      {
+        "name": "StoreIntent",
+        "slots": [
+          {
+            "name" : "Item",
+            "type": "LIST_OF_ITEMS"
+          },
+          {
+            "name" : "Places",
+            "type": "LIST_OF_ITEMS"
+          },
+        ],
+        "samples": []
+      },
+      {
+        "name": "StoreEventItem",
+        "slots": [],
+        "samples": []
+      },
+      {
+        "name": "ListEventItem",
+        "slots": [],
+        "samples": []
+      },
+      {
         "name": "AMAZON.CancelIntent",
         "slots": [],
         "samples": []
