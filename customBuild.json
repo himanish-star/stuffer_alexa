@@ -2,8 +2,6 @@
   "languageModel": {
     "invocationName": "stuff locator",
     "intents": [
-      //FindIntent
-      //todo:add other slot named {color}
       {
         "name": "FindIntent",
         "slots": [
@@ -17,7 +15,6 @@
           "Where have I kept my {item}"
         ]
       },
-      //StoreIntent
       {
         "name": "StoreIntent",
         "slots": [
@@ -35,8 +32,6 @@
           "My {item} is on the {place}"
         ]
       },
-      //StoreEventItem
-      //todo: to be implemented as the 2nd phase
       {
         "name": "StoreEventItem",
         "slots": [
@@ -50,8 +45,6 @@
           }
         ]
       },
-      //ListEventItem
-      //todo: to be implemented as the 2nd phase
       {
         "name": "ListEventItem",
         "slots": [

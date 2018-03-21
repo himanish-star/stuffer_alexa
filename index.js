@@ -15,31 +15,31 @@ const handlers = {
     this.response.speak('Hello Sir, what would you like to do?').listen();
     this.emit(':responseReady');
   },
-  //where have I kept my {stuff}
+  //where have I kept my {item}
   'FindItemIntent': function (intent, session, response) {
     
-    const itemSlot = intent.slots.Item;
-    let findItemName = "";
+    const item = intent.slots.Items;
+    let queryName = "";
     
-    if(itemSlot && itemSlot.value){
-      findItemName = itemSlot.value.toLowerCase();
+    if(item && item.value){
+      queryName = item.value.toLowerCase();
     }
     
     //call search function here that step by step searches for the item as we had decided at all cases
-    let location = searchItem(findItemName)
+    let location = searchItem(queryName);
     
     let speechOutput = {}, rePromptOutput = {};
     
     if (location) {
       speechOutput = {
-        speech: findItemName + " is kept at " + location,
+        speech: queryName + " is kept at " + location,
         type: AlexaSkill.speechOutputType.PLAIN_TEXT
       };
-      response.tellWithCard(speechOutput, cardTitle, recipe);
+      response.tellWithCard(speechOutput, cardTitle, recipe);//params missing
     } else {
-      let speech;
-      if (findItemName) {
-        speech = "I'm sorry, I currently do not know where" + findItemName + " is stored. What else can I help with?";
+      let speech='';
+      if (queryName) {
+        speech = "I'm sorry, I currently do not know where" + queryName + " is stored. What else can I help with?";
       } else {
         speech = "I'm sorry, I currently do not know its location. What else can I help with?";
       }
@@ -57,10 +57,10 @@ const handlers = {
   //I am storing my {stuff} in {location}
   'StoreItemIntent': function () {
   
-    const itemSlot = intent.slots.Item;
+    const itemSlot = intent.slots.Items;
     const locationSlot = intent.slots.Places;
     let storeItemName = "";
-    let storeItemLocation = ""
+    let storeItemLocation = "";
   
     if(itemSlot && itemSlot.value && locationSlot && locationSlot.value){
       storeItemName = itemSlot.value.toLowerCase();
@@ -109,3 +109,11 @@ const handlers = {
     this.emit(':responseReady');
   }
 };
+
+function searchItem() {
+
+}
+
+function storeItem() {
+  
+}
