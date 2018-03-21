@@ -2,41 +2,56 @@
   "languageModel": {
     "invocationName": "stuff locator",
     "intents": [
+      //FindIntent
+      //todo:add other slot named {color}
       {
         "name": "FindIntent",
         "slots": [
           {
-            "name" : "Item",
-            "type": "LIST_OF_ITEMS"
+            "name": "item",
+            "type": "Items"
           }
+        ],
+        "samples": [
+          "Where is my {item}",
+          "Where have I kept my {item}"
         ]
       },
+      //StoreIntent
       {
         "name": "StoreIntent",
         "slots": [
           {
-            "name" : "Item",
-            "type": "LIST_OF_ITEMS"
+            "name" : "item",
+            "type": "Items"
           },
           {
-            "name" : "Places",
-            "type": "LIST_OF_ITEMS"
+            "name" : "place",
+            "type": "Places"
           }
+        ],
+        "samples": [
+          "I am keeping my {item} inside {place}",
+          "My {item} is on the {place}"
         ]
       },
+      //StoreEventItem
+      //todo: to be implemented as the 2nd phase
       {
         "name": "StoreEventItem",
         "slots": [
           {
-            "name" : "Item",
-            "type": "LIST_OF_ITEMS"
+            "name" : "item",
+            "type": "Items"
           },
           {
-            "name" : "Places",
-            "type": "LIST_OF_PLACES"
+            "name" : "place",
+            "type": "Places"
           }
         ]
       },
+      //ListEventItem
+      //todo: to be implemented as the 2nd phase
       {
         "name": "ListEventItem",
         "slots": [
@@ -45,8 +60,8 @@
           "type": "AMAZON.EventType"
           },
           {
-            "name" : "loItems",
-            "type": "LIST_OF_PLACES"
+            "name" : "item",
+            "type": "Items"
           }
         ]
       },
@@ -73,6 +88,45 @@
         ]
       }
     ],
-    "types": []
+    "types": [
+      {
+        "name": "Items",
+        "values": [
+          {
+            "id": "",
+            "name": {
+              "value": "Watch",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "Wallet",
+              "synonyms": []
+            }
+          }
+        ]
+      },
+      {
+        "name": "Places",
+        "value": [
+          {
+            "id": "",
+            "name": {
+              "value": "Table",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "Drawer",
+              "synonyms": []
+            }
+          }
+        ]
+      }
+    ]
   }
 }
