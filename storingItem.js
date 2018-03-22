@@ -1,6 +1,7 @@
 const startSearch = require('searchingItem').startSearch;
 const activeSearch = require('activeListSearching').activeSearch;
 let activeList = [];// this list will contain a maximum of 10 things which would be maintained as a FIFO list
+let originalList = [];
 
 const storeItem = (itemName, locationName) => {
   //1. First item is to be stored to the activeList
@@ -12,19 +13,22 @@ const storeItem = (itemName, locationName) => {
     now push
   */
   let activeListMember = {
-    itemName,
-    locationName
+    itemName: itemName,
+    locationName: locationName
   };
-  if(activeList.length === 10) {
+  /*if(activeList.length === 10) {
     let poppedItem = activeList.shift();
     activeList.push(activeListMember);
     addMemberToMasterDB(poppedItem);
   } else {
     activeList.push(activeListMember);
   }
-  storeActiveListToDB(activeList);
+  storeActiveListToDB(activeList);*/
+  originalList.push(activeListMember);
+  return originalList;
 };
 
 module.exports = {
   storeItem, activeList
 };
+//remember to tell Shikhar that activeList = [] would be passed

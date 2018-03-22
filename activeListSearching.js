@@ -1,4 +1,4 @@
-const activeSearch = () => {
+const activeSearch = (itemName, originalList) => {
 
 };
 
