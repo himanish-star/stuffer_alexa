@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "alexa-sdk": "^1.0.25"
+    "alexa-sdk": "^1.0.25",
+    "aws-sdk": "^2.212.1",
+    "es6-promisify": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
