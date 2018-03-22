@@ -9,6 +9,9 @@
             "name" : "Item",
             "type": "LIST_OF_ITEMS"
           }
+        ],
+        "samples": [
+          "find my {Item}"
         ]
       },
       {
@@ -19,35 +22,12 @@
             "type": "LIST_OF_ITEMS"
           },
           {
-            "name" : "Places",
-            "type": "LIST_OF_ITEMS"
-          }
-        ]
-      },
-      {
-        "name": "StoreEventItem",
-        "slots": [
-          {
-            "name" : "Item",
-            "type": "LIST_OF_ITEMS"
-          },
-          {
-            "name" : "Places",
+            "name" : "Place",
             "type": "LIST_OF_PLACES"
           }
-        ]
-      },
-      {
-        "name": "ListEventItem",
-        "slots": [
-          {
-          "name" : "EventName",
-          "type": "AMAZON.EventType"
-          },
-          {
-            "name" : "loItems",
-            "type": "LIST_OF_PLACES"
-          }
+        ],
+        "samples": [
+          "place my {Item} inside {Place}"
         ]
       },
       {
@@ -74,8 +54,8 @@
       }
     ],
     "types": [
-            {
-          "name": "Items",
+      {
+        "name": "LIST_OF_ITEMS",
         "values": [
           {
             "id": "",
@@ -94,7 +74,7 @@
         ]
       },
       {
-        "name": "Places",
+        "name": "LIST_OF_PLACES",
         "value": [
           {
             "id": "",
