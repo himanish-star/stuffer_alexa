@@ -1,20 +1,28 @@
 const startSearch = require('searchingItem').startSearch;
-const activeList = [];
+const activeSearch = require('activeListSearching').activeSearch;
+let activeList = [];// this list will contain a maximum of 10 things which would be maintained as a FIFO list
 
-/*
-* @param itemName
-* @param locationName
-*/
-const storeItem = (itemName, LocationName) => {
-  //how do we start writing this code ??
+const storeItem = (itemName, locationName) => {
+  //1. First item is to be stored to the activeList
+  //2. If the active List size is exceeded move to the database
+  //3. More complexities will be put into as we progress
   
-  /*if(/!*use searching imported above to see whether it exists in list or not
-       if same name object exists, remprompt user in else condition for differentiating keyword
-       now push
-     *!/ )*/
-  activeList.push(itemName, LocationName);
-  //fix some interval after which we update the masterDB, or maybe when we remove an ITEM then.
-  addToMasterDB(itemName, LocationName)
+  /*use startSearch imported above to see whether it exists in list or not
+    if same name object exists, re-prompt user in else condition for differentiating keyword
+    now push
+  */
+  let activeListMember = {
+    itemName,
+    locationName
+  };
+  if(activeList.length === 10) {
+    let poppedItem = activeList.shift();
+    activeList.push(activeListMember);
+    addMemberToMasterDB(poppedItem);
+  } else {
+    activeList.push(activeListMember);
+  }
+  storeActiveListToDB(activeList);
 };
 
 module.exports = {
