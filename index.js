@@ -13,17 +13,17 @@ module.exports.handler = (event, context) => {
 
 const handlers = {
   'LaunchRequest': function () {
-    //todo: greet the user if an existing one
+    //todo: greet the user if an existing one by checking sessions
     this.response.speak('Hello Sir, what would you like to do?').listen();
     this.emit(':responseReady');
   },
-  
+  //todo: utterances which fire this intent
   //find my {Item}
   'FindItemIntent': function () {
-    
     const itemSlot = this.event.request.intent.slots.Item;
-    let findItemName='';
-    let speechOutput='', rePromptOutput='';
+    let findItemName = '',
+      speechOutput = '',
+      rePromptOutput = '';
     
     if(itemSlot && itemSlot.value){
       findItemName = itemSlot.value.toLowerCase();
@@ -45,11 +45,13 @@ const handlers = {
       this.emit(":ask", speechOutput, rePromptOutput)
     }
   },
-  //I am storing my {stuff} in {location}
+  //todo: utterances which fire this intent
+  //place my {Item} inside {Place}
   'StoreItemIntent': function () {
     const itemSlot = this.event.request.intent.slots.Item;
     const locationSlot = this.event.request.intent.slots.Place;
-    let storeItemName='', storeItemLocation='';
+    let storeItemName = '',
+      storeItemLocation = '';
   
     if(itemSlot && itemSlot.value && locationSlot && locationSlot.value){
       storeItemName = itemSlot.value.toLowerCase();
@@ -58,7 +60,8 @@ const handlers = {
       storeItem(storeItemName, storeItemLocation)
     }
     
-    let speechOutput = '', rePromptOutput = '';
+    let speechOutput = '',
+      rePromptOutput = '';
   
     if (storeItemLocation && storeItemName) {
       
