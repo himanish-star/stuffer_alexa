@@ -1,6 +1,6 @@
-"use strict";
-
 const Alexa = require('alexa-sdk');
+const searchingItem = require('searchingItem').startSearch();
+const storingItem = require('storingItem').storeItem();
 
 module.exports.handler = (event, context) => {
   const alexa = Alexa.handler(event, context);
@@ -27,7 +27,7 @@ const handlers = {
     }
     
     //call search function here that step by step searches for the item as we had decided at all cases
-    let location = searchItem(findItemName)
+    let location = searchingItem(findItemName)
     
     let speechOutput = {}, rePromptOutput = {};
     
@@ -66,7 +66,7 @@ const handlers = {
       storeItemName = itemSlot.value.toLowerCase();
       storeItemLocation = locationSlot.value.toLowerCase();
       //call store function here that stores in ActiveList as well as MasterDb (we can implement concept of paging for updating masterDB)
-      storeItem(storeItemName, storeItemLocation)
+      storingItem(storeItemName, storeItemLocation)
     }
     
     let speechOutput = {}, rePromptOutput = {};
@@ -109,12 +109,3 @@ const handlers = {
     this.emit(':responseReady');
   }
 };
-
-
-function searchItem() {
-
-}
-
-function storeItem() {
-
-}
