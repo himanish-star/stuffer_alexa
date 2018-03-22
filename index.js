@@ -55,7 +55,7 @@ const handlers = {
       storeItemName = itemSlot.value.toLowerCase();
       storeItemLocation = locationSlot.value.toLowerCase();
       //call store function here that stores in ActiveList as well as MasterDb (we can implement concept of paging for updating masterDB)
-      startSearch(storeItemName, storeItemLocation)
+      storeItem(storeItemName, storeItemLocation)
     }
     
     let speechOutput = '', rePromptOutput = '';
