@@ -6,42 +6,34 @@
         "name": "FindIntent",
         "slots": [
           {
-            "name": "item",
-            "type": "Items"
+            "name" : "Item",
+            "type": "LIST_OF_ITEMS"
           }
-        ],
-        "samples": [
-          "Where is my {item}",
-          "Where have I kept my {item}"
         ]
       },
       {
         "name": "StoreIntent",
         "slots": [
           {
-            "name" : "item",
-            "type": "Items"
+            "name" : "Item",
+            "type": "LIST_OF_ITEMS"
           },
           {
-            "name" : "place",
-            "type": "Places"
+            "name" : "Places",
+            "type": "LIST_OF_ITEMS"
           }
-        ],
-        "samples": [
-          "I am keeping my {item} inside {place}",
-          "My {item} is on the {place}"
         ]
       },
       {
         "name": "StoreEventItem",
         "slots": [
           {
-            "name" : "item",
-            "type": "Items"
+            "name" : "Item",
+            "type": "LIST_OF_ITEMS"
           },
           {
-            "name" : "place",
-            "type": "Places"
+            "name" : "Places",
+            "type": "LIST_OF_PLACES"
           }
         ]
       },
@@ -53,8 +45,8 @@
           "type": "AMAZON.EventType"
           },
           {
-            "name" : "item",
-            "type": "Items"
+            "name" : "loItems",
+            "type": "LIST_OF_PLACES"
           }
         ]
       },
@@ -82,8 +74,8 @@
       }
     ],
     "types": [
-      {
-        "name": "Items",
+            {
+          "name": "Items",
         "values": [
           {
             "id": "",
