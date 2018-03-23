@@ -28,9 +28,30 @@ const handlers = {
       const repromptSpeech = 'Please tell me the name of the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    else {
-      this.emit(":tell", 'hope');
+
+    if (!slots.Place.value) {
+      const slotToElicit = 'Place';
+      const speechOutput = 'Where is the item stored?';
+      const repromptSpeech = 'Please give me a location of the item.';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
+    else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
+
+      if (slots.Place.confirmationStatus !== 'DENIED') {
+        // slot status: unconfirmed
+        const slotToConfirm = 'Place';
+        const speechOutput = `The item location is ${slots.Place.value}, correct?`;
+        const repromptSpeech = speechOutput;
+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
+      }
+
+      // slot status: denied -> reprompt for slot data
+      const slotToElicit = 'Place';
+      const speechOutput = 'Where can the item be found?';
+      const repromptSpeech = 'Please give me a location where the item is stored.';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+    this.emit(":tell", "hope");
   }
 };
 
