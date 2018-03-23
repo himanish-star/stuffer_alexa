@@ -94,5 +94,74 @@
         ]
       }
     ]
-  }
+  },
+  "dialog": {
+    "intents": [
+      {
+        "name": "StoreItemIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Item",
+            "type": "ItemName",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet"
+            }
+          },
+          {
+            "name": "Place",
+            "type": "ItemLocation",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which planet are you starting from?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which 2 planet are you starting from?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which planet are you going to?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which 2 planet are you going to?"
+        }
+      ]
+    }
+  ]
 }
