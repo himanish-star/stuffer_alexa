@@ -45,13 +45,6 @@
         "name": "AMAZON.StopIntent",
         "slots": [],
         "samples": []
-      },
-      {
-        "name": "LaunchRequest",
-        "slots": [],
-        "samples": [
-          "say hello"
-        ]
       }
     ],
     "types": [

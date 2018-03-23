@@ -17,12 +17,6 @@ const instructions = `Welcome to Stuff locator<break strength="medium" />
                       The following commands are available: store item, find item... What
                       would you like to do?`;
 
-module.exports.handler = (event, context) => {
-  const alexa = Alexa.handler(event, context);
-  alexa.APP_ID = appId;
-  alexa.registerHandlers(handlers);
-  alexa.execute();
-};
 
 const handlers = {
   'LaunchRequest'() {
@@ -191,4 +185,11 @@ const handlers = {
   'AMAZON.StopIntent'() {
     this.emit(':tell', 'Goodbye!');
   }
+};
+
+module.exports.handler = (event, context) => {
+  const alexa = Alexa.handler(event, context);
+  alexa.APP_ID = appId;
+  alexa.registerHandlers(handlers);
+  alexa.execute();
 };
