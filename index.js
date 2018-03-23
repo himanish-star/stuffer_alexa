@@ -8,7 +8,7 @@ const docClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
   'StoreItemIntent': function () {
-
+    let emitOO = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
     // ItemName
@@ -69,9 +69,9 @@ const handlers = {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
+        emitOO(':tell', "success");
       }
     });
-    this.emit(":tell", "hope");
   }
 };
 
