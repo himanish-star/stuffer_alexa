@@ -1,5 +1,10 @@
 'use strict';
 const Alexa = require('alexa-sdk');
+const awsSDK = require('aws-sdk');
+const promisify = require('es6-promisify');
+
+const itemsTable = 'Items';
+const docClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
   'StoreItemIntent': function () {
@@ -51,6 +56,21 @@ const handlers = {
       const repromptSpeech = 'Please give me a location where the item is stored.';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
+    let params = {
+      TableName: itemsTable,
+      Item:{
+        "userId": userId,
+        "itemName": slots.Item.value,
+        "locationName": slots.Place.value
+      }
+    };
+    docClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+    });
     this.emit(":tell", "hope");
   }
 };
