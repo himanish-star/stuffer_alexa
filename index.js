@@ -1,6 +1,7 @@
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
 const promisify = require('es6-promisify');
+const thesaurus = require('thesaurus-com');
 
 const appId = 'REPLACE WITH SKILL APPLICATION ID';
 const itemsTable = 'Items';
@@ -40,34 +41,103 @@ const handlers = {
       const repromptSpeech = 'Please tell me the name of the item to be found';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
+  
+    //perform searches in active list then in the dynamoDB
+    //step by step
+    //1. Direct Match in Active List imported above
+    //2. Searching of 5 synonyms in activeList
+    //3. check Up if if itemName exists in masterDB -> give out probable places
+    //4. check up if confirmed synonym exists in masterDB or not
+    //5. Scope for recursive searches
+    //6. Send a not found flag now
+    
     const { userId } = this.event.session.user;
     const itemName = slots.ItemName.value;
-    const dynamoParams = {
-      TableName: itemsTable,
-      Key: {
-        Name: itemName,
-        UserId: userId
+
+    console.log('Attempting to read data in activeList');
+  
+    //search active list. (write code once SHM inplements it)
+    // if(!found)
+  
+    console.log('Attempting to read data of synonyms in activeList');
+  
+    const synonyms = thesaurus.search(itemName).synonyms;
+    const reqdSynonyms = [];
+    synonyms.forEach(function (synonym) {
+      
+      //we need a way to filterOut unnecessary synonyms and keep only reqd.
+      // We might for once filter by keeping only the ones existing in activeList.
+      // But then there can be cases when an item exists in DB but not activeList.
+      // Also, direct prompting could irritate the user
+      
+      if(activeList.includes(synonym)) {
+        reqdSynonyms.push(synonym)
+        // prompt user were u talking about this synonym
+        // if yes, tell its location else continue()
       }
-    };
+    })
+    
+    // if still !found
+  
+    console.log('Attempting to read data in DB for probable places');
+  
+    let locationFound = searchDynamo(itemName, userId);
+  
+  
+    console.log('Attempting to read data of synonyms in DB for probable places');
 
-    console.log('Attempting to read data');
-
-    // query DynamoDB
-    dbGet(dynamoParams)
-      .then(data => {
-        console.log('Get item succeeded', data);
-
-        const item = data.Item;
-
-        if (item) {
-          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);
-        }
-        else {
-          this.emit(':tell', `Item ${itemName} not found!`);
+    if (!locationFound) {
+      reqdSynonyms.forEach(function (synonym) {
+        if() {
+          // prompt user  were u talking about this synonym
+          // if yes, tell its probable location else continue()
+  
+        let synLocation =searchDynamo(synonym, userId);
+        // whenever synlocation Flag is true, continue();
         }
       })
-      .catch(err => console.error(err));
+    }
+  
+    //recursive searches should be covered in searchIntent itself
+
+    function searchDynamo (itemName, userId) {
+  
+      const dynamoParams = {
+        TableName: itemsTable,
+        Key: {
+          Name: itemName,
+          UserId: userId
+        }
+      };
+  
+      // query DynamoDB
+      dbGet(dynamoParams)
+        .then(data => {
+          console.log('Get item succeeded', data);
+      
+          const item = data.Item;
+          
+          let foundFlag = false;
+          
+          if (item) {
+            
+            item.Location.join(", or, "); //as this will be an array of all probable places
+            
+            this.emit(':tell', `Item ${itemName} might be located at ${item.Location}`);
+            // wait for user to confirm. If he/she confirms then
+            foundFlag = true;
+          }
+          else {
+            this.emit(':tell', `History of ${itemName} not found!`);
+          }
+          
+          return foundFlag;
+          
+        })
+        .catch(err => console.error(err));
+    }
+    
+    
   },
   //todo: utterances which fire this intent
   //place my {Item} inside {Place}

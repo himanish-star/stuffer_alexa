@@ -56,7 +56,7 @@
     ],
     "types": [
       {
-        "name": "ItemStored",
+        "name": "ItemName",
         "values": [
           {
             "id": "",
@@ -76,7 +76,7 @@
       },
       {
         "name": "ItemLocation",
-        "value": [
+        "values": [
           {
             "id": "",
             "name": {
