@@ -1,17 +1,5 @@
 'use strict';
 const Alexa = require('alexa-sdk');
-const awsSDK = require('aws-sdk');
-const promisify = require('es6-promisify');
-
-const itemsTable = 'Items';
-const docClient = new awsSDK.DynamoDB.DocumentClient();
-
-// convert callback style functions to promises
-const dbScan = promisify(docClient.scan, docClient);
-const dbGet = promisify(docClient.get, docClient);
-const dbPut = promisify(docClient.put, docClient);
-const dbDelete = promisify(docClient.delete, docClient);
-
 
 const handlers = {
   'StoreItemIntent': function () {
