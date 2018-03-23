@@ -2,7 +2,6 @@ const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
 const promisify = require('es6-promisify');
 
-const appId = 'REPLACE WITH SKILL APPLICATION ID';
 const itemsTable = 'Items';
 const docClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -17,13 +16,6 @@ const instructions = `Welcome to Stuff locator<break strength="medium" />
                       The following commands are available: store item, find item... What
                       would you like to do?`;
 
-module.exports.handler = (event, context) => {
-  const alexa = Alexa.handler(event, context);
-  alexa.APP_ID = appId;
-  alexa.registerHandlers(handlers);
-  alexa.execute();
-};
-
 const handlers = {
   'LaunchRequest'() {
     this.emit(':ask', instructions);
@@ -34,7 +26,7 @@ const handlers = {
     const { slots } = this.event.request.intent;
 
     // prompt for slot data if needed
-    if (!slots.ItemName.value) {
+    if (!slots.Item.value) {
       const slotToElicit = 'ItemName';
       const speechOutput = 'What is the name of the item?';
       const repromptSpeech = 'Please tell me the name of the item to be found';
@@ -42,12 +34,12 @@ const handlers = {
     }
 
     const { userId } = this.event.session.user;
-    const itemName = slots.ItemName.value;
+    const itemName = slots.Item.value;
     const dynamoParams = {
       TableName: itemsTable,
       Key: {
-        Name: itemName,
-        UserId: userId
+        itemName: itemName,
+        userId: userId
       }
     };
 
@@ -61,7 +53,7 @@ const handlers = {
         const item = data.Item;
 
         if (item) {
-          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);
+          this.emit(':tell', `Item ${itemName} is located in ${item.itemLocation}`);
         }
         else {
           this.emit(':tell', `Item ${itemName} not found!`);
@@ -77,18 +69,18 @@ const handlers = {
     const { slots } = this.event.request.intent;
 
     // ItemName
-    if (!slots.ItemStored.value) {
-      const slotToElicit = 'ItemStored';
+    if (!slots.Item.value) {
+      const slotToElicit = 'ItemName';
       const speechOutput = 'What is the item to be stored?';
       const repromptSpeech = 'Please tell me the name of the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    else if (slots.ItemStored.confirmationStatus !== 'CONFIRMED') {
+    else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
 
-      if (slots.ItemStored.confirmationStatus !== 'DENIED') {
+      if (slots.Item.confirmationStatus !== 'DENIED') {
         // slot status: unconfirmed
         const slotToConfirm = 'ItemName';
-        const speechOutput = `The name of the item is ${slots.ItemName.value}, correct?`;
+        const speechOutput = `The name of the item is ${slots.Item.value}, correct?`;
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
@@ -101,18 +93,18 @@ const handlers = {
     }
 
     // ItemLocation
-    if (!slots.ItemLocation.value) {
+    if (!slots.Place.value) {
       const slotToElicit = 'ItemLocation';
       const speechOutput = 'Where is the item stored?';
       const repromptSpeech = 'Please give me a location of the item.';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    else if (slots.ItemLocation.confirmationStatus !== 'CONFIRMED') {
+    else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
 
-      if (slots.ItemLocation.confirmationStatus !== 'DENIED') {
+      if (slots.Place.confirmationStatus !== 'DENIED') {
         // slot status: unconfirmed
         const slotToConfirm = 'ItemLocation';
-        const speechOutput = `The item location is ${slots.ItemLocation.value}, correct?`;
+        const speechOutput = `The item location is ${slots.Place.value}, correct?`;
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
@@ -125,22 +117,22 @@ const handlers = {
     }
 
     // all slot values received and confirmed, now add the record to DynamoDB
-    const name = slots.ItemName.value;
-    const location = slots.ItemLocation.value;
+    const name = slots.Item.value;
+    const location = slots.Place.value;
     const dynamoParams = {
       TableName: itemsTable,
       Item: {
-        Name: name,
-        UserId: userId,
-        Location: location
+        itemName: name,
+        userId: userId,
+        itemLocation: location
       }
     };
 
     const checkIfItemExistsParams = {
       TableName: itemsTable,
       Key: {
-        Name: name,
-        UserId: userId
+        itemName: name,
+        userId: userId
       }
     };
 
@@ -191,4 +183,10 @@ const handlers = {
   'AMAZON.StopIntent'() {
     this.emit(':tell', 'Goodbye!');
   }
+};
+
+module.exports.handler = (event, context) => {
+  const alexa = Alexa.handler(event, context);
+  alexa.registerHandlers(handlers);
+  alexa.execute();
 };

@@ -3,7 +3,7 @@
     "invocationName": "stuff locator",
     "intents": [
       {
-        "name": "FindIntent",
+        "name": "FindItemIntent",
         "slots": [
           {
             "name" : "Item",
@@ -15,7 +15,7 @@
         ]
       },
       {
-        "name": "StoreIntent",
+        "name": "StoreItemIntent",
         "slots": [
           {
             "name" : "Item",
@@ -27,8 +27,8 @@
           }
         ],
         "samples": [
-          "Add an item",
-          "Store an item"
+          "add an item",
+          "store an item"
         ]
       },
       {
@@ -56,7 +56,7 @@
     ],
     "types": [
       {
-        "name": "ItemStored",
+        "name": "ItemName",
         "values": [
           {
             "id": "",
@@ -76,7 +76,7 @@
       },
       {
         "name": "ItemLocation",
-        "value": [
+        "values": [
           {
             "id": "",
             "name": {
