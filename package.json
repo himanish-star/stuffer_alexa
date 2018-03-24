@@ -1,18 +1,26 @@
 {
-  "name": "stuffer",
+  "name": "stufflocator",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "dependencies": {
     "alexa-sdk": "^1.0.25",
-    "aws-sdk": "^2.212.1",
-    "es6-promisify": "^6.0.0",
-    "thesaurus-com": "^1.1.3"
+    "thesaurus-com": "^1.1.3",
+    "aws-sdk": "^2.213.1",
+    "es6-promisify": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himanish-star/thingy-locator.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/himanish-star/thingy-locator/issues"
+  },
+  "homepage": "https://github.com/himanish-star/thingy-locator#readme",
+  "description": ""
 }

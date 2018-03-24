@@ -3,10 +3,10 @@
     "invocationName": "stuff locator",
     "intents": [
       {
-        "name": "FindIntent",
+        "name": "FindItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           }
         ],
@@ -15,20 +15,20 @@
         ]
       },
       {
-        "name": "StoreIntent",
+        "name": "StoreItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           },
           {
-            "name" : "Place",
+            "name": "Place",
             "type": "ItemLocation"
           }
         ],
         "samples": [
-          "Add an item",
-          "Store an item"
+          "add an item",
+          "store an item"
         ]
       },
       {
@@ -94,5 +94,74 @@
         ]
       }
     ]
-  }
+  },
+  "dialog": {
+    "intents": [
+      {
+        "name": "StoreItemIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Item",
+            "type": "ItemName",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet"
+            }
+          },
+          {
+            "name": "Place",
+            "type": "ItemLocation",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which planet are you starting from?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which 2 planet are you starting from?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which planet are you going to?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which 2 planet are you going to?"
+        }
+      ]
+    }
+  ]
 }
