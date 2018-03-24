@@ -2,11 +2,15 @@
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
 //todo: es6-promisify is now out with a newer version, so update your code with the newer version of the API.
-const promisify = require('es6-promisify');
+// const promisify = require('es6-promisify');
 
 const itemsTableName = 'Items';
 const timeStampList = 'timeStamp';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
+
+const date = new Date()
+const currentTimeStamp = date.getTime();
+
 
 const handlers = {
 
@@ -123,6 +127,8 @@ const handlers = {
   }
 };
 
+// handling renewal of ActiveList/Database
+
 const timeStampParams = {
   TableName: timeStampList
 };
@@ -135,9 +141,6 @@ docClient.scan(timeStampParams, function (err, data) {
     console.log("Time Stamp found:", JSON.stringify(data, null, 2));
   }
 });
-
-const date = new Date()
-const currentTimeStamp = date.getTime();
 
 function checkRenew (timeStamp) {
   
