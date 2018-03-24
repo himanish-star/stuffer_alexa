@@ -8,7 +8,7 @@ const itemsTableName = 'Items';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
-  
+
   'FindItemIntent': function () {
   
     let emitCopy = this.emit;
@@ -36,33 +36,10 @@ const handlers = {
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
   
-    //name of the place where the item is to be stored
-    /*if (!slots.Place.value) {
-      const slotToElicit = 'Place';
-      const speechOutput = 'Where is the item stored?';
-      const repromptSpeech = 'Please give me a location of the item.';
-      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
-    } else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
-      if (slots.Place.confirmationStatus !== 'DENIED') {
-        // slot status: unconfirmed
-        const slotToConfirm = 'Place';
-        const speechOutput = `The item location is ${slots.Place.value}, correct?`;
-        const repromptSpeech = speechOutput;
-        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
-      }
-    
-      // slot status: denied -> reprompt for slot data
-      const slotToElicit = 'Place';
-      const speechOutput = 'Where can the item be found?';
-      const repromptSpeech = 'Please give me a location where the item is stored.';
-      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
-    }*/
-  
     let params = {
       TableName: itemsTableName,
       Key:{
-        "hashkey": userId,
-        "itemName": slots.Item.value
+        "userId": userId
       }
     };
     documentClient.get(params, function(err, data) {
@@ -71,7 +48,7 @@ const handlers = {
         emitCopy(':tell', `oops! something went wrong`);
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
-        emitCopy(':tell', `your ${slots.Item.value} is stored at ${data.locationName}`);
+        emitCopy(':tell', `you can find your ${slots.Item.value} at ${data.Item.locationName}`);
       }
     });
   },
