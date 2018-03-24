@@ -5,6 +5,7 @@ const awsSDK = require('aws-sdk');
 const promisify = require('es6-promisify');
 
 const itemsTableName = 'Items';
+const timeStampList = 'timeStamp';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
@@ -122,6 +123,83 @@ const handlers = {
   }
 };
 
+const timeStampParams = {
+  TableName: timeStampList
+};
+
+docClient.scan(timeStampParams, function (err, data) {
+  if (err) {
+    console.error("Time stamp not working", JSON.stringify(err, null, 2));
+  } else {
+    checkRenew(data.timeStamp)
+    console.log("Time Stamp found:", JSON.stringify(data, null, 2));
+  }
+});
+
+const date = new Date()
+const currentTimeStamp = date.getTime();
+
+function checkRenew (timeStamp) {
+  
+  if(!timeStamp) {
+    let params = {
+      TableName: timeStampList,
+      timeStamp:{
+        "userId": userId,
+        "timestamp": currentTimeStamp
+      }
+    };
+    //todo: Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.
+    //todo: Promisify to be used here(check how to use the new API)
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+    });
+    
+    
+  } else {
+    
+    //deleteALL
+    docClient.delete({
+      TableName: timeStampList,
+      Key: {}
+    }, function(err, data) {
+      if (err) {
+      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+      console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+    });
+    
+    let timeStampAtFirst = timeStamp[i]; //or some way to get the first one.
+    //store the first one
+    let params = {
+      TableName: timeStampList,
+      timeStamp:{
+        "userId": userId,
+        "timestamp": timeStampAtFirst
+      }
+    };
+
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+    });
+    
+    if (currentTimeStamp - timeStamp >= 86400000) {
+      setInterval(function () {
+        //copy data intelligently from active to master DB
+      }, 86400000)
+    }
+    
+  }
+}
 
 exports.handler = function (event, context, callback) {
   const alexa = Alexa.handler(event, context, callback);
