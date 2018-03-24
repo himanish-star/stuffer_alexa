@@ -3,7 +3,7 @@
     "invocationName": "stuff locator",
     "intents": [
       {
-        "name": "FindIntent",
+        "name": "FindItemIntent",
         "slots": [
           {
             "name" : "Item",
@@ -11,11 +11,14 @@
           }
         ],
         "samples": [
-          "find my {Item}"
+          "find my {Item}",
+          "help me find my {Item}",
+          "where is my {Item}",
+          "find an item"
         ]
       },
       {
-        "name": "StoreIntent",
+        "name": "StoreItemIntent",
         "slots": [
           {
             "name" : "Item",
@@ -27,8 +30,9 @@
           }
         ],
         "samples": [
-          "Add an item",
-          "Store an item"
+          "add an item",
+          "store an item",
+          "place my {Item} inside the {Place}"
         ]
       },
       {
@@ -49,7 +53,7 @@
     ],
     "types": [
       {
-        "name": "ItemStored",
+        "name": "ItemName",
         "values": [
           {
             "id": "",
@@ -69,7 +73,7 @@
       },
       {
         "name": "ItemLocation",
-        "value": [
+        "values": [
           {
             "id": "",
             "name": {
@@ -87,5 +91,74 @@
         ]
       }
     ]
-  }
+  },
+  "dialog": {
+    "intents": [
+      {
+        "name": "StoreItemIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Item",
+            "type": "ItemName",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Item"
+            }
+          },
+          {
+            "name": "Place",
+            "type": "ItemLocation",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Place"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the item to be stored?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "The name of the item is {Item}, correct?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Where is the item stored?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Place",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "The item location is {Place}, correct?"
+        }
+      ]
+    }
+  ]
 }
