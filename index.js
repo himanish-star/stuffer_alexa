@@ -8,6 +8,7 @@ const itemsTableName = 'Items';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
+  
   'FindItemIntent': function () {
   
     let emitCopy = this.emit;
@@ -59,15 +60,15 @@ const handlers = {
   
     let params = {
       TableName: itemsTableName,
-      Item:{
-        "userId": userId,
+      Key:{
+        "hashkey": userId,
         "itemName": slots.Item.value
       }
     };
     documentClient.get(params, function(err, data) {
       if (err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', `oops! something went wrong ${data}`);
+        emitCopy(':tell', `oops! something went wrong`);
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
         emitCopy(':tell', `your ${slots.Item.value} is stored at ${data.locationName}`);
