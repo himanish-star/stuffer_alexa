@@ -5,12 +5,9 @@ const awsSDK = require('aws-sdk');
 //todo: const promisify = require('es6-promisify');
 
 const itemsTableName = 'Items';
-const timeStampTableName = 'timeStamp';
+const timeStampTableName = 'TimeStamp';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
-
-const date = new Date();
-const currentTimeStamp = date.getTime();//todo: this might cause some error
-
+const documentClientNew = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
 
@@ -44,7 +41,7 @@ const handlers = {
     let params = {
       TableName: itemsTableName,
       Key:{
-        "itemName-userId": slots.Item.value + " " + userId;
+        "itemName-userId": slots.Item.value + " " + userId
       }
     };
     documentClient.get(params, function(err, data) {
@@ -62,7 +59,8 @@ const handlers = {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-
+    
+    fetchExistingTimeStamp(userId);
     // name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -123,7 +121,6 @@ const handlers = {
         emitCopy(':tell', "oops! something went wrong");
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
-        fetchExistingTimeStamp(userId);
         emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);
       }
     });
@@ -137,19 +134,21 @@ function fetchExistingTimeStamp(userId) {
       "userId": userId
     }
   };
-  documentClient.get(timeStampParams, function (err, data) {
+  documentClientNew.get(timeStampParams, function (err, data) {
     if (err) {
       console.error("Time stamp not working", JSON.stringify(err, null, 2));
       checkRenew(false, userId);
     } else {
-      checkRenew(data.timeStamp, userId);
       console.log("Time Stamp found:", JSON.stringify(data, null, 2));
+      checkRenew(data, userId);
     }
   });
 }
 
-function checkRenew(timeStamp, userId) {
-  if(!timeStamp) {
+function checkRenew(data, userId) {
+  const date = new Date();
+  const currentTimeStamp = date.getTime();
+  if(!data.Item) {
     let params = {
       TableName: timeStampTableName,
       Item:{
@@ -158,7 +157,7 @@ function checkRenew(timeStamp, userId) {
       }
     };
 
-    documentClient.put(params, function(err, data) {
+    documentClientNew.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
       } else {
@@ -166,33 +165,19 @@ function checkRenew(timeStamp, userId) {
       }
     });
   } else {
-    if (currentTimeStamp - timeStamp >= 86400000) {
-      //it's now time to update the Database with the activeList
-      //deleteALL
-      documentClient.delete({
+    if(currentTimeStamp - data.Item.timeStamp >= 86400000) {
+      let params = {
         TableName: timeStampTableName,
-        Key: {
-          "userId": userId
+        Item:{
+          "userId": userId,
+          "timestamp": currentTimeStamp
         }
-      }, function(err, data) {
+      };
+      documentClientNew.put(params, function(err, data) {
         if (err) {
           console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
           console.log("Added item:", JSON.stringify(data, null, 2));
-          let params = {
-            TableName: timeStampTableName,
-            Item:{
-              "userId": userId,
-              "timestamp": currentTimeStamp
-            }
-          };
-          documentClient.put(params, function(err, data) {
-            if (err) {
-              console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-            } else {
-              console.log("Added item:", JSON.stringify(data, null, 2));
-            }
-          });
           copyActiveList();
         }
       });
@@ -203,82 +188,6 @@ function checkRenew(timeStamp, userId) {
 function copyActiveList() {
   //todo: update items database with the activeList
 }
-
-//todo: handling renewal of ActiveList/Database (Shikhar's version)
-
-/*const timeStampParams = {
-  TableName: timeStampTableName
-};
-
-documentClient.scan(timeStampParams, function (err, data) {
-  if (err) {
-    console.error("Time stamp not working", JSON.stringify(err, null, 2));
-  } else {
-    checkRenew(data.timeStamp);
-    console.log("Time Stamp found:", JSON.stringify(data, null, 2));
-  }
-});
-
-function checkRenew (timeStamp) {
-  
-  if(!timeStamp) {
-    let params = {
-      TableName: timeStampTableName,
-      timeStamp:{
-        "userId": userId,
-        "timestamp": currentTimeStamp
-      }
-    };
-
-    documentClient.put(params, function(err, data) {
-      if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-      } else {
-        console.log("Added item:", JSON.stringify(data, null, 2));
-      }
-    });
-    
-    
-  } else {
-    
-    //deleteALL
-    documentClient.delete({
-      TableName: timeStampTableName,
-      Key: {}
-    }, function(err, data) {
-      if (err) {
-      console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-      } else {
-      console.log("Added item:", JSON.stringify(data, null, 2));
-      }
-    });
-    
-    let timeStampAtFirst = timeStamp[i]; //or some way to get the first one.
-    //store the first one
-    let params = {
-      TableName: timeStampList,
-      timeStamp:{
-        "userId": userId,
-        "timestamp": timeStampAtFirst
-      }
-    };
-
-    documentClient.put(params, function(err, data) {
-      if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-      } else {
-        console.log("Added item:", JSON.stringify(data, null, 2));
-      }
-    });
-    
-    if (currentTimeStamp - timeStamp >= 86400000) {
-      setInterval(function () {
-        //copy data intelligently from active to master DB
-      }, 86400000)
-    }
-    
-  }
-}*/
 
 exports.handler = function (event, context, callback) {
   const alexa = Alexa.handler(event, context, callback);
