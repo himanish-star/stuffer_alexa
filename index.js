@@ -7,6 +7,22 @@ const itemsTable = 'Items';
 const docClient = new awsSDK.DynamoDB.DocumentClient();
 
 const handlers = {
+  
+  'LaunchRequest': function() {
+  
+    const deviceId = this.event.context.System.device.deviceId;
+    const accessToken = this.event.context.System.apiAccessToken;
+  
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', `https://api.amazonalexa.com/v1/devices/${deviceId}/settings/address`, true);
+    xhttp.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+    xhttp.setRequestHeader('contentType', `application/json`);
+    xhttp.send();
+    const locationData = xhttp.response;
+    
+    this.emit(':ask', locationData);
+  },
+ 
   'StoreItemIntent': function () {
     let emitOO = this.emit;
     const { userId } = this.event.session.user;
