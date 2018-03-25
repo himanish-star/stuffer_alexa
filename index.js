@@ -44,7 +44,7 @@ const handlers = {
     let params = {
       TableName: itemsTableName,
       Key:{
-        "userId": userId
+        "itemName-userId": slots.Item.value + " " + userId;
       }
     };
     documentClient.get(params, function(err, data) {
@@ -109,6 +109,7 @@ const handlers = {
     let params = {
       TableName: itemsTableName,
       Item:{
+        "itemName-userId": slots.Item.value + " " + userId,
         "userId": userId,
         "itemName": slots.Item.value,
         "locationName": slots.Place.value
@@ -151,7 +152,7 @@ function checkRenew(timeStamp, userId) {
   if(!timeStamp) {
     let params = {
       TableName: timeStampTableName,
-      timeStamp:{
+      Item:{
         "userId": userId,
         "timestamp": currentTimeStamp
       }
@@ -180,7 +181,7 @@ function checkRenew(timeStamp, userId) {
           console.log("Added item:", JSON.stringify(data, null, 2));
           let params = {
             TableName: timeStampTableName,
-            timeStamp:{
+            Item:{
               "userId": userId,
               "timestamp": currentTimeStamp
             }
@@ -200,7 +201,7 @@ function checkRenew(timeStamp, userId) {
 }
 
 function copyActiveList() {
-  //update database with the activeList
+  //todo: update items database with the activeList
 }
 
 //todo: handling renewal of ActiveList/Database (Shikhar's version)
