@@ -165,7 +165,7 @@ function checkRenew(data, userId) {
       }
     });
   } else {
-    if(currentTimeStamp - data.Item.timeStamp >= 86400000) {
+    if(currentTimeStamp - data.Item.timestamp >= 86400000) {
       let params = {
         TableName: timeStampTableName,
         Item:{
