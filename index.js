@@ -2,14 +2,14 @@
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
 //todo: es6-promisify is now out with a newer version, so update your code with the newer version of the API.
-// const promisify = require('es6-promisify');
+//todo: const promisify = require('es6-promisify');
 
 const itemsTableName = 'Items';
-const timeStampList = 'timeStamp';
+const timeStampTableName = 'timeStamp';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
-const date = new Date()
-const currentTimeStamp = date.getTime();
+const date = new Date();
+const currentTimeStamp = date.getTime();//todo: this might cause some error
 
 
 const handlers = {
@@ -57,6 +57,7 @@ const handlers = {
       }
     });
   },
+
   'StoreItemIntent': function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
@@ -113,31 +114,106 @@ const handlers = {
         "locationName": slots.Place.value
       }
     };
-    //todo: Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.
-    //todo: Promisify to be used here(check how to use the new API)
+    //todo: (SHM's task) => Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.
+    //todo: (not required for now)Promisify to be used here(check how to use the new API)
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         emitCopy(':tell', "oops! something went wrong");
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
+        fetchExistingTimeStamp(userId);
         emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);
       }
     });
   }
 };
 
-// handling renewal of ActiveList/Database
+function fetchExistingTimeStamp(userId) {
+  const timeStampParams = {
+    TableName: timeStampTableName,
+    Key: {
+      "userId": userId
+    }
+  };
+  documentClient.get(timeStampParams, function (err, data) {
+    if (err) {
+      console.error("Time stamp not working", JSON.stringify(err, null, 2));
+      checkRenew(false, userId);
+    } else {
+      checkRenew(data.timeStamp, userId);
+      console.log("Time Stamp found:", JSON.stringify(data, null, 2));
+    }
+  });
+}
 
-const timeStampParams = {
-  TableName: timeStampList
+function checkRenew(timeStamp, userId) {
+  if(!timeStamp) {
+    let params = {
+      TableName: timeStampTableName,
+      timeStamp:{
+        "userId": userId,
+        "timestamp": currentTimeStamp
+      }
+    };
+
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+      }
+    });
+  } else {
+    if (currentTimeStamp - timeStamp >= 86400000) {
+      //it's now time to update the Database with the activeList
+      //deleteALL
+      documentClient.delete({
+        TableName: timeStampTableName,
+        Key: {
+          "userId": userId
+        }
+      }, function(err, data) {
+        if (err) {
+          console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+          console.log("Added item:", JSON.stringify(data, null, 2));
+          let params = {
+            TableName: timeStampTableName,
+            timeStamp:{
+              "userId": userId,
+              "timestamp": currentTimeStamp
+            }
+          };
+          documentClient.put(params, function(err, data) {
+            if (err) {
+              console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+            } else {
+              console.log("Added item:", JSON.stringify(data, null, 2));
+            }
+          });
+          copyActiveList();
+        }
+      });
+    }
+  }
+}
+
+function copyActiveList() {
+  //update database with the activeList
+}
+
+//todo: handling renewal of ActiveList/Database (Shikhar's version)
+
+/*const timeStampParams = {
+  TableName: timeStampTableName
 };
 
-docClient.scan(timeStampParams, function (err, data) {
+documentClient.scan(timeStampParams, function (err, data) {
   if (err) {
     console.error("Time stamp not working", JSON.stringify(err, null, 2));
   } else {
-    checkRenew(data.timeStamp)
+    checkRenew(data.timeStamp);
     console.log("Time Stamp found:", JSON.stringify(data, null, 2));
   }
 });
@@ -146,14 +222,13 @@ function checkRenew (timeStamp) {
   
   if(!timeStamp) {
     let params = {
-      TableName: timeStampList,
+      TableName: timeStampTableName,
       timeStamp:{
         "userId": userId,
         "timestamp": currentTimeStamp
       }
     };
-    //todo: Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.
-    //todo: Promisify to be used here(check how to use the new API)
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -166,8 +241,8 @@ function checkRenew (timeStamp) {
   } else {
     
     //deleteALL
-    docClient.delete({
-      TableName: timeStampList,
+    documentClient.delete({
+      TableName: timeStampTableName,
       Key: {}
     }, function(err, data) {
       if (err) {
@@ -202,7 +277,7 @@ function checkRenew (timeStamp) {
     }
     
   }
-}
+}*/
 
 exports.handler = function (event, context, callback) {
   const alexa = Alexa.handler(event, context, callback);
