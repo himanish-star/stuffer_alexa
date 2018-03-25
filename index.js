@@ -37,11 +37,11 @@ const handlers = {
       const repromptSpeech = 'Please tell me the name of the item to be found';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-  
+
     let params = {
       TableName: itemsTableName,
       Key:{
-        "itemName-userId": slots.Item.value + " " + userId
+        "itemName-userId": slots.Item.value + "-" + userId
       }
     };
     documentClient.get(params, function(err, data) {
@@ -107,7 +107,7 @@ const handlers = {
     let params = {
       TableName: itemsTableName,
       Item:{
-        "itemName-userId": slots.Item.value + " " + userId,
+        "itemName-userId": slots.Item.value + "-" + userId,
         "userId": userId,
         "itemName": slots.Item.value,
         "locationName": slots.Place.value
