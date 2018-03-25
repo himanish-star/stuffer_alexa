@@ -11,7 +11,10 @@
           }
         ],
         "samples": [
-          "find my {Item}"
+          "find my {Item}",
+          "help me find my {Item}",
+          "where is my {Item}",
+          "find an item"
         ]
       },
       {
@@ -28,7 +31,8 @@
         ],
         "samples": [
           "add an item",
-          "store an item"
+          "store an item",
+          "place my {Item} inside the {Place}"
         ]
       },
       {
@@ -45,13 +49,6 @@
         "name": "AMAZON.StopIntent",
         "slots": [],
         "samples": []
-      },
-      {
-        "name": "LaunchRequest",
-        "slots": [],
-        "samples": [
-          "say hello"
-        ]
       }
     ],
     "types": [
@@ -98,6 +95,23 @@
   "dialog": {
     "intents": [
       {
+        "name": "FindItemIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Item",
+            "type": "ItemName",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
+              "confirmation": "Confirm.Intent-FindItemIntent.IntentSlot-Item"
+            }
+          }
+        ]
+      },
+      {
         "name": "StoreItemIntent",
         "confirmationRequired": false,
         "prompts": {},
@@ -108,8 +122,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
-              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet"
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Item"
             }
           },
           {
@@ -118,8 +132,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
-              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet"
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Place"
             }
           }
         ]
@@ -128,38 +142,56 @@
   },
   "prompts": [
     {
-      "id": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which planet are you starting from?"
+          "value": "What is the item to be stored?"
         }
       ]
     },
     {
-      "id": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Item",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which 2 planet are you starting from?"
+          "value": "The name of the item is {Item}, correct?"
         }
       ]
     },
     {
-      "id": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which planet are you going to?"
+          "value": "Where is the item stored?"
         }
       ]
     },
     {
-      "id": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Place",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which 2 planet are you going to?"
+          "value": "The item location is {Place}, correct?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the item to be found?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-FindItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "The name of the item is {Item}, correct?"
         }
       ]
     }
