@@ -1,23 +1,53 @@
 'use strict';
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
+const thesaurus = require('thesaurus-com');
 //todo: es6-promisify is now out with a newer version, so update your code with the newer version of the API.
 //todo: const promisify = require('es6-promisify');
 
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
+const activeListTableName = 'ActiveList';
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 const documentClientNew = new awsSDK.DynamoDB.DocumentClient();
+let activeListFetchedStatus = false;
+let activeList = []; //todo: this would behave as out cache active List
+
+function fetchActiveListAndCache(userId) {
+  const params = {
+    TableName: activeListTableName,
+    Key: {
+      "userId": userId
+    }
+  };
+  documentClient.get(params, function (err, data) {
+    if(err) {
+      console.log('oops something went wrong', err);
+    } else {
+      console.log('activeList has been cached');
+      activeListFetchedStatus = true;
+      activeList = data.Item.activeList;
+    }
+  })
+}
+
+function filterSynonyms(synonyms) {
+
+}
 
 const handlers = {
-  
+
   'FindItemIntent': function () {
-    
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-    
-    // name of the item
+
+    //fetch activeList if not yet
+    if(!activeListFetchedStatus) {
+      fetchActiveListAndCache(userId);
+    }
+
+    //name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item to be found?';
@@ -31,28 +61,78 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item you would like to find?';
       const repromptSpeech = 'Please tell me the name of the item to be found';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
-    let params = {
-      TableName: itemsTableName,
-      Key:{
-        "itemName-userId": slots.Item.value + "-" + userId
+
+    const itemName = slots.ItemName.value;
+    let searchFlag = false;
+    let requiredSynonyms = [];
+
+    for (let activeMember in activeList) {
+      if(activeMember[itemName]) {
+        emitCopy(":tell", `your ${itemName} is located at ${activeMember[itemName]}`);
+        searchFlag = true;
+        break;
       }
-    };
-    documentClient.get(params, function(err, data) {
-      if (err) {
-        console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', `oops! something went wrong`);
-      } else {
-        console.log("Found item:", JSON.stringify(data, null, 2));
-        emitCopy(':tell', `you can find your ${slots.Item.value} at ${data.Item.locationName}`);
-      }
-    });
+    }
+    if(!searchFlag) {
+      console.log('Attempting to read data of synonyms in activeList');
+      const synonyms = thesaurus.search(itemName).synonyms;
+      //todo: filter out required synonyms
+      requiredSynonyms = filterSynonyms(synonyms);
+      requiredSynonyms.forEach(function (synonym) {
+        for (let activeMember in activeList) {
+          if(activeMember[synonym]) {
+            //todo: user has to confirm that this is what he requires, setup dialog model
+            emitCopy(":tell", `your ${synonym} is located at ${activeMember[itemName]}`);
+            searchFlag = true;
+            break;
+          }
+        }
+      });
+    }
+    if(!searchFlag) {
+      console.log('Attempting to read data in Items table');
+      let params = {
+        TableName: itemsTableName,
+        Key:{
+          "itemName-userId": slots.Item.value + "-" + userId
+        }
+      };
+      documentClient.get(params, function(err, data) {
+        if (err) {
+          console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+          emitCopy(':tell', `oops! something went wrong`);
+        } else {
+          console.log("Found item:", JSON.stringify(data, null, 2));
+          if(data.Item) {
+            emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
+          } else {
+            console.log('Attempting to read data of synonyms in Items table');
+            requiredSynonyms.forEach(function (synonym) {
+              params.Key = {
+                "itemName-userId": synonym + "-" + userId
+              };
+              documentClient.get(params, function(err, data) {
+                if(err) {
+                  console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+                  emitCopy(':tell', `oops! something went wrong`);
+                } else {
+                  if(data.Item) {
+                    emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
+                  }
+                }
+              });
+            });
+
+          }
+        }
+      });
+    }
   },
   
   'StoreItemIntent': function () {
