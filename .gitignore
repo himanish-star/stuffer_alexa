@@ -1,4 +1,4 @@
 node_modules/
 .idea
 package-lock.json
-dynamodb_local_latest
+thingy-locator.zip
