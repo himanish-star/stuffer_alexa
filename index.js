@@ -52,6 +52,7 @@ function storeActiveList(userId) {
   })
 }
 
+//moves all old items to masterDB
 function moveFromActiveListToDB(userId, transferList) {
   
   transferList.forEach(function (item) {
@@ -89,12 +90,12 @@ const handlers = {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-    
-    //fetch activeList if not yet
+  
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
+      fetchExistingTimeStamp(userId);
     }
-    
+  
     //name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -149,6 +150,7 @@ const handlers = {
         }
       });
     }
+    
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
@@ -199,6 +201,10 @@ const handlers = {
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
   
+    if(!activeListFetchedStatus) {
+      fetchActiveListAndCache(userId);
+      fetchExistingTimeStamp(userId);
+    }
     
     //fetch activeList if not yet
     
@@ -252,12 +258,10 @@ const handlers = {
     activeList.push({
       itemName: slots.Item.value,
       locationName: slots.Place.value,
-      whetherTransferred: 'false'
+      whetherTransferred: false
     });
   
-    //checks if you need to copy stuff from AL -> DB. copies if needed.
-    fetchExistingTimeStamp(userId);
-  
+    
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
   
@@ -278,7 +282,7 @@ const handlers = {
   
 };
 
-
+//gets old timestamp and then updates DB if needed
 function fetchExistingTimeStamp(userId) {
   const timeStampParams = {
     TableName: timeStampTableName,
@@ -297,6 +301,7 @@ function fetchExistingTimeStamp(userId) {
   });
 }
 
+//updates db after checking time
 function checkRenew(data, userId) {
   const date = new Date();
   const currentTimeStamp = date.getTime();
