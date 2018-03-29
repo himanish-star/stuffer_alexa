@@ -76,12 +76,6 @@ function moveFromActiveListToDB(userId, transferList) {
   })
 }
 
-//function to filter out the unnecessary synonyms
-function filterSynonyms(synonyms) {
-  //todo: this function is to be implemented
-  return synonyms;
-}
-
 const handlers = {
   
   //After every findItemIntent remove element from activeList.
@@ -136,13 +130,17 @@ const handlers = {
       console.log('Attempting to read data of synonyms in activeList');
       const synonyms = thesaurus.search(itemName).synonyms;
       //todo: filter out required synonyms
-      requiredSynonyms = filterSynonyms(synonyms);
-      requiredSynonyms.forEach(function (synonym) {
+      // requiredSynonyms = filterSynonyms(synonyms);
+      // requiredSynonyms.forEach(function (synonym) {
+      synonyms.forEach(function (synonym) {
+        
         for (let activeMember in activeList) {
           if(activeMember[synonym]) {
             //todo: user has to confirm that this is what he requires, setup dialog model
+            requiredSynonyms.push(synonym);
             emitCopy(":tell", `your ${synonym} is located at ${activeMember[synonym]}`);
             searchFlag = true;
+            
             let index = activeList.indexOf(synonym);
             if (index > -1) activeList.splice(index, 1);
             break;
@@ -204,12 +202,6 @@ const handlers = {
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
-    }
-    
-    //fetch activeList if not yet
-    
-    if(!activeListFetchedStatus) {
-      fetchActiveListAndCache(userId);
     }
     
     // name of the item
