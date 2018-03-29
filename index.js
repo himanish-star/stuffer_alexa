@@ -7,7 +7,6 @@ const thesaurus = require('thesaurus-com');
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
-const mainDBTableName = 'MasterDB'
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -38,7 +37,7 @@ function fetchActiveListAndCache(userId) {
 //stores the activeList back into the ActiveList table after the program comes to a halt
 function storeActiveList(userId) {
   const params = {
-    TableName: activeListFetchedStatus,
+    TableName: activeListTableName,
     Item: {
       "userId": userId,
       "activeList": activeList
