@@ -6,7 +6,7 @@
         "name": "FindItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           }
         ],
@@ -21,11 +21,11 @@
         "name": "StoreItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           },
           {
-            "name" : "Place",
+            "name": "Place",
             "type": "ItemLocation"
           }
         ],
