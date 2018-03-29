@@ -29,7 +29,7 @@ function fetchActiveListAndCache(userId) {
     } else {
       console.log('activeList has been cached');
       activeListFetchedStatus = true;
-      activeList = data.Item.activeList;
+      if(data.Item) activeList = data.Item.activeList;
     }
   })
 }
@@ -260,11 +260,13 @@ const handlers = {
   'AMAZON.CancelIntent': function () {
     const { userId } = this.event.session.user;
     storeActiveList(userId);
+    this.emit(':tell', 'Goodbye!');
   },
   
   'AMAZON.StopIntent': function () {
     const { userId } = this.event.session.user;
     storeActiveList(userId);
+    this.emit(':tell', 'Goodbye!');
   },
   
   'LaunchRequest':  function () {
@@ -329,7 +331,7 @@ function checkRenew(data, userId) {
           console.log("Added item:", JSON.stringify(data, null, 2));
           const transferList = activeList.filter(elem => !elem.whetherTransferred);
           activeList.forEach(function (elem) {
-            elem.whetherTransferred = 'true';
+            elem.whetherTransferred = true;
           })
           moveFromActiveListToDB(userId, transferList)
         }
