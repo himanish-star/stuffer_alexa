@@ -111,17 +111,19 @@ const handlers = {
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
     
-    const itemName = slots.ItemName.value;
+    const itemName = slots.Item.value;
     let searchFlag = false;
     let requiredSynonyms = [];
     
     //search in activeList with itemName
-    for (let activeMember in activeList) {
-      if(activeMember[itemName]) {
-        emitCopy(":tell", `your ${itemName} is located at ${activeMember[itemName]}`);
+    for (let activeMember of activeList) {
+      console.log(activeMember.itemName, itemName, activeMember.itemName === itemName);
+      if(activeMember.itemName === itemName) {
+        emitCopy(":tell", `your ${itemName} is located at ${activeMember.locationName}`);
         searchFlag = true;
-        let index = activeList.indexOf(itemName);
-        if (index > -1) activeList.splice(index, 1);
+        const index = activeList.indexOf(activeMember);
+        activeList.splice(index, 1);
+        storeActiveList(userId);
         break;
       }
     }
@@ -134,15 +136,15 @@ const handlers = {
       // requiredSynonyms.forEach(function (synonym) {
       synonyms.forEach(function (synonym) {
         
-        for (let activeMember in activeList) {
-          if(activeMember[synonym]) {
+        for (let activeMember of activeList) {
+          if(activeMember.itemName === synonym) {
             //todo: user has to confirm that this is what he requires, setup dialog model
             requiredSynonyms.push(synonym);
-            emitCopy(":tell", `your ${synonym} is located at ${activeMember[synonym]}`);
+            emitCopy(":tell", `your ${synonym} is located at ${activeMember.locationName}`);
             searchFlag = true;
-            
-            let index = activeList.indexOf(synonym);
-            if (index > -1) activeList.splice(index, 1);
+            const index = activeList.indexOf(activeMember);
+            activeList.splice(index, 1);
+            storeActiveList(userId);
             break;
           }
         }
@@ -252,8 +254,8 @@ const handlers = {
       locationName: slots.Place.value,
       whetherTransferred: false
     });
-  
-    
+
+    storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
   
@@ -332,7 +334,7 @@ function checkRenew(data, userId) {
           const transferList = activeList.filter(elem => !elem.whetherTransferred);
           activeList.forEach(function (elem) {
             elem.whetherTransferred = true;
-          })
+          });
           moveFromActiveListToDB(userId, transferList)
         }
       });
