@@ -7,6 +7,7 @@ const thesaurus = require('thesaurus-com');
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
+const historyTableName = 'HistoryOfItems';
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -14,6 +15,49 @@ let activeListFetchedStatus = false;
 
 //this activeList is filled up at the beginning of the program and emptied at the exit of the program
 let activeList = [];
+
+//function to update history
+function updateHistoryOfItem(userId, itemName, itemLocation) {
+  let historyArrayOfItem = [];
+  const readParams = {
+    TableName: historyTableName,
+    Key: {
+      "itemName-userId": `${itemName}-${userId}`
+    }
+  };
+
+  documentClient.get(readParams, function (err, data) {
+    if (err) {
+      console.log('error, the history array of the item couldn\'t be fetched');
+    } else {
+      if(data.Item) {
+        historyArrayOfItem = data.Item.historyArray;
+        if(!historyArrayOfItem.includes(itemLocation)) {
+          historyArrayOfItem.push(itemLocation);
+          if(historyArrayOfItem.length > 5) {
+            historyArrayOfItem.shift();
+          }
+        }
+      } else {
+        historyArrayOfItem.push(itemLocation);
+      }
+      const writeParams = {
+        TableName: historyTableName,
+        Item: {
+          "itemName-userId": `${itemName}-${userId}`,
+          "historyArray": historyArrayOfItem
+        }
+      };
+      documentClient.put(writeParams, function (err, data) {
+        if(err) {
+          console.log('error, the history array of the item couldn\'t be updated');
+        } else {
+          console.log('this history of the Item has been updated', data);
+        }
+      })
+    }
+  })
+}
 
 //function to fetch activeList at the beginning of the start of Alexa
 function fetchActiveListAndCache(userId) {
@@ -114,11 +158,13 @@ const handlers = {
     const itemName = slots.ItemName.value;
     let searchFlag = false;
     let requiredSynonyms = [];
+    let itemLocation;
     
     //search in activeList with itemName
     for (let activeMember in activeList) {
       if(activeMember[itemName]) {
         emitCopy(":tell", `your ${itemName} is located at ${activeMember[itemName]}`);
+        itemLocation = activeMember[itemName];
         searchFlag = true;
         let index = activeList.indexOf(itemName);
         if (index > -1) activeList.splice(index, 1);
@@ -140,7 +186,7 @@ const handlers = {
             requiredSynonyms.push(synonym);
             emitCopy(":tell", `your ${synonym} is located at ${activeMember[synonym]}`);
             searchFlag = true;
-            
+            itemLocation = activeMember[synonym];
             let index = activeList.indexOf(synonym);
             if (index > -1) activeList.splice(index, 1);
             break;
@@ -165,6 +211,8 @@ const handlers = {
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
+            itemLocation = data.Item.locationName;
+            searchFlag = true;
             emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
           } else {
             //search in Items table on the basis of synonym
@@ -179,9 +227,27 @@ const handlers = {
                   emitCopy(':tell', `oops! something went wrong`);
                 } else {
                   if(data.Item) {
+                    itemLocation = data.Item.locationName;
+                    searchFlag = true;
                     emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
                   } else {
-                    //todo: now check history @shikhar and @prakriti
+                    const getParams = {
+                      TableName: historyTableName,
+                      Key: {
+                        "itemName-userId": `${itemName}-${userId}`
+                      }
+                    };
+                    documentClient.get(getParams, function (err, data) {
+                      if(err) {
+                        console.log('error, nothing found');
+                      } else {
+                        if(data.Item) {
+                          emitCopy(":tell", `you may find your item inside the ${data.Item.historyArray.toString()}`)
+                        } else {
+                          emitCopy(":tell", "nothing found")
+                        }
+                      }
+                    })
                   }
                 }
               });
@@ -191,7 +257,11 @@ const handlers = {
         }
       });
     }
-    
+
+    //check searchFlag status
+    if(searchFlag) {
+      updateHistoryOfItem(userId, itemName, itemLocation);
+    }
   },
   
   'StoreItemIntent': function () {
@@ -332,7 +402,7 @@ function checkRenew(data, userId) {
           const transferList = activeList.filter(elem => !elem.whetherTransferred);
           activeList.forEach(function (elem) {
             elem.whetherTransferred = true;
-          })
+          });
           moveFromActiveListToDB(userId, transferList)
         }
       });
