@@ -8,13 +8,13 @@ const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
 const historyTableName = 'HistoryOfItems';
-const eventsTableName = 'Events'
+const eventsTableName = 'Events';
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 let activeListFetchedStatus = false;
 
-//this activeList is filled up at the beginning of the program and emptied at the exit of the program
+//this activeList is filled up at the beginning of the program
 let activeList = [];
 
 //function to update history
@@ -159,13 +159,14 @@ const handlers = {
     const itemName = slots.Item.value;
     let searchFlag = false;
     let requiredSynonyms = [];
+    let itemLocation = '';
 
     //search in activeList with itemName
     for (let activeMember of activeList) {
-      console.log(activeMember.itemName, itemName, activeMember.itemName === itemName);
       if(activeMember.itemName === itemName) {
         emitCopy(":tell", `your ${itemName} is located at ${activeMember.locationName}`);
         searchFlag = true;
+        itemLocation = activeMember.locationName;
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
@@ -187,7 +188,7 @@ const handlers = {
             requiredSynonyms.push(synonym);
             emitCopy(":tell", `your ${synonym} is located at ${activeMember.locationName}`);
             searchFlag = true;
-
+            itemLocation = activeMember.locationName;
             const index = activeList.indexOf(activeMember);
             activeList.splice(index, 1);
             storeActiveList(userId);
@@ -213,8 +214,8 @@ const handlers = {
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
-            itemLocation = data.Item.locationName;
             searchFlag = true;
+            itemLocation = data.Item.locationName;
             emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
           } else {
             //search in Items table on the basis of synonym
@@ -229,8 +230,8 @@ const handlers = {
                   emitCopy(':tell', `oops! something went wrong`);
                 } else {
                   if(data.Item) {
-                    itemLocation = data.Item.locationName;
                     searchFlag = true;
+                    itemLocation = data.Item.locationName;
                     emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
                   } else {
                     const getParams = {
