@@ -36,6 +36,42 @@
         ]
       },
       {
+        "name": "StoreEventItemIntent",
+        "slots": [
+          {
+            "name": "Event",
+            "type": "EventName"
+          },
+          {
+            "name": "Item",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemtwo",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemthree",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemfour",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemfive",
+            "type": "ItemName"
+          }
+        ],
+        "samples": [
+          "add event {Event} and add {Item} {Itemtwo}",
+          "add event {Event} and add {Item} {Itemtwo} {Itemthree}",
+          "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour}",
+          "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive}",
+          "add event {Event} and add {Item}"
+        ]
+      },
+      {
         "name": "AMAZON.CancelIntent",
         "slots": [],
         "samples": []
@@ -52,6 +88,26 @@
       }
     ],
     "types": [
+      {
+        "name": "EventName",
+        "values": [
+          {
+            "name": {
+              "value": "Shopping"
+            }
+          },
+          {
+            "name": {
+              "value": "Party"
+            }
+          },
+          {
+            "name": {
+              "value": "Exam"
+            }
+          }
+        ]
+      },
       {
         "name": "ItemName",
         "values": [
