@@ -6,8 +6,8 @@ const thesaurus = require('thesaurus-com');
 
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
+const eventsTable = 'Events';
 const activeListTableName = 'ActiveList';
-
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 let activeListFetchedStatus = false;
@@ -77,7 +77,6 @@ function moveFromActiveListToDB(userId, transferList) {
 }
 
 const handlers = {
-  
   //After every findItemIntent remove element from activeList.
   
   'FindItemIntent': function () {
@@ -104,13 +103,13 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item you would like to find?';
       const repromptSpeech = 'Please tell me the name of the item to be found';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
+
     const itemName = slots.Item.value;
     let searchFlag = false;
     let requiredSynonyms = [];
@@ -195,12 +194,12 @@ const handlers = {
     }
     
   },
-  
+
   'StoreItemIntent': function () {
     
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-  
+
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
@@ -220,13 +219,13 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item you would like to store?';
       const repromptSpeech = 'Please tell me the name of the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
+
     //name of the place where the item is to be stored
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
@@ -241,7 +240,7 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
@@ -258,6 +257,39 @@ const handlers = {
     storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
+
+  'StoreEventItemIntent': function () {
+    let emitCopy = this.emit;
+    const { userId } = this.event.session.user;
+    let event_name = this.event.request.intent.slots.Event.value;
+    let itemName = this.event.request.intent.slots.Item.value;
+    let itemTwo = this.event.request.intent.slots.Itemtwo.value;
+    let itemThree = this.event.request.intent.slots.Itemthree.value;
+    let itemFour = this.event.request.intent.slots.Itemfour.value;
+    let itemFive = this.event.request.intent.slots.Itemfive.value;
+
+
+    let params = {
+      TableName: eventsTable,
+      Item:{
+        "eventName-userId": `${event_name}-${userId}`,
+        "userId": userId,
+        "itemName": itemName,
+        "itemTwoName": itemTwo,
+        "itemThreeName": itemThree,
+        "itemFourName": itemFour,
+        "itemFiveName": itemFive,
+        "eventName": event_name
+      }
+    };
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+        emitCopy(':tell', "your new event has been created");
+      }
+    })},
   
   'AMAZON.CancelIntent': function () {
     const { userId } = this.event.session.user;
@@ -309,7 +341,7 @@ function checkRenew(data, userId) {
         "timestamp": currentTimeStamp
       }
     };
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
