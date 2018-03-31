@@ -7,6 +7,7 @@ const thesaurus = require('thesaurus-com');
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
+const eventsTableName = 'Events'
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -54,7 +55,7 @@ function storeActiveList(userId) {
 
 //moves all old items to masterDB
 function moveFromActiveListToDB(userId, transferList) {
-  
+
   transferList.forEach(function (item) {
     const params = {
       TableName: itemsTableName,
@@ -65,7 +66,7 @@ function moveFromActiveListToDB(userId, transferList) {
         "locationName": item.locationName
       }
     };
-  
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -77,19 +78,19 @@ function moveFromActiveListToDB(userId, transferList) {
 }
 
 const handlers = {
-  
+
   //After every findItemIntent remove element from activeList.
-  
+
   'FindItemIntent': function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-  
+
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
     }
-  
+
     //name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -104,17 +105,17 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item you would like to find?';
       const repromptSpeech = 'Please tell me the name of the item to be found';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
+
     const itemName = slots.Item.value;
     let searchFlag = false;
     let requiredSynonyms = [];
-    
+
     //search in activeList with itemName
     for (let activeMember of activeList) {
       console.log(activeMember.itemName, itemName, activeMember.itemName === itemName);
@@ -135,7 +136,7 @@ const handlers = {
       // requiredSynonyms = filterSynonyms(synonyms);
       // requiredSynonyms.forEach(function (synonym) {
       synonyms.forEach(function (synonym) {
-        
+
         for (let activeMember of activeList) {
           if(activeMember.itemName === synonym) {
             //todo: user has to confirm that this is what he requires, setup dialog model
@@ -150,7 +151,7 @@ const handlers = {
         }
       });
     }
-    
+
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
@@ -188,24 +189,24 @@ const handlers = {
                 }
               });
             });
-            
+
           }
         }
       });
     }
-    
+
   },
-  
+
   'StoreItemIntent': function () {
-    
+
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-  
+
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
     }
-    
+
     // name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -220,13 +221,13 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item you would like to store?';
       const repromptSpeech = 'Please tell me the name of the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
+
     //name of the place where the item is to be stored
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
@@ -241,14 +242,14 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-      
+
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
       const repromptSpeech = 'Please give me a location where the item is stored.';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-    
+
     activeList.push({
       itemName: slots.Item.value,
       locationName: slots.Place.value,
@@ -258,24 +259,168 @@ const handlers = {
     storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
-  
+
+  'StoreEventItemIntent': function () {
+    let emitOO = this.emit;
+    const { userId } = this.event.session.user;
+    let event_name = this.event.request.intent.slots.Event.value;
+    let itemName = this.event.request.intent.slots.Item.value;
+    let itemTwo = this.event.request.intent.slots.Itemtwo.value;
+    let itemThree = this.event.request.intent.slots.Itemthree.value;
+    let itemFour = this.event.request.intent.slots.Itemfour.value;
+    let itemFive = this.event.request.intent.slots.Itemfive.value;
+    // if (!slots.Item.value) {
+    //   const slotToElicit = 'Item';
+    //   const speechOutput = 'What is the item required for this event?';
+    //   const repromptSpeech = 'Please tell me the name of the items';
+    //   return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    // }
+    // else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
+    //
+    //   if (slots.Item.confirmationStatus !== 'DENIED') {
+    //     // slot status: unconfirmed
+    //     const slotToConfirm = 'Item';
+    //     const speechOutput = `The names of the item is ${slots.Item.value}, correct?`;
+    //     const repromptSpeech = speechOutput;
+    //     return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
+    //   }
+    //
+    //   const slotToElicit = 'Item';
+    //   const speechOutput = 'What are the item you would like to store?';
+    //   const repromptSpeech = 'Please tell me the name of the items';
+    //   return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    // }
+    //
+    // if (!slots.Event.value) {
+    //   const slotToElicit = 'Event';
+    //   const speechOutput = 'What is the name of the event?';
+    //   const repromptSpeech = 'Please give me a name for the event.';
+    //   return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    // }
+    // else if (slots.Event.confirmationStatus !== 'CONFIRMED') {
+    //
+    //   if (slots.Event.confirmationStatus !== 'DENIED') {
+    //     // slot status: unconfirmed
+    //     const slotToConfirm = 'Event';
+    //     const speechOutput = `The event is a ${slots.Event.value}, correct?`;
+    //     const repromptSpeech = speechOutput;
+    //     return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
+    //   }
+    //
+    //   // slot status: denied -> reprompt for slot data
+    //   const slotToElicit = 'Event';
+    //   const speechOutput = 'What is the name of the event?';
+    //   const repromptSpeech = 'Please give me the name of the event.';
+    //   return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    // }
+    let params = {
+      TableName: eventsTableName,
+      Item:{
+        "userId-eventName": userId+ "-"+event_name,
+        "eventName":event_name,
+        "itemName": itemName,
+        "itemTwoName": itemTwo,
+        "itemThreeName": itemThree,
+        "itemFourName": itemFour,
+        "itemFiveName": itemFive
+      }
+    };
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item:", JSON.stringify(data, null, 2));
+        emitOO(':tell', "success");
+      }
+    });
+  },
+
+  'FindEventItemIntent': function () {
+    let emitCopy = this.emit;
+    const { userId } = this.event.session.user;
+    const { slots } = this.event.request.intent;
+
+    //name of the item
+    if (!slots.Event.value) {
+      const slotToElicit = 'Event';
+      const speechOutput = 'What is the name of the event';
+      const repromptSpeech = 'Please tell me the name of the event';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    } else if (slots.Event.confirmationStatus !== 'CONFIRMED') {
+      if (slots.Event.confirmationStatus !== 'DENIED') {
+        // slot status: unconfirmed
+        const slotToConfirm = 'Event';
+        const speechOutput = `The name of the event is ${slots.Event.value}, correct?`;
+        const repromptSpeech = speechOutput;
+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
+      }
+
+      const slotToElicit = 'Event';
+      const speechOutput = 'What is the name of the event?';
+      const repromptSpeech = 'Please tell me the name of the event';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+
+    console.log('Attempting to read data in Events table');
+    let params = {
+      TableName: eventsTableName,
+      Key:{
+        "userId-eventName": userId+ "-"+slots.Event.value
+      }
+    };
+    documentClient.get(params, function(err, data) {
+      if (err) {
+        console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+        emitCopy(':tell', `oops! something went wrong`);
+      } else {
+        console.log("Found item:", JSON.stringify(data, null, 2));
+        if(data.Item.itemName) {
+          if(data.Item.itemTwoName) {
+            if(data.Item.itemThreeName) {
+              if(data.Item.itemFourName) {
+                if(data.Item.itemFiveName) {
+                  emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+                  ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName},
+                  ${data.Item.itemFiveName}`);
+                }
+                emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+                ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName}`);
+              }
+              emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+              ${data.Item.itemTwoName}, ${data.Item.itemThreeName}`);
+            }
+            emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+            ${data.Item.itemTwoName}`);
+          }
+          emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName}`);
+        }
+        emitCopy(":tell", `For ${data.Item.eventName} you do not require anything.`);
+      }
+    });
+  },
+
+
   'AMAZON.CancelIntent': function () {
     const { userId } = this.event.session.user;
     storeActiveList(userId);
     this.emit(':tell', 'Goodbye!');
   },
-  
+
   'AMAZON.StopIntent': function () {
     const { userId } = this.event.session.user;
     storeActiveList(userId);
     this.emit(':tell', 'Goodbye!');
   },
-  
+
   'LaunchRequest':  function () {
+    this.emit(':ask', `Welcome to Stuffer <break strength="medium" /> 
+                      The following commands are available: add an item, store an item,
+                      add an event, list items for an event. What
+                      would you like to do?`);
     //todo: ask Shikhar or Prakriti to design this
     // Prakriti had already used this in one of her PR's
   }
-  
+
 };
 
 //gets old timestamp and then updates DB if needed
@@ -309,7 +454,7 @@ function checkRenew(data, userId) {
         "timestamp": currentTimeStamp
       }
     };
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
