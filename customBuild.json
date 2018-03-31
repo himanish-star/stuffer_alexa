@@ -18,6 +18,43 @@
         ]
       },
       {
+          "name": "StoreEventItemIntent",
+          "slots": [
+              {
+                  "name": "Event",
+                  "type": "EventName"
+              },
+              {
+                  "name": "Item",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemtwo",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemthree",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemfour",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemfive",
+                  "type": "ItemName"
+              }
+          ],
+          "samples": [
+              "add event {Event} and add {Item}",
+              "add event {Event} and add {Item} {Itemtwo}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive}"
+
+          ]
+      },
+      {
         "name": "StoreItemIntent",
         "slots": [
           {
@@ -49,6 +86,25 @@
         "name": "AMAZON.StopIntent",
         "slots": [],
         "samples": []
+      },
+      {
+          "name": "FindEventItemIntent",
+          "slots": [
+              {
+                  "name": "Event",
+                  "type": "EventName"
+              }
+          ],
+          "samples": [
+              "List items"
+          ]
+      },
+      {
+          "name": "LaunchRequest",
+          "slots": [],
+          "samples": [
+              "open stuff locator"
+          ]
       }
     ],
     "types": [
@@ -70,6 +126,26 @@
             }
           }
         ]
+      },
+      {
+          "name": "EventName",
+          "values": [
+              {
+                  "name": {
+                      "value": "Shopping"
+                  }
+              },
+              {
+                  "name": {
+                      "value": "Party"
+                  }
+              },
+              {
+                  "name": {
+                      "value": "Exam"
+                  }
+              }
+          ]
       },
       {
         "name": "ItemLocation",
