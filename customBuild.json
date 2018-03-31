@@ -6,29 +6,70 @@
         "name": "FindItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           }
         ],
         "samples": [
-          "find my {Item}"
+          "find my {Item}",
+          "help me find my {Item}",
+          "where is my {Item}",
+          "find an item"
         ]
+      },
+      {
+          "name": "StoreEventItemIntent",
+          "slots": [
+              {
+                  "name": "Event",
+                  "type": "EventName"
+              },
+              {
+                  "name": "Item",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemtwo",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemthree",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemfour",
+                  "type": "ItemName"
+              },
+              {
+                  "name": "Itemfive",
+                  "type": "ItemName"
+              }
+          ],
+          "samples": [
+              "add event {Event} and add {Item}",
+              "add event {Event} and add {Item} {Itemtwo}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour}",
+              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive}"
+
+          ]
       },
       {
         "name": "StoreItemIntent",
         "slots": [
           {
-            "name" : "Item",
+            "name": "Item",
             "type": "ItemName"
           },
           {
-            "name" : "Place",
+            "name": "Place",
             "type": "ItemLocation"
           }
         ],
         "samples": [
           "add an item",
-          "store an item"
+          "store an item",
+          "place my {Item} inside the {Place}"
         ]
       },
       {
@@ -47,11 +88,23 @@
         "samples": []
       },
       {
-        "name": "LaunchRequest",
-        "slots": [],
-        "samples": [
-          "say hello"
-        ]
+          "name": "FindEventItemIntent",
+          "slots": [
+              {
+                  "name": "Event",
+                  "type": "EventName"
+              }
+          ],
+          "samples": [
+              "List items"
+          ]
+      },
+      {
+          "name": "LaunchRequest",
+          "slots": [],
+          "samples": [
+              "open stuff locator"
+          ]
       }
     ],
     "types": [
@@ -73,6 +126,26 @@
             }
           }
         ]
+      },
+      {
+          "name": "EventName",
+          "values": [
+              {
+                  "name": {
+                      "value": "Shopping"
+                  }
+              },
+              {
+                  "name": {
+                      "value": "Party"
+                  }
+              },
+              {
+                  "name": {
+                      "value": "Exam"
+                  }
+              }
+          ]
       },
       {
         "name": "ItemLocation",
@@ -98,6 +171,23 @@
   "dialog": {
     "intents": [
       {
+        "name": "FindItemIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Item",
+            "type": "ItemName",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
+              "confirmation": "Confirm.Intent-FindItemIntent.IntentSlot-Item"
+            }
+          }
+        ]
+      },
+      {
         "name": "StoreItemIntent",
         "confirmationRequired": false,
         "prompts": {},
@@ -108,8 +198,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
-              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet"
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Item"
             }
           },
           {
@@ -118,8 +208,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
-              "confirmation": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet"
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Place"
             }
           }
         ]
@@ -128,38 +218,56 @@
   },
   "prompts": [
     {
-      "id": "Elicit.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which planet are you starting from?"
+          "value": "What is the item to be stored?"
         }
       ]
     },
     {
-      "id": "Confirm.Intent-GetTravelTime.IntentSlot-DepartingPlanet",
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Item",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which 2 planet are you starting from?"
+          "value": "The name of the item is {Item}, correct?"
         }
       ]
     },
     {
-      "id": "Elicit.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "id": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which planet are you going to?"
+          "value": "Where is the item stored?"
         }
       ]
     },
     {
-      "id": "Confirm.Intent-GetTravelTime.IntentSlot-ArrivingPlanet",
+      "id": "Confirm.Intent-StoreItemIntent.IntentSlot-Place",
       "variations": [
         {
           "type": "PlainText",
-          "value": "Which 2 planet are you going to?"
+          "value": "The item location is {Place}, correct?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the item to be found?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-FindItemIntent.IntentSlot-Item",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "The name of the item is {Item}, correct?"
         }
       ]
     }
