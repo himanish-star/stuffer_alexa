@@ -65,7 +65,7 @@ function moveFromActiveListToDB(userId, transferList) {
         "locationName": item.locationName
       }
     };
-  
+    
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -84,12 +84,12 @@ const handlers = {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-  
+    
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
     }
-  
+    
     //name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -200,7 +200,7 @@ const handlers = {
     
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-  
+    
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
@@ -254,7 +254,7 @@ const handlers = {
       locationName: slots.Place.value,
       whetherTransferred: false
     });
-
+    
     storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
