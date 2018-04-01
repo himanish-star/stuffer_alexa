@@ -111,7 +111,7 @@ function moveFromActiveListToDB(userId, transferList) {
       }
     };
 
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -218,44 +218,23 @@ const handlers = {
             itemLocation = data.Item.locationName;
             emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
           } else {
-            //search in Items table on the basis of synonym
-            console.log('Attempting to read data of synonyms in Items table');
-            requiredSynonyms.forEach(function (synonym) {
-              params.Key = {
-                "itemName-userId": synonym + "-" + userId
-              };
-              documentClient.get(params, function(err, data) {
-                if(err) {
-                  console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-                  emitCopy(':tell', `oops! something went wrong`);
+            const getParams = {
+              TableName: historyTableName,
+              Key: {
+                "itemName-userId": `${itemName}-${userId}`
+              }
+            };
+            documentClient.get(getParams, function (err, data) {
+              if(err) {
+                console.log('error, nothing found');
+              } else {
+                if(data.Item) {
+                  emitCopy(":tell", `you may find your item inside the ${data.Item.historyArray.join(", ")}`)
                 } else {
-                  if(data.Item) {
-                    searchFlag = true;
-                    itemLocation = data.Item.locationName;
-                    emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
-                  } else {
-                    const getParams = {
-                      TableName: historyTableName,
-                      Key: {
-                        "itemName-userId": `${itemName}-${userId}`
-                      }
-                    };
-                    documentClient.get(getParams, function (err, data) {
-                      if(err) {
-                        console.log('error, nothing found');
-                      } else {
-                        if(data.Item) {
-                          emitCopy(":tell", `you may find your item inside the ${data.Item.historyArray.toString()}`)
-                        } else {
-                          emitCopy(":tell", "nothing found")
-                        }
-                      }
-                    })
-                  }
+                  emitCopy(":tell", "nothing found")
                 }
-              });
-            });
-
+              }
+            })
           }
         }
       });
@@ -325,7 +304,7 @@ const handlers = {
       locationName: slots.Place.value,
       whetherTransferred: false
     });
-    
+
     storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
@@ -339,7 +318,7 @@ const handlers = {
     let itemThree = this.event.request.intent.slots.Itemthree.value;
     let itemFour = this.event.request.intent.slots.Itemfour.value;
     let itemFive = this.event.request.intent.slots.Itemfive.value;
-    
+
     let params = {
       TableName: eventsTableName,
       Item:{
@@ -352,7 +331,7 @@ const handlers = {
         "itemFiveName": itemFive
       }
     };
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
