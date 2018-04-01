@@ -7,14 +7,58 @@ const thesaurus = require('thesaurus-com');
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
-const eventsTableName = 'Events'
+const historyTableName = 'HistoryOfItems';
+const eventsTableName = 'Events';
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
 let activeListFetchedStatus = false;
 
-//this activeList is filled up at the beginning of the program and emptied at the exit of the program
+//this activeList is filled up at the beginning of the program
 let activeList = [];
+
+//function to update history
+function updateHistoryOfItem(userId, itemName, itemLocation) {
+  let historyArrayOfItem = [];
+  const readParams = {
+    TableName: historyTableName,
+    Key: {
+      "itemName-userId": `${itemName}-${userId}`
+    }
+  };
+
+  documentClient.get(readParams, function (err, data) {
+    if (err) {
+      console.log('error, the history array of the item couldn\'t be fetched');
+    } else {
+      if(data.Item) {
+        historyArrayOfItem = data.Item.historyArray;
+        if(!historyArrayOfItem.includes(itemLocation)) {
+          historyArrayOfItem.push(itemLocation);
+          if(historyArrayOfItem.length > 5) {
+            historyArrayOfItem.shift();
+          }
+        }
+      } else {
+        historyArrayOfItem.push(itemLocation);
+      }
+      const writeParams = {
+        TableName: historyTableName,
+        Item: {
+          "itemName-userId": `${itemName}-${userId}`,
+          "historyArray": historyArrayOfItem
+        }
+      };
+      documentClient.put(writeParams, function (err, data) {
+        if(err) {
+          console.log('error, the history array of the item couldn\'t be updated');
+        } else {
+          console.log('this history of the Item has been updated', data);
+        }
+      })
+    }
+  })
+}
 
 //function to fetch activeList at the beginning of the start of Alexa
 function fetchActiveListAndCache(userId) {
@@ -67,7 +111,7 @@ function moveFromActiveListToDB(userId, transferList) {
       }
     };
 
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -115,43 +159,20 @@ const handlers = {
     const itemName = slots.Item.value;
     let searchFlag = false;
     let requiredSynonyms = [];
+    let itemLocation = '';
 
     //search in activeList with itemName
     for (let activeMember of activeList) {
-      console.log(activeMember.itemName, itemName, activeMember.itemName === itemName);
       if(activeMember.itemName === itemName) {
         emitCopy(":tell", `your ${itemName} is located at ${activeMember.locationName}`);
         searchFlag = true;
+        itemLocation = activeMember.locationName;
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
         break;
       }
     }
-    //search in activeList with synonym
-    if(!searchFlag) {
-      console.log('Attempting to read data of synonyms in activeList');
-      const synonyms = thesaurus.search(itemName).synonyms;
-      //todo: filter out required synonyms
-      // requiredSynonyms = filterSynonyms(synonyms);
-      // requiredSynonyms.forEach(function (synonym) {
-      synonyms.forEach(function (synonym) {
-
-        for (let activeMember of activeList) {
-          if(activeMember.itemName === synonym) {
-            //todo: user has to confirm that this is what he requires, setup dialog model
-            requiredSynonyms.push(synonym);
-            emitCopy(":tell", `your ${synonym} is located at ${activeMember.locationName}`);
-            searchFlag = true;
-            const index = activeList.indexOf(activeMember);
-            activeList.splice(index, 1);
-            storeActiveList(userId);
-            break;
-          }
-        }
-      });
-    }
-
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
@@ -168,33 +189,36 @@ const handlers = {
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
+            searchFlag = true;
+            itemLocation = data.Item.locationName;
             emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
           } else {
-            //search in Items table on the basis of synonym
-            console.log('Attempting to read data of synonyms in Items table');
-            requiredSynonyms.forEach(function (synonym) {
-              params.Key = {
-                "itemName-userId": synonym + "-" + userId
-              };
-              documentClient.get(params, function(err, data) {
-                if(err) {
-                  console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-                  emitCopy(':tell', `oops! something went wrong`);
+            const getParams = {
+              TableName: historyTableName,
+              Key: {
+                "itemName-userId": `${itemName}-${userId}`
+              }
+            };
+            documentClient.get(getParams, function (err, data) {
+              if(err) {
+                console.log('error, nothing found');
+              } else {
+                if(data.Item) {
+                  emitCopy(":tell", `you may find your item inside the ${data.Item.historyArray.join(", ")}`)
                 } else {
-                  if(data.Item) {
-                    emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
-                  } else {
-                    //todo: now check history @shikhar and @prakriti
-                  }
+                  emitCopy(":tell", "nothing found")
                 }
-              });
-            });
-
+              }
+            })
           }
         }
       });
     }
 
+    //check searchFlag status
+    if(searchFlag) {
+      updateHistoryOfItem(userId, itemName, itemLocation);
+    }
   },
 
   'StoreItemIntent': function () {
@@ -255,7 +279,7 @@ const handlers = {
       locationName: slots.Place.value,
       whetherTransferred: false
     });
-    
+
     storeActiveList(userId);
     this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
   },
@@ -269,7 +293,7 @@ const handlers = {
     let itemThree = this.event.request.intent.slots.Itemthree.value;
     let itemFour = this.event.request.intent.slots.Itemfour.value;
     let itemFive = this.event.request.intent.slots.Itemfive.value;
-    
+
     let params = {
       TableName: eventsTableName,
       Item:{
@@ -282,7 +306,7 @@ const handlers = {
         "itemFiveName": itemFive
       }
     };
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
