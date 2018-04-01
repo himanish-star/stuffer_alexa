@@ -173,31 +173,6 @@ const handlers = {
         break;
       }
     }
-    //search in activeList with synonym
-    if(!searchFlag) {
-      console.log('Attempting to read data of synonyms in activeList');
-      const synonyms = thesaurus.search(itemName).synonyms;
-      //todo: filter out required synonyms
-      // requiredSynonyms = filterSynonyms(synonyms);
-      // requiredSynonyms.forEach(function (synonym) {
-      synonyms.forEach(function (synonym) {
-
-        for (let activeMember of activeList) {
-          if(activeMember.itemName === synonym) {
-            //todo: user has to confirm that this is what he requires, setup dialog model
-            requiredSynonyms.push(synonym);
-            emitCopy(":tell", `your ${synonym} is located at ${activeMember.locationName}`);
-            searchFlag = true;
-            itemLocation = activeMember.locationName;
-            const index = activeList.indexOf(activeMember);
-            activeList.splice(index, 1);
-            storeActiveList(userId);
-            break;
-          }
-        }
-      });
-    }
-
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
