@@ -2,8 +2,8 @@
 
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
-const thesaurus = require('thesaurus-com');
 
+// Tables
 const itemsTableName = 'Items';
 const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
@@ -17,111 +17,7 @@ let activeListFetchedStatus = false;
 //this activeList is filled up at the beginning of the program
 let activeList = [];
 
-//function to update history
-function updateHistoryOfItem(userId, itemName, itemLocation) {
-  let historyArrayOfItem = [];
-  const readParams = {
-    TableName: historyTableName,
-    Key: {
-      "itemName-userId": `${itemName}-${userId}`
-    }
-  };
-
-  documentClient.get(readParams, function (err, data) {
-    if (err) {
-      console.log('error, the history array of the item couldn\'t be fetched');
-    } else {
-      if(data.Item) {
-        historyArrayOfItem = data.Item.historyArray;
-        if(!historyArrayOfItem.includes(itemLocation)) {
-          historyArrayOfItem.push(itemLocation);
-          if(historyArrayOfItem.length > 5) {
-            historyArrayOfItem.shift();
-          }
-        }
-      } else {
-        historyArrayOfItem.push(itemLocation);
-      }
-      const writeParams = {
-        TableName: historyTableName,
-        Item: {
-          "itemName-userId": `${itemName}-${userId}`,
-          "historyArray": historyArrayOfItem
-        }
-      };
-      documentClient.put(writeParams, function (err, data) {
-        if(err) {
-          console.log('error, the history array of the item couldn\'t be updated');
-        } else {
-          console.log('this history of the Item has been updated', data);
-        }
-      })
-    }
-  })
-}
-
-//function to fetch activeList at the beginning of the start of Alexa
-function fetchActiveListAndCache(userId) {
-  const params = {
-    TableName: activeListTableName,
-    Key: {
-      "userId": userId
-    }
-  };
-  documentClient.get(params, function (err, data) {
-    if(err) {
-      console.log("oops! activeList couldn't be fetched", err);
-    } else {
-      console.log('activeList has been cached');
-      activeListFetchedStatus = true;
-      if(data.Item) activeList = data.Item.activeList;
-    }
-  })
-}
-
-//stores the activeList back into the ActiveList table after the program comes to a halt
-function storeActiveList(userId) {
-  const params = {
-    TableName: activeListTableName,
-    Item: {
-      "userId": userId,
-      "activeList": activeList
-    }
-  };
-  documentClient.put(params, function (err, data) {
-    if(err) {
-      console.log("activeList couldn't be stored");
-    } else {
-      console.log("activeList has been stored", data);
-    }
-  })
-}
-
-//moves all old items to masterDB
-function moveFromActiveListToDB(userId, transferList) {
-
-  transferList.forEach(function (item) {
-    const params = {
-      TableName: itemsTableName,
-      Item:{
-        "itemName-userId": item.itemName + "-" + userId,
-        "userId": userId,
-        "itemName": item.itemName,
-        "locationName": item.locationName
-      }
-    };
-
-
-    documentClient.put(params, function(err, data) {
-      if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-      } else {
-        console.log("Added item to the database:", JSON.stringify(data, null, 2));
-      }
-    });
-  })
-}
-
+// handles all Intents
 const handlers = {
 
   //After every findItemIntent remove element from activeList.
@@ -158,7 +54,6 @@ const handlers = {
 
     const itemName = slots.Item.value;
     let searchFlag = false;
-    let requiredSynonyms = [];
     let itemLocation = '';
 
     //search in activeList with itemName
@@ -167,12 +62,15 @@ const handlers = {
         emitCopy(":tell", `your ${itemName} is located at ${activeMember.locationName}`);
         searchFlag = true;
         itemLocation = activeMember.locationName;
+    
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
+        updateHistoryOfItem(userId, itemName, itemLocation);
         break;
       }
     }
+    
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
@@ -192,6 +90,24 @@ const handlers = {
             searchFlag = true;
             itemLocation = data.Item.locationName;
             emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
+  
+            //deleting found item form itemsTable. Updation in historyTable Takes place below
+            let params = {
+              TableName: itemsTableName,
+              Key:{
+                "itemName-userId": slots.Item.value + "-" + userId
+              }
+            };
+            
+            documentClient.delete(params, function (err, data) {
+              if (err) {
+                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+              } else {
+                console.log(`Deleted Item`, JSON.stringify(data, null, 2));
+                updateHistoryOfItem(userId, itemName, itemLocation);
+              }
+            })
+            
           } else {
             const getParams = {
               TableName: historyTableName,
@@ -213,11 +129,6 @@ const handlers = {
           }
         }
       });
-    }
-
-    //check searchFlag status
-    if(searchFlag) {
-      updateHistoryOfItem(userId, itemName, itemLocation);
     }
   },
 
@@ -276,8 +187,7 @@ const handlers = {
 
     activeList.push({
       itemName: slots.Item.value,
-      locationName: slots.Place.value,
-      whetherTransferred: false
+      locationName: slots.Place.value
     });
 
     storeActiveList(userId);
@@ -396,14 +306,119 @@ const handlers = {
 
   'LaunchRequest':  function () {
     this.emit(':ask', `Welcome to Stuffer <break strength="medium" />
-                      The following commands are available: add an item, store an item,
-                      add an event, list items for an event. What
+                      The following commands are available: add an item, find an item,
+                      add items for an event, find items for an event. What
                       would you like to do?`);
     //todo: ask Shikhar or Prakriti to design this
     // Prakriti had already used this in one of her PR's
   }
 
 };
+
+//function to update history
+function updateHistoryOfItem(userId, itemName, itemLocation) {
+  let historyArrayOfItem = [];
+  const readParams = {
+    TableName: historyTableName,
+    Key: {
+      "itemName-userId": `${itemName}-${userId}`
+    }
+  };
+  
+  documentClient.get(readParams, function (err, data) {
+    if (err) {
+      console.log('error, the history array of the item couldn\'t be fetched');
+    } else {
+      if(data.Item) {
+        historyArrayOfItem = data.Item.historyArray;
+        if(!historyArrayOfItem.includes(itemLocation)) {
+          historyArrayOfItem.push(itemLocation);
+          if(historyArrayOfItem.length > 5) {
+            historyArrayOfItem.shift();
+          }
+        }
+      } else {
+        historyArrayOfItem.push(itemLocation);
+      }
+      const writeParams = {
+        TableName: historyTableName,
+        Item: {
+          "itemName-userId": `${itemName}-${userId}`,
+          "historyArray": historyArrayOfItem
+        }
+      };
+      documentClient.put(writeParams, function (err, data) {
+        if(err) {
+          console.log('error, the history array of the item couldn\'t be updated');
+        } else {
+          console.log('this history of the Item has been updated', data);
+        }
+      })
+    }
+  })
+}
+
+//function to fetch activeList at the beginning of the start of Alexa
+function fetchActiveListAndCache(userId) {
+  const params = {
+    TableName: activeListTableName,
+    Key: {
+      "userId": userId
+    }
+  };
+  documentClient.get(params, function (err, data) {
+    if(err) {
+      console.log("oops! activeList couldn't be fetched", err);
+    } else {
+      console.log('activeList has been cached');
+      activeListFetchedStatus = true;
+      if(data.Item) activeList = data.Item.activeList;
+    }
+  })
+}
+
+//stores the activeList back into the ActiveList table after the program comes to a halt
+function storeActiveList(userId) {
+  const params = {
+    TableName: activeListTableName,
+    Item: {
+      "userId": userId,
+      "activeList": activeList
+    }
+  };
+  documentClient.put(params, function (err, data) {
+    if(err) {
+      console.log("activeList couldn't be stored");
+    } else {
+      console.log("activeList has been stored", data);
+    }
+  })
+}
+
+//moves all old items to masterDB
+function localALtoDBAL(userId, transferList) {
+  
+  transferList.forEach(function (item) {
+    const params = {
+      TableName: itemsTableName,
+      Item:{
+        "itemName-userId": item.itemName + "-" + userId,
+        "userId": userId,
+        "itemName": item.itemName,
+        "locationName": item.locationName
+      }
+    };
+    
+    
+    documentClient.put(params, function(err, data) {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+      } else {
+        console.log("Added item to the database:", JSON.stringify(data, null, 2));
+      }
+    });
+  })
+}
 
 //gets old timestamp and then updates DB if needed
 function fetchExistingTimeStamp(userId) {
@@ -458,11 +473,11 @@ function checkRenew(data, userId) {
           console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
           console.log("Added item:", JSON.stringify(data, null, 2));
-          const transferList = activeList.filter(elem => !elem.whetherTransferred);
-          activeList.forEach(function (elem) {
-            elem.whetherTransferred = true;
-          });
-          moveFromActiveListToDB(userId, transferList)
+         
+          // transfers local Active list items to larger ActiveList existing in DB. i.e. Items Table after every 3 days
+          // empties the local ActiveList afterwards.
+          localALtoDBAL(userId, activeList)
+          activeList = []
         }
       });
     }
