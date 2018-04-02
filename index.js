@@ -197,12 +197,15 @@ const handlers = {
   'StoreEventItemIntent': function () {
     let emitOO = this.emit;
     const { userId } = this.event.session.user;
+    let event_key = this.event.request.intent.slots.Event_key.value;
     let event_name = this.event.request.intent.slots.Event.value;
+    let start = this.event.request.intent.slots.Start.value;
     let itemName = this.event.request.intent.slots.Item.value;
     let itemTwo = this.event.request.intent.slots.Itemtwo.value;
     let itemThree = this.event.request.intent.slots.Itemthree.value;
     let itemFour = this.event.request.intent.slots.Itemfour.value;
     let itemFive = this.event.request.intent.slots.Itemfive.value;
+    let stop = this.event.request.intent.slots.Stop.value;
 
     let params = {
       TableName: eventsTableName,

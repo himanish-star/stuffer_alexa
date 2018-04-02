@@ -25,6 +25,14 @@
                   "type": "EventName"
               },
               {
+                "name": "Event_key",
+                "type": "EventName"
+              },
+              {
+                "name": "Start",
+                "type": "ItemName"
+              },
+              {
                   "name": "Item",
                   "type": "ItemName"
               },
@@ -43,14 +51,18 @@
               {
                   "name": "Itemfive",
                   "type": "ItemName"
+              },
+              {
+                "name": "Stop",
+                "type": "ItemName"
               }
           ],
           "samples": [
-              "add event {Event} and add {Item}",
-              "add event {Event} and add {Item} {Itemtwo}",
-              "add event {Event} and add {Item} {Itemtwo} {Itemthree}",
-              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour}",
-              "add event {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive}"
+              "add {Event_key} {Event} and add {Start} {Item} {Stop}",
+              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Stop}",
+              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
 
           ]
       },
@@ -114,14 +126,14 @@
           {
             "id": "",
             "name": {
-              "value": "Watch",
+              "value": "stop",
               "synonyms": []
             }
           },
           {
             "id": "",
             "name": {
-              "value": "Wallet",
+              "value": "start",
               "synonyms": []
             }
           }
@@ -132,7 +144,7 @@
           "values": [
               {
                   "name": {
-                      "value": "Shopping"
+                      "value": "event"
                   }
               },
               {
