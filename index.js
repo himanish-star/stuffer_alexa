@@ -66,6 +66,7 @@ const handlers = {
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
+        updateHistoryOfItem(userId, itemName, itemLocation);
         break;
       }
     }
@@ -102,7 +103,8 @@ const handlers = {
               if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
               } else {
-                console.log(`Deleted Item ${data.Item.itemName} : `, JSON.stringify(data, null, 2));
+                console.log(`Deleted Item`, JSON.stringify(data, null, 2));
+                updateHistoryOfItem(userId, itemName, itemLocation);
               }
             })
             
@@ -127,11 +129,6 @@ const handlers = {
           }
         }
       });
-    }
-
-    //check searchFlag status
-    if(searchFlag) {
-      updateHistoryOfItem(userId, itemName, itemLocation);
     }
   },
 
