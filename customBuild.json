@@ -3,6 +3,21 @@
     "invocationName": "stuff locator",
     "intents": [
       {
+        "name": "AddUserName",
+        "slots": [
+          {
+            "name": "Name",
+            "type": "AMAZON.Person"
+          }
+        ],
+        "samples": [
+          "{Name}",
+          "I am {Name}",
+          "my name is {Name}",
+          "it's {Name}"
+        ]
+      },
+      {
         "name": "FindItemIntent",
         "slots": [
           {
@@ -21,83 +36,79 @@
           "where is the {Item}",
           "help me find my {Item}",
           "help find my {Item}"
-
         ]
       },
       {
-          "name": "StoreEventItemIntent",
-          "slots": [
-              {
-                  "name": "Event",
-                  "type": "EventName"
-              },
-              {
-                "name": "Event_key",
-                "type": "EventName"
-              },
-              {
-                "name": "Start",
-                "type": "ItemName"
-              },
-              {
-                  "name": "Item",
-                  "type": "ItemName"
-              },
-              {
-                  "name": "Itemtwo",
-                  "type": "ItemName"
-              },
-              {
-                  "name": "Itemthree",
-                  "type": "ItemName"
-              },
-              {
-                  "name": "Itemfour",
-                  "type": "ItemName"
-              },
-              {
-                  "name": "Itemfive",
-                  "type": "ItemName"
-              },
-              {
-                "name": "Stop",
-                "type": "ItemName"
-              }
-          ],
-          "samples": [
-              "add {Event_key} {Event} and add {Start} {Item} {Stop}",
-              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Stop}",
-              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+        "name": "StoreEventItemIntent",
+        "slots": [
+          {
+            "name": "Event",
+            "type": "EventName"
+          },
+          {
+            "name": "Event_key",
+            "type": "EventName"
+          },
+          {
+            "name": "Start",
+            "type": "ItemName"
+          },
+          {
+            "name": "Item",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemtwo",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemthree",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemfour",
+            "type": "ItemName"
+          },
+          {
+            "name": "Itemfive",
+            "type": "ItemName"
+          },
+          {
+            "name": "Stop",
+            "type": "ItemName"
+          }
+        ],
+        "samples": [
+          "add {Event_key} {Event} and add {Start} {Item} {Stop}",
+          "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Stop}",
+          "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+          "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+          "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
 
-              "add {Event_key} {Event} and add the {Start} {Item} {Stop}",
-              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Stop}",
-              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "add {Event_key} {Event} and add the {Start} {Item} {Stop}",
+          "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Stop}",
+          "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+          "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+          "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
 
-              "add {Event_key} {Event} and add the following {Start} {Item} {Stop}",
-              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Stop}",
-              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "add {Event_key} {Event} and add the following {Start} {Item} {Stop}",
+          "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Stop}",
+          "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+          "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+          "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
 
-              "add {Event_key} {Event} and add following {Start} {Item} {Stop}",
-              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Stop}",
-              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "add {Event_key} {Event} and add following {Start} {Item} {Stop}",
+          "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Stop}",
+          "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+          "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+          "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
 
-              "add {Event_key} {Event} and add following items to {Start} {Item} {Stop}",
-              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Stop}",
-              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
-
-
-
-          ]
+          "add {Event_key} {Event} and add following items to {Start} {Item} {Stop}",
+          "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Stop}",
+          "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+          "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+          "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
+        ]
       },
       {
         "name": "StoreItemIntent",
@@ -181,31 +192,31 @@
         "samples": []
       },
       {
-          "name": "FindEventItemIntent",
-          "slots": [
-              {
-                  "name": "Event",
-                  "type": "EventName"
-              }
-          ],
-          "samples": [
-              "Tell me the items for event",
-              "Tell me the items for {event}",
-              "Please tell me the items for {event}",
-              "List event items",
-              "List {event} items",
-              "Specify items for {event}",
-              "Specify items",
-              "List items"
+        "name": "FindEventItemIntent",
+        "slots": [
+          {
+            "name": "Event",
+            "type": "EventName"
+          }
+        ],
+        "samples": [
+          "Tell me the items for event",
+          "Tell me the items for {Event}",
+          "Please tell me the items for {Event}",
+          "List event items",
+          "List {Event} items",
+          "Specify items for {Event}",
+          "Specify items",
+          "List items"
 
-          ]
+        ]
       },
       {
-          "name": "LaunchRequest",
-          "slots": [],
-          "samples": [
-              "open stuff locator"
-          ]
+        "name": "LaunchRequest",
+        "slots": [],
+        "samples": [
+          "open stuff locator"
+        ]
       }
     ],
     "types": [
@@ -244,24 +255,24 @@
         ]
       },
       {
-          "name": "EventName",
-          "values": [
-              {
-                  "name": {
-                      "value": "event"
-                  }
-              },
-              {
-                  "name": {
-                      "value": "Party"
-                  }
-              },
-              {
-                  "name": {
-                      "value": "Exam"
-                  }
-              }
-          ]
+        "name": "EventName",
+        "values": [
+          {
+            "name": {
+              "value": "event"
+            }
+          },
+          {
+            "name": {
+              "value": "Party"
+            }
+          },
+          {
+            "name": {
+              "value": "Exam"
+            }
+          }
+        ]
       },
       {
         "name": "ItemLocation",
@@ -299,6 +310,23 @@
             "prompts": {
               "elicitation": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
               "confirmation": "Confirm.Intent-FindItemIntent.IntentSlot-Item"
+            }
+          }
+        ]
+      },
+      {
+        "name": "AddUserName",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "Name",
+            "type": "AMAZON.Person",
+            "confirmationRequired": true,
+            "elicitationRequired": true,
+            "prompts": {
+              "elicitation": "Elicit.Intent-AddUserName.IntentSlot-Name",
+              "confirmation": "Confirm.Intent-AddUserName.IntentSlot-Name"
             }
           }
         ]
@@ -348,6 +376,24 @@
         {
           "type": "PlainText",
           "value": "The name of the item is {Item}, correct?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-AddUserName.IntentSlot-Name",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is your name?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-AddUserName.IntentSlot-Name",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Your name is {Name}, correct?"
         }
       ]
     },

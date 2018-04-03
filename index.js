@@ -9,6 +9,7 @@ const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
 const historyTableName = 'HistoryOfItems';
 const eventsTableName = 'Events';
+const usersTableName = "Users";
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -20,7 +21,7 @@ let activeList = [];
 // handles all Intents
 const handlers = {
 
-  //After every findItemIntent remove element from activeList.
+  //After every findItemIntent remove element from activeList or from the Items table
 
   'FindItemIntent': function () {
     let emitCopy = this.emit;
@@ -59,10 +60,10 @@ const handlers = {
     //search in activeList with itemName
     for (let activeMember of activeList) {
       if(activeMember.itemName === itemName) {
-        emitCopy(":tell", `your ${itemName} is located at ${activeMember.locationName}`);
+        emitCopy(":tell", `your ${itemName} is located inside the ${activeMember.locationName}`);
         searchFlag = true;
         itemLocation = activeMember.locationName;
-    
+
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
@@ -70,7 +71,7 @@ const handlers = {
         break;
       }
     }
-    
+
     //search in Items table using ItemName
     if(!searchFlag) {
       console.log('Attempting to read data in Items table');
@@ -83,14 +84,14 @@ const handlers = {
       documentClient.get(params, function(err, data) {
         if (err) {
           console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-          emitCopy(':tell', `Item not found in the items Table too`);
+          emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
             searchFlag = true;
             itemLocation = data.Item.locationName;
-            emitCopy(":tell", `you can find your ${data.Item.itemName} at ${data.Item.locationName}`)
-  
+            emitCopy(":tell", `you can find your ${data.Item.itemName} inside the ${data.Item.locationName}`);
+
             //deleting found item form itemsTable. Updation in historyTable Takes place below
             let params = {
               TableName: itemsTableName,
@@ -98,7 +99,7 @@ const handlers = {
                 "itemName-userId": slots.Item.value + "-" + userId
               }
             };
-            
+
             documentClient.delete(params, function (err, data) {
               if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
@@ -107,7 +108,7 @@ const handlers = {
                 updateHistoryOfItem(userId, itemName, itemLocation);
               }
             })
-            
+
           } else {
             const getParams = {
               TableName: historyTableName,
@@ -118,11 +119,12 @@ const handlers = {
             documentClient.get(getParams, function (err, data) {
               if(err) {
                 console.log('error, nothing found');
+                emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
               } else {
                 if(data.Item) {
-                  emitCopy(":tell", `you may find your item inside the ${data.Item.historyArray.join(", ")}`)
+                  emitCopy(":tell", `Based on the history of the item, I think you may find your item inside the following locations ${data.Item.historyArray.join(", ")}`)
                 } else {
-                  emitCopy(":tell", "nothing found")
+                  emitCopy(":tell", "Sorry we have no track of this item, please check that the name of the item is correct")
                 }
               }
             })
@@ -146,7 +148,7 @@ const handlers = {
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item to be stored?';
-      const repromptSpeech = 'Please specify the item';
+      const repromptSpeech = 'Please specify the item that is to be stored';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
       if (slots.Item.confirmationStatus !== 'DENIED') {
@@ -159,7 +161,7 @@ const handlers = {
 
       const slotToElicit = 'Item';
       const speechOutput = 'What item is to be stored?';
-      const repromptSpeech = 'Please specify the item';
+      const repromptSpeech = 'Please specify the item that is to be stored';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -167,7 +169,7 @@ const handlers = {
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
       const speechOutput = 'Where is the item stored?';
-      const repromptSpeech = 'Please specify the location.';
+      const repromptSpeech = 'Please specify the location where the item is to be stored';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
       if (slots.Place.confirmationStatus !== 'DENIED') {
@@ -181,7 +183,7 @@ const handlers = {
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
-      const repromptSpeech = 'Please specify the location.';
+      const repromptSpeech = 'Please specify the location where the item is to be stored';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -191,11 +193,11 @@ const handlers = {
     });
 
     storeActiveList(userId);
-    this.emit(":tell", `your ${slots.Item.value} has been stored at ${slots.Place.value}`)
+    this.emit(":tell", `I will now remember that your ${slots.Item.value} is inside the ${slots.Place.value}`)
   },
 
   'StoreEventItemIntent': function () {
-    let emitOO = this.emit;
+    let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     let event_name = this.event.request.intent.slots.Event.value;
     let itemName = this.event.request.intent.slots.Item.value;
@@ -207,7 +209,7 @@ const handlers = {
     let params = {
       TableName: eventsTableName,
       Item:{
-        "userId-eventName": userId+ "-"+event_name,
+        "userId-eventName": userId + "-"+ event_name,
         "eventName":event_name,
         "itemName": itemName,
         "itemTwoName": itemTwo,
@@ -220,9 +222,10 @@ const handlers = {
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
-        emitOO(':tell', "Event has been successfully added.");
+        emitCopy(':tell', "this event has been successfully created");
       }
     });
   },
@@ -236,7 +239,7 @@ const handlers = {
     if (!slots.Event.value) {
       const slotToElicit = 'Event';
       const speechOutput = 'What is the event name?';
-      const repromptSpeech = 'Please specify the event';
+      const repromptSpeech = 'Please specify the event name';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Event.confirmationStatus !== 'CONFIRMED') {
       if (slots.Event.confirmationStatus !== 'DENIED') {
@@ -248,8 +251,8 @@ const handlers = {
       }
 
       const slotToElicit = 'Event';
-      const speechOutput = 'What is the event?';
-      const repromptSpeech = 'Please specify the event';
+      const speechOutput = 'What is the event name?';
+      const repromptSpeech = 'Please specify the event name';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -263,60 +266,122 @@ const handlers = {
     documentClient.get(params, function(err, data) {
       if (err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', `No data found in events list table`);
+        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
-        if(data.Item.itemName) {
-          if(data.Item.itemTwoName) {
-            if(data.Item.itemThreeName) {
-              if(data.Item.itemFourName) {
-                if(data.Item.itemFiveName) {
-                  emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+        if(data.Item) {
+          if(data.Item.itemName) {
+            if(data.Item.itemTwoName) {
+              if(data.Item.itemThreeName) {
+                if(data.Item.itemFourName) {
+                  if(data.Item.itemFiveName) {
+                    emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
                   ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName},
                   ${data.Item.itemFiveName}`);
+                  }
+                  emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
+                ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName}`);
                 }
                 emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-                ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName}`);
+              ${data.Item.itemTwoName}, ${data.Item.itemThreeName}`);
               }
               emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-              ${data.Item.itemTwoName}, ${data.Item.itemThreeName}`);
-            }
-            emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
             ${data.Item.itemTwoName}`);
+            }
+            emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName}`);
           }
-          emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName}`);
+          emitCopy(":tell", `For ${data.Item.eventName} you do not require anything.`);
+        } else {
+          emitCopy(":tell", "sorry, no such event exists. Please create an event!");
         }
-        emitCopy(":tell", `For ${data.Item.eventName} you do not require anything.`);
       }
     });
   },
 
   'AMAZON.CancelIntent': function () {
-    const { userId } = this.event.session.user;
-    storeActiveList(userId);
     this.emit(':tell', 'Goodbye!');
   },
 
   'AMAZON.StopIntent': function () {
-    const { userId } = this.event.session.user;
-    storeActiveList(userId);
     this.emit(':tell', 'Goodbye!');
+  },
+  
+  'AddUserName': function () {
+    let emitCopy = this.emit;
+    const { userId } = this.event.session.user;
+    const { slots } = this.event.request.intent;
+
+    //name of person
+    if (!slots.Name.value) {
+      const slotToElicit = 'Name';
+      const speechOutput = 'What is your name?';
+      const repromptSpeech = 'try something like: my name is John';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    } else if (slots.Name.confirmationStatus !== 'CONFIRMED') {
+      if (slots.Name.confirmationStatus !== 'DENIED') {
+        // slot status: unconfirmed
+        const slotToConfirm = 'Name';
+        const speechOutput = `Your name is ${slots.Name.value}, correct?`;
+        const repromptSpeech = speechOutput;
+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
+      }
+
+      const slotToElicit = 'Name';
+      const speechOutput = 'What is your name?';
+      const repromptSpeech = 'try something like: my name is John';
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+    }
+
+    const writeParams = {
+      TableName: usersTableName,
+      Item: {
+        "userId": userId,
+        "userName": slots.Name.value
+      }
+    };
+    documentClient.put(writeParams, function (err, data) {
+      if (err) {
+        console.log(err);
+        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+      } else {
+        console.log(data);
+        emitCopy(':ask', `Your now all set to start using the app ${slots.Name.value}`);
+      }
+    });
   },
 
   'LaunchRequest':  function () {
-    this.emit(':ask', `Welcome to Stuffer <break strength="medium" />
+    let emitCopy = this.emit;
+    const { userId } = this.event.session.user;
+
+    const searchParams = {
+      TableName: usersTableName,
+      Key: {
+        "userId": userId
+      }
+    };
+    documentClient.get(searchParams, function (err, data) {
+      if(err) {
+        console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+      } else {
+        if(data.Item) {
+          emitCopy(":ask", `Hey ${data.Item.userName}, so how do you want me to help you?`)
+        } else {
+          emitCopy(':ask', `Welcome to Stuffer <break strength="medium" />
                       The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item
-                      listing and <break strength="medium" /> retriieving items for an event. 
+                      listing and <break strength="medium" /> retrieving items for an event. 
                       To store an item say <break strength="medium" /> add item <break strength="medium" />
                       To find an item say <break strength="medium" /> find item <break strength="medium" />
                       To list items for an event say <break strength="medium" /> add event name and add the following 
                       items  <break strength="medium" /> item one <break strength="medium" /> item two 
                       <break strength="medium" /> stop <break strength="medium" />
-                      To retriieve items for an event say <break strength="medium" /> list items <break strength="medium" />
+                      To retrieve items for an event say <break strength="medium" /> list items <break strength="medium" />
                       For any event only five items can be added  <break strength="medium" /><break strength="medium" />
-                       What would you like to do? `);
-    //todo: ask Shikhar or Prakriti to design this
-    // Prakriti had already used this in one of her PR's
+                       So before we start what's your name?`);
+        }
+      }
+    });
   }
 
 };
@@ -330,7 +395,7 @@ function updateHistoryOfItem(userId, itemName, itemLocation) {
       "itemName-userId": `${itemName}-${userId}`
     }
   };
-  
+
   documentClient.get(readParams, function (err, data) {
     if (err) {
       console.log('error, the history array of the item couldn\'t be fetched');
@@ -403,7 +468,7 @@ function storeActiveList(userId) {
 
 //moves all old items to masterDB
 function localALtoDBAL(userId, transferList) {
-  
+
   transferList.forEach(function (item) {
     const params = {
       TableName: itemsTableName,
@@ -414,8 +479,7 @@ function localALtoDBAL(userId, transferList) {
         "locationName": item.locationName
       }
     };
-    
-    
+
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -479,7 +543,7 @@ function checkRenew(data, userId) {
           console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
           console.log("Added item:", JSON.stringify(data, null, 2));
-         
+
           // transfers local Active list items to larger ActiveList existing in DB. i.e. Items Table after every 3 days
           // empties the local ActiveList afterwards.
           localALtoDBAL(userId, activeList)
