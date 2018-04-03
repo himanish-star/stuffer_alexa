@@ -136,7 +136,22 @@
               "value": "start",
               "synonyms": []
             }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "wallet",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "watch",
+              "synonyms": []
+            }
           }
+
         ]
       },
       {
