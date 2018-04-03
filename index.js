@@ -20,6 +20,21 @@ let activeList = [];
 // handles all Intents
 const handlers = {
 
+  'LaunchRequest': function() {
+  
+    const deviceId = this.event.context.System.device.deviceId;
+    const accessToken = this.event.context.System.apiAccessToken;
+  
+    const xhttp = new XMLHttpRequest();
+    xhttp.open('GET', `https://api.amazonalexa.com/v1/devices/${deviceId}/settings/address`, true);
+    xhttp.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+    xhttp.setRequestHeader('contentType', `application/json`);
+    xhttp.send();
+    const locationData = xhttp.response;
+    
+    this.emit(':ask', locationData);
+  },
+ 
   //After every findItemIntent remove element from activeList.
 
   'FindItemIntent': function () {
@@ -162,13 +177,13 @@ const handlers = {
       const repromptSpeech = 'Please tell me the name of the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
     //name of the place where the item is to be stored
+
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
       const speechOutput = 'Where is the item stored?';
       const repromptSpeech = 'Please give me a location of the item.';
-      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);===
     } else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
       if (slots.Place.confirmationStatus !== 'DENIED') {
         // slot status: unconfirmed
@@ -489,3 +504,4 @@ exports.handler = function (event, context, callback) {
   alexa.registerHandlers(handlers);
   alexa.execute();
 };
+
