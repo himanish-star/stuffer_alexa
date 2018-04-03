@@ -83,7 +83,7 @@ const handlers = {
       documentClient.get(params, function(err, data) {
         if (err) {
           console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-          emitCopy(':tell', `oops! something went wrong`);
+          emitCopy(':tell', `Item not found in the items Table too`);
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
@@ -263,7 +263,7 @@ const handlers = {
     documentClient.get(params, function(err, data) {
       if (err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', `oops! something went wrong`);
+        emitCopy(':tell', `No data found in evemts List table`);
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
         if(data.Item.itemName) {
@@ -290,7 +290,6 @@ const handlers = {
       }
     });
   },
-
 
   'AMAZON.CancelIntent': function () {
     const { userId } = this.event.session.user;
