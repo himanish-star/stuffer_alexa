@@ -13,11 +13,15 @@
         "samples": [
           "find my {Item}",
           "find the {Item}",
-          "where is my {Item}",
-          "where is the {Item}",
+          "find an item",
           "find {Item}",
+          "where is my {Item}",
+          "where is {Item}",
+          "where is {Item} stored",
+          "where is the {Item}",
           "help me find my {Item}",
-          "find an item"
+          "help find my {Item}"
+
         ]
       },
       {
@@ -65,7 +69,33 @@
               "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Stop}",
               "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
               "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
+              "add {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+
+              "add {Event_key} {Event} and add the {Start} {Item} {Stop}",
+              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Stop}",
+              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+              "add {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+
+              "add {Event_key} {Event} and add the following {Start} {Item} {Stop}",
+              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Stop}",
+              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+              "add {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+
+              "add {Event_key} {Event} and add following {Start} {Item} {Stop}",
+              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Stop}",
+              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+              "add {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+
+              "add {Event_key} {Event} and add following items to {Start} {Item} {Stop}",
+              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Stop}",
+              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
+              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
+              "add {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
+
+
 
           ]
       },
@@ -159,7 +189,15 @@
               }
           ],
           "samples": [
+              "Tell me the items for event",
+              "Tell me the items for {event}",
+              "Please tell me the items for {event}",
+              "List event items",
+              "List {event} items",
+              "Specify items for {event}",
+              "Specify items",
               "List items"
+
           ]
       },
       {
@@ -191,14 +229,14 @@
           {
             "id": "",
             "name": {
-              "value": "wallet",
+              "value": "items",
               "synonyms": []
             }
           },
           {
             "id": "",
             "name": {
-              "value": "watch",
+              "value": "list",
               "synonyms": []
             }
           }

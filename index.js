@@ -146,20 +146,20 @@ const handlers = {
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item to be stored?';
-      const repromptSpeech = 'Please tell me the name of the item';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
       if (slots.Item.confirmationStatus !== 'DENIED') {
         // slot status: unconfirmed
         const slotToConfirm = 'Item';
-        const speechOutput = `The name of the item is ${slots.Item.value}, correct?`;
+        const speechOutput = `The item is ${slots.Item.value}, correct?`;
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
 
       const slotToElicit = 'Item';
-      const speechOutput = 'What is the item you would like to store?';
-      const repromptSpeech = 'Please tell me the name of the item';
+      const speechOutput = 'What item is to be stored?';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -167,7 +167,7 @@ const handlers = {
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
       const speechOutput = 'Where is the item stored?';
-      const repromptSpeech = 'Please give me a location of the item.';
+      const repromptSpeech = 'Please specify the location.';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
       if (slots.Place.confirmationStatus !== 'DENIED') {
@@ -181,7 +181,7 @@ const handlers = {
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
-      const repromptSpeech = 'Please give me a location where the item is stored.';
+      const repromptSpeech = 'Please specify the location.';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -222,7 +222,7 @@ const handlers = {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
-        emitOO(':tell', "success");
+        emitOO(':tell', "Event has been successfully added.");
       }
     });
   },
@@ -235,21 +235,21 @@ const handlers = {
     //name of the item
     if (!slots.Event.value) {
       const slotToElicit = 'Event';
-      const speechOutput = 'What is the name of the event';
-      const repromptSpeech = 'Please tell me the name of the event';
+      const speechOutput = 'What is the event name?';
+      const repromptSpeech = 'Please specify the event';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Event.confirmationStatus !== 'CONFIRMED') {
       if (slots.Event.confirmationStatus !== 'DENIED') {
         // slot status: unconfirmed
         const slotToConfirm = 'Event';
-        const speechOutput = `The name of the event is ${slots.Event.value}, correct?`;
+        const speechOutput = `The event is ${slots.Event.value}, correct?`;
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
 
       const slotToElicit = 'Event';
-      const speechOutput = 'What is the name of the event?';
-      const repromptSpeech = 'Please tell me the name of the event';
+      const speechOutput = 'What is the event?';
+      const repromptSpeech = 'Please specify the event';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -263,7 +263,7 @@ const handlers = {
     documentClient.get(params, function(err, data) {
       if (err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', `No data found in evemts List table`);
+        emitCopy(':tell', `No data found in events list table`);
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
         if(data.Item.itemName) {
@@ -305,9 +305,16 @@ const handlers = {
 
   'LaunchRequest':  function () {
     this.emit(':ask', `Welcome to Stuffer <break strength="medium" />
-                      The following commands are available: add an item, find an item,
-                      add items for an event, find items for an event. What
-                      would you like to do?`);
+                      The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item
+                      listing and <break strength="medium" /> retriieving items for an event. 
+                      To store an item say <break strength="medium" /> add item <break strength="medium" />
+                      To find an item say <break strength="medium" /> find item <break strength="medium" />
+                      To list items for an event say <break strength="medium" /> add event name and add the following 
+                      items  <break strength="medium" /> item one <break strength="medium" /> item two 
+                      <break strength="medium" /> stop <break strength="medium" />
+                      To retriieve items for an event say <break strength="medium" /> list items <break strength="medium" />
+                      For any event only five items can be added  <break strength="medium" /><break strength="medium" />
+                       What would you like to do? `);
     //todo: ask Shikhar or Prakriti to design this
     // Prakriti had already used this in one of her PR's
   }
