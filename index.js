@@ -143,7 +143,7 @@ const handlers = {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
     }
-
+    console.log('asas', slots);
     // name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
@@ -306,56 +306,12 @@ const handlers = {
     this.emit(':tell', 'Goodbye!');
   },
   
-  'AddUserName': function () {
-    let emitCopy = this.emit;
-    const { userId } = this.event.session.user;
-    const { slots } = this.event.request.intent;
-
-    //name of person
-    if (!slots.Name.value) {
-      const slotToElicit = 'Name';
-      const speechOutput = 'What is your name?';
-      const repromptSpeech = 'try something like: my name is John';
-      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
-    } else if (slots.Name.confirmationStatus !== 'CONFIRMED') {
-      if (slots.Name.confirmationStatus !== 'DENIED') {
-        // slot status: unconfirmed
-        const slotToConfirm = 'Name';
-        const speechOutput = `Your name is ${slots.Name.value}, correct?`;
-        const repromptSpeech = speechOutput;
-        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
-      }
-
-      const slotToElicit = 'Name';
-      const speechOutput = 'What is your name?';
-      const repromptSpeech = 'try something like: my name is John';
-      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
-    }
-
-    const writeParams = {
-      TableName: usersTableName,
-      Item: {
-        "userId": userId,
-        "userName": slots.Name.value
-      }
-    };
-    documentClient.put(writeParams, function (err, data) {
-      if (err) {
-        console.log(err);
-        emitCopy(':tell', 'cannot connect to the server');
-      } else {
-        console.log(data);
-        emitCopy(':ask', `let's get started ${slots.Name.value}`);
-      }
-    });
-  },
-
   'LaunchRequest':  function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
 
     const searchParams = {
-      TableName: usersTableName,
+      TableName: timeStampTableName,
       Key: {
         "userId": userId
       }
@@ -366,7 +322,7 @@ const handlers = {
         emitCopy(':tell', 'cannot connect to the server');
       } else {
         if(data.Item) {
-          emitCopy(":ask", `Hey ${data.Item.userName}, so how do you want me to help you?`)
+          emitCopy(":ask", `Hey, how do you want me to help you?`)
         } else {
           emitCopy(':ask', `Welcome to Stuffer <break strength="medium" />
                       The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item <break strength="medium" />
@@ -377,8 +333,7 @@ const handlers = {
                       items  <break strength="medium" /> item one <break strength="medium" /> item two 
                       <break strength="medium" /> stop <break strength="medium" />
                       To retrieve items for an event say <break strength="medium" /> list items <break strength="medium" />
-                      For any event only five items can be added  <break strength="medium" /><break strength="medium" /><break strength="medium" />
-                       So before we start what's your name?`);
+                      For any event only five items can be added  <break strength="medium" /><break strength="medium" /><break strength="medium" />`);
         }
       }
     });
