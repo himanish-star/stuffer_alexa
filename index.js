@@ -35,8 +35,8 @@ const handlers = {
     //name of the item
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
-      const speechOutput = 'What is the item to be found?';
-      const repromptSpeech = 'Please tell me the name of the item to be found';
+      const speechOutput = 'What item is to be found?';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
       if (slots.Item.confirmationStatus !== 'DENIED') {
@@ -48,8 +48,8 @@ const handlers = {
       }
 
       const slotToElicit = 'Item';
-      const speechOutput = 'What is the item you would like to find?';
-      const repromptSpeech = 'Please tell me the name of the item to be found';
+      const speechOutput = 'What item is to be found?';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -60,7 +60,7 @@ const handlers = {
     //search in activeList with itemName
     for (let activeMember of activeList) {
       if(activeMember.itemName === itemName) {
-        emitCopy(":tell", `your ${itemName} is located inside the ${activeMember.locationName}`);
+        emitCopy(":tell", `${itemName} exists at ${activeMember.locationName}`);
         searchFlag = true;
         itemLocation = activeMember.locationName;
 
@@ -84,13 +84,13 @@ const handlers = {
       documentClient.get(params, function(err, data) {
         if (err) {
           console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-          emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+          emitCopy(':tell', 'cannot connect to the server');
         } else {
           console.log("Found item:", JSON.stringify(data, null, 2));
           if(data.Item) {
             searchFlag = true;
             itemLocation = data.Item.locationName;
-            emitCopy(":tell", `you can find your ${data.Item.itemName} inside the ${data.Item.locationName}`);
+            emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
 
             //deleting found item form itemsTable. Updation in historyTable Takes place below
             let params = {
@@ -119,12 +119,12 @@ const handlers = {
             documentClient.get(getParams, function (err, data) {
               if(err) {
                 console.log('error, nothing found');
-                emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+                emitCopy(':tell', 'cannot connect to the server');
               } else {
                 if(data.Item) {
-                  emitCopy(":tell", `Based on the history of the item, I think you may find your item inside the following locations ${data.Item.historyArray.join(", ")}`)
+                  emitCopy(":tell", `Item might exist at ${data.Item.historyArray.join(", ")}`)
                 } else {
-                  emitCopy(":tell", "Sorry we have no track of this item, please check that the name of the item is correct")
+                  emitCopy(":tell", "Item not found")
                 }
               }
             })
@@ -148,7 +148,7 @@ const handlers = {
     if (!slots.Item.value) {
       const slotToElicit = 'Item';
       const speechOutput = 'What is the item to be stored?';
-      const repromptSpeech = 'Please specify the item that is to be stored';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Item.confirmationStatus !== 'CONFIRMED') {
       if (slots.Item.confirmationStatus !== 'DENIED') {
@@ -161,7 +161,7 @@ const handlers = {
 
       const slotToElicit = 'Item';
       const speechOutput = 'What item is to be stored?';
-      const repromptSpeech = 'Please specify the item that is to be stored';
+      const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -169,7 +169,7 @@ const handlers = {
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
       const speechOutput = 'Where is the item stored?';
-      const repromptSpeech = 'Please specify the location where the item is to be stored';
+      const repromptSpeech = 'Please specify the location';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Place.confirmationStatus !== 'CONFIRMED') {
       if (slots.Place.confirmationStatus !== 'DENIED') {
@@ -183,7 +183,7 @@ const handlers = {
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
-      const repromptSpeech = 'Please specify the location where the item is to be stored';
+      const repromptSpeech = 'Please specify the location';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -193,7 +193,7 @@ const handlers = {
     });
 
     storeActiveList(userId);
-    this.emit(":tell", `I will now remember that your ${slots.Item.value} is inside the ${slots.Place.value}`)
+    this.emit(":tell", `item successfully stored`)
   },
 
   'StoreEventItemIntent': function () {
@@ -222,10 +222,10 @@ const handlers = {
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+        emitCopy(':tell', 'cannot connect to the server');
       } else {
         console.log("Added item:", JSON.stringify(data, null, 2));
-        emitCopy(':tell', "this event has been successfully created");
+        emitCopy(':tell', "event created");
       }
     });
   },
@@ -239,7 +239,7 @@ const handlers = {
     if (!slots.Event.value) {
       const slotToElicit = 'Event';
       const speechOutput = 'What is the event name?';
-      const repromptSpeech = 'Please specify the event name';
+      const repromptSpeech = 'Please specify the event';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     } else if (slots.Event.confirmationStatus !== 'CONFIRMED') {
       if (slots.Event.confirmationStatus !== 'DENIED') {
@@ -252,7 +252,7 @@ const handlers = {
 
       const slotToElicit = 'Event';
       const speechOutput = 'What is the event name?';
-      const repromptSpeech = 'Please specify the event name';
+      const repromptSpeech = 'Please specify the event';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
 
@@ -266,7 +266,7 @@ const handlers = {
     documentClient.get(params, function(err, data) {
       if (err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+        emitCopy(':tell', 'cannot connect to the server');
       } else {
         console.log("Found item:", JSON.stringify(data, null, 2));
         if(data.Item) {
@@ -292,7 +292,7 @@ const handlers = {
           }
           emitCopy(":tell", `For ${data.Item.eventName} you do not require anything.`);
         } else {
-          emitCopy(":tell", "sorry, no such event exists. Please create an event!");
+          emitCopy(":tell", "no such event exists");
         }
       }
     });
@@ -342,10 +342,10 @@ const handlers = {
     documentClient.put(writeParams, function (err, data) {
       if (err) {
         console.log(err);
-        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+        emitCopy(':tell', 'cannot connect to the server');
       } else {
         console.log(data);
-        emitCopy(':ask', `Your now all set to start using the app ${slots.Name.value}`);
+        emitCopy(':ask', `let's get started ${slots.Name.value}`);
       }
     });
   },
@@ -363,21 +363,21 @@ const handlers = {
     documentClient.get(searchParams, function (err, data) {
       if(err) {
         console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', 'Sorry having a hard time finding your item, please contact the developer');
+        emitCopy(':tell', 'cannot connect to the server');
       } else {
         if(data.Item) {
           emitCopy(":ask", `Hey ${data.Item.userName}, so how do you want me to help you?`)
         } else {
           emitCopy(':ask', `Welcome to Stuffer <break strength="medium" />
-                      The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item
+                      The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item <break strength="medium" />
                       listing and <break strength="medium" /> retrieving items for an event. 
                       To store an item say <break strength="medium" /> add item <break strength="medium" />
                       To find an item say <break strength="medium" /> find item <break strength="medium" />
-                      To list items for an event say <break strength="medium" /> add event name and add the following 
+                      To list items for an event say <break strength="medium" /> add event name and add  
                       items  <break strength="medium" /> item one <break strength="medium" /> item two 
                       <break strength="medium" /> stop <break strength="medium" />
                       To retrieve items for an event say <break strength="medium" /> list items <break strength="medium" />
-                      For any event only five items can be added  <break strength="medium" /><break strength="medium" />
+                      For any event only five items can be added  <break strength="medium" /><break strength="medium" /><break strength="medium" />
                        So before we start what's your name?`);
         }
       }
