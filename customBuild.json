@@ -3,21 +3,6 @@
     "invocationName": "stuff locator",
     "intents": [
       {
-        "name": "AddUserName",
-        "slots": [
-          {
-            "name": "Name",
-            "type": "AMAZON.Person"
-          }
-        ],
-        "samples": [
-          "{Name}",
-          "I am {Name}",
-          "my name is {Name}",
-          "it's {Name}"
-        ]
-      },
-      {
         "name": "FindItemIntent",
         "slots": [
           {
@@ -317,23 +302,6 @@
         ]
       },
       {
-        "name": "AddUserName",
-        "confirmationRequired": false,
-        "prompts": {},
-        "slots": [
-          {
-            "name": "Name",
-            "type": "AMAZON.Person",
-            "confirmationRequired": true,
-            "elicitationRequired": true,
-            "prompts": {
-              "elicitation": "Elicit.Intent-AddUserName.IntentSlot-Name",
-              "confirmation": "Confirm.Intent-AddUserName.IntentSlot-Name"
-            }
-          }
-        ]
-      },
-      {
         "name": "StoreItemIntent",
         "confirmationRequired": false,
         "prompts": {},
@@ -378,24 +346,6 @@
         {
           "type": "PlainText",
           "value": "The name of the item is {Item}, correct?"
-        }
-      ]
-    },
-    {
-      "id": "Elicit.Intent-AddUserName.IntentSlot-Name",
-      "variations": [
-        {
-          "type": "PlainText",
-          "value": "What is your name?"
-        }
-      ]
-    },
-    {
-      "id": "Confirm.Intent-AddUserName.IntentSlot-Name",
-      "variations": [
-        {
-          "type": "PlainText",
-          "value": "Your name is {Name}, correct?"
         }
       ]
     },
