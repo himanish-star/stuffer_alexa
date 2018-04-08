@@ -12,9 +12,9 @@
         ],
         "samples": [
           "find item",
+          "find an item",
           "find my {Item}",
           "find the {Item}",
-          "find an item",
           "find {Item}",
           "where is my {Item}",
           "where is {Item}",
@@ -34,10 +34,6 @@
           {
             "name": "Event_key",
             "type": "EventName"
-          },
-          {
-            "name": "Start",
-            "type": "ItemName"
           },
           {
             "name": "Item",
@@ -60,40 +56,40 @@
             "type": "ItemName"
           },
           {
-            "name": "Stop",
+            "name": "End",
             "type": "ItemName"
           }
         ],
         "samples": [
-          "create {Event_key} {Event} and add {Start} {Item} {Stop}",
-          "create {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Stop}",
-          "create {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-          "create {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-          "create {Event_key} {Event} and add {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "create {Event_key} {Event} and add {Item} {End} of list.",
+          "create {Event_key} {Event} and add {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add the {Start} {Item} {Stop}",
-          "create {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Stop}",
-          "create {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-          "create {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-          "create {Event_key} {Event} and add the {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "create {Event_key} {Event} and add the {Item} {End} of list.",
+          "create {Event_key} {Event} and add the {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add the following {Start} {Item} {Stop}",
-          "create {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Stop}",
-          "create {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-          "create {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-          "create {Event_key} {Event} and add the following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "create {Event_key} {Event} and add following {Item} {End} of list.",
+          "create {Event_key} {Event} and add following {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add following {Start} {Item} {Stop}",
-          "create {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Stop}",
-          "create {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-          "create {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-          "create {Event_key} {Event} and add following {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}",
+          "create {Event_key} {Event} and add the following {Item} {End} of list.",
+          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add following items to {Start} {Item} {Stop}",
-          "create {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Stop}",
-          "create {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Stop}",
-          "create {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Stop}",
-          "create {Event_key} {Event} and add following items to {Start} {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {Stop}"
+          "create {Event_key} {Event} and add following items to {Item} {End} of list.",
+          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list."
         ]
       },
       {
@@ -219,14 +215,7 @@
           {
             "id": "",
             "name": {
-              "value": "stop",
-              "synonyms": []
-            }
-          },
-          {
-            "id": "",
-            "name": {
-              "value": "start",
+              "value": "end",
               "synonyms": []
             }
           },
