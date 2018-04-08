@@ -171,7 +171,13 @@
       {
         "name": "AMAZON.HelpIntent",
         "slots": [],
-        "samples": []
+        "samples": [
+          "help",
+          "help me",
+          "help me out",
+          "tell me how to start",
+          "how do I start"
+        ]
       },
       {
         "name": "AMAZON.StopIntent",

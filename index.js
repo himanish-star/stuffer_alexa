@@ -9,7 +9,16 @@ const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
 const historyTableName = 'HistoryOfItems';
 const eventsTableName = 'Events';
-const usersTableName = "Users";
+
+const instructions = `Welcome to Stuffer.
+                      The following features are available:  storing item. finding item.
+                      listing <break strength="medium" /> and retrieving items for an event.
+                      To store an item say, add an item.
+                      To find an item say, find an item.
+                      To list items for an event say, add event, name, and, add items. item one, item two, item three, stop.
+                      To retrieve items for an event say, list items.
+                      For any event, only five items can be added. Start now by adding an item. To hear this again, ask stuff locator to help.`
+
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
 
@@ -306,6 +315,12 @@ const handlers = {
     this.emit(':tell', 'Goodbye!');
   },
   
+  'AMAZON.HelpIntent': function () {
+    const speechOutput = instructions;
+    const reprompt = instructions;
+    this.emit(':tell', speechOutput, reprompt);
+  },
+  
   'LaunchRequest':  function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
@@ -324,16 +339,7 @@ const handlers = {
         if(data.Item) {
           emitCopy(":ask", `Hey, how do you want me to help you?`)
         } else {
-          emitCopy(':ask', `Welcome to Stuffer <break strength="medium" />
-                      The following features are available:  <break strength="medium" />storing item,  <break strength="medium" />finding item <break strength="medium" />
-                      listing and <break strength="medium" /> retrieving items for an event. 
-                      To store an item say <break strength="medium" /> add item <break strength="medium" />
-                      To find an item say <break strength="medium" /> find item <break strength="medium" />
-                      To list items for an event say <break strength="medium" /> add event name and add  
-                      items  <break strength="medium" /> item one <break strength="medium" /> item two 
-                      <break strength="medium" /> stop <break strength="medium" />
-                      To retrieve items for an event say <break strength="medium" /> list items <break strength="medium" />
-                      For any event only five items can be added  <break strength="medium" /><break strength="medium" /><break strength="medium" />`);
+          emitCopy(':ask', instructions);
         }
       }
     });
