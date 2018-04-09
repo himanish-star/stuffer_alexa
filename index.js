@@ -12,10 +12,10 @@ const eventsTableName = 'Events';
 
 const instructions = `Welcome to Stuffer.
                       The following features are available:  storing item. finding item.
-                      listing <break strength="medium" /> and retrieving items for an event.
+                      listing and retrieving items for an event.
                       To store an item say, add an item.
                       To find an item say, find an item.
-                      To list items for an event say, add event, name, and, add items. item one, item two, item three, stop.
+                      To list items for an event say, add event, name, and, add items. item one, item two, item three, end of list.
                       To retrieve items for an event say, list items.
                       For any event, only five items can be added. Start now by adding an item. To hear this again, ask stuff locator to help.`
 
