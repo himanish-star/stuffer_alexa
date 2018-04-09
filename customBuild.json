@@ -653,14 +653,231 @@
           {
             "id": "",
             "name": {
-              "value": "Table",
+              "value": "drawer",
               "synonyms": []
             }
           },
+
           {
             "id": "",
             "name": {
-              "value": "Drawer",
+              "value": "cupboard",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bag",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "suitcase",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bed",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "study-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bed-drawer",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "sofa",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "dressing-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bathroom",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "dressing-room",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "secret-location",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "shelf",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "kitchen",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "fridge",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "coffee-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "side-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "center-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "showcase",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "dinning-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bookshelf",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "crib",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "commode",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "settee",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "sofa table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bedside-table",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bittle",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "bucket",
               "synonyms": []
             }
           }
