@@ -631,6 +631,221 @@
         "name": "EventName",
         "values": [
           {
+            "id": "",
+            "name": {
+              "value": "party",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "exam",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "shopping",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "birthday",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "anniversary",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "practical",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "interview",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "meeting",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "appointment",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "conference",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "workshop",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "class",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "course",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "sports",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "workout",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "wedding",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "date",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "festival",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "trip",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "vacation",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "picnic",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "travel",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "dinner",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "lunch",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "evening-tea",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "breakfast",
+              "synonyms": []
+            }
+          },
+
+          {
+            "id": "",
+            "name": {
+              "value": "lunch",
+              "synonyms": []
+            }
+          },
+          {
             "name": {
               "value": "event"
             }
