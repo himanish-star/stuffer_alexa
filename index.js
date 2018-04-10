@@ -284,22 +284,22 @@ const handlers = {
               if(data.Item.itemThreeName) {
                 if(data.Item.itemFourName) {
                   if(data.Item.itemFiveName) {
-                    emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-                  ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName},
-                  ${data.Item.itemFiveName}`);
+                    emitCopy(":tell", `For ${data.Item.eventName} you require. ${data.Item.itemName}.
+                  ${data.Item.itemTwoName}. ${data.Item.itemThreeName}. ${data.Item.itemFourName}.
+                  ${data.Item.itemFiveName}.`);
                   }
-                  emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-                ${data.Item.itemTwoName}, ${data.Item.itemThreeName}, ${data.Item.itemFourName}`);
+                  emitCopy(":tell", `For ${data.Item.eventName} you require. ${data.Item.itemName}.
+                ${data.Item.itemTwoName}. ${data.Item.itemThreeName}. ${data.Item.itemFourName}.`);
                 }
-                emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-              ${data.Item.itemTwoName}, ${data.Item.itemThreeName}`);
+                emitCopy(":tell", `For ${data.Item.eventName} you require. ${data.Item.itemName}.
+              ${data.Item.itemTwoName}. ${data.Item.itemThreeName}.`);
               }
-              emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName},
-            ${data.Item.itemTwoName}`);
+              emitCopy(":tell", `For ${data.Item.eventName} you require. ${data.Item.itemName}.
+            ${data.Item.itemTwoName}.`);
             }
-            emitCopy(":tell", `For ${data.Item.eventName} you require ${data.Item.itemName}`);
+            emitCopy(":tell", `For ${data.Item.eventName}. you require ${data.Item.itemName}.`);
           }
-          emitCopy(":tell", `For ${data.Item.eventName} you do not require anything.`);
+          emitCopy(":tell", `For ${data.Item.eventName}. you do not require anything.`);
         } else {
           emitCopy(":tell", "no such event exists");
         }

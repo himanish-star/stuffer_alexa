@@ -633,22 +633,6 @@
           {
             "id": "",
             "name": {
-              "value": "party",
-              "synonyms": []
-            }
-          },
-
-          {
-            "id": "",
-            "name": {
-              "value": "exam",
-              "synonyms": []
-            }
-          },
-
-          {
-            "id": "",
-            "name": {
               "value": "shopping",
               "synonyms": []
             }
@@ -810,14 +794,6 @@
             "id": "",
             "name": {
               "value": "dinner",
-              "synonyms": []
-            }
-          },
-
-          {
-            "id": "",
-            "name": {
-              "value": "lunch",
               "synonyms": []
             }
           },
