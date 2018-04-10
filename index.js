@@ -131,7 +131,7 @@ const handlers = {
                 emitCopy(':tell', 'cannot connect to the server');
               } else {
                 if(data.Item) {
-                  emitCopy(":tell", `Item might exist at ${data.Item.historyArray.join(", ")}`)
+                  emitCopy(":tell", `History tells me that the item might exist at ${data.Item.historyArray.join(". ")}`)
                 } else {
                   emitCopy(":tell", "Item not found")
                 }

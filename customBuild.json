@@ -61,35 +61,35 @@
           }
         ],
         "samples": [
-          "create {Event_key} {Event} and add {Item} {End} of list.",
-          "create {Event_key} {Event} and add {Item} {Itemtwo} {End} of list.",
-          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {End} of list.",
-          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
-          "create {Event_key} {Event} and add {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
+          "create {Event_key} {Event} and add items {Item} {End} of list.",
+          "create {Event_key} {Event} and add items {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add the {Item} {End} of list.",
-          "create {Event_key} {Event} and add the {Item} {Itemtwo} {End} of list.",
-          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {End} of list.",
-          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
-          "create {Event_key} {Event} and add the {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
+          "create {Event_key} {Event} and add the items {Item} {End} of list.",
+          "create {Event_key} {Event} and add the items {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add following {Item} {End} of list.",
-          "create {Event_key} {Event} and add following {Item} {Itemtwo} {End} of list.",
-          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {End} of list.",
-          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
-          "create {Event_key} {Event} and add following {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
+          "create {Event_key} {Event} and add following items {Item} {End} of list.",
+          "create {Event_key} {Event} and add following items {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add the following {Item} {End} of list.",
-          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {End} of list.",
-          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {End} of list.",
-          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
-          "create {Event_key} {Event} and add the following {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
+          "create {Event_key} {Event} and add the following items {Item} {End} of list.",
+          "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
 
-          "create {Event_key} {Event} and add following items to {Item} {End} of list.",
-          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {End} of list.",
-          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {End} of list.",
-          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
-          "create {Event_key} {Event} and add following items to {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list."
+          "create {Event_key} {Event} and add following items to items {Item} {End} of list.",
+          "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {End} of list.",
+          "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {Itemthree} {End} of list.",
+          "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
+          "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list."
         ]
       },
       {
@@ -222,6 +222,13 @@
           {
             "id": "",
             "name": {
+              "value": "wallet",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
               "value": "items",
               "synonyms": []
             }
@@ -278,14 +285,35 @@
           {
             "id": "",
             "name": {
-              "value": "SpecsCase",
+              "value": "cake",
               "synonyms": []
             }
           },
           {
             "id": "",
             "name": {
-              "value": "Slippers",
+              "value": "cap",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "confetti",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "specscase",
+              "synonyms": []
+            }
+          },
+          {
+            "id": "",
+            "name": {
+              "value": "slippers",
               "synonyms": []
             }
           },
@@ -355,7 +383,7 @@
           {
             "id": "",
             "name": {
-              "value": "admit card",
+              "value": "admit-card",
               "synonyms": []
             }
           },
