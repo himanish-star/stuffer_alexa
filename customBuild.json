@@ -66,25 +66,21 @@
           "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {End} of list.",
           "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
           "create {Event_key} {Event} and add items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
-
           "create {Event_key} {Event} and add the items {Item} {End} of list.",
           "create {Event_key} {Event} and add the items {Item} {Itemtwo} {End} of list.",
           "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {End} of list.",
           "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
           "create {Event_key} {Event} and add the items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
-
           "create {Event_key} {Event} and add following items {Item} {End} of list.",
           "create {Event_key} {Event} and add following items {Item} {Itemtwo} {End} of list.",
           "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {End} of list.",
           "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
           "create {Event_key} {Event} and add following items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
-
           "create {Event_key} {Event} and add the following items {Item} {End} of list.",
           "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {End} of list.",
           "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {End} of list.",
           "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {Itemfour} {End} of list.",
           "create {Event_key} {Event} and add the following items {Item} {Itemtwo} {Itemthree} {Itemfour} {Itemfive} {End} of list.",
-
           "create {Event_key} {Event} and add following items to items {Item} {End} of list.",
           "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {End} of list.",
           "create {Event_key} {Event} and add following items to items {Item} {Itemtwo} {Itemthree} {End} of list.",
@@ -161,12 +157,10 @@
       },
       {
         "name": "AMAZON.CancelIntent",
-        "slots": [],
         "samples": []
       },
       {
         "name": "AMAZON.HelpIntent",
-        "slots": [],
         "samples": [
           "help",
           "help me",
@@ -177,7 +171,6 @@
       },
       {
         "name": "AMAZON.StopIntent",
-        "slots": [],
         "samples": []
       },
       {
@@ -197,7 +190,6 @@
           "Specify items for {Event}",
           "Specify items",
           "List items"
-
         ]
       },
       {
@@ -213,444 +205,968 @@
         "name": "ItemName",
         "values": [
           {
-            "id": "",
             "name": {
-              "value": "end",
-              "synonyms": []
+              "value": "Alarm clock"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "wallet",
-              "synonyms": []
+              "value": "Armoire"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "items",
-              "synonyms": []
+              "value": "Backpack"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "list",
-              "synonyms": []
+              "value": "Bedding"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "register",
-              "synonyms": []
+              "value": "Bedspread"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "keys",
-              "synonyms": []
+              "value": "Binders"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "woollens",
-              "synonyms": []
+              "value": "Blankets"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "mobile",
-              "synonyms": []
+              "value": "Blinds"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "cover",
-              "synonyms": []
+              "value": "Bookcase"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bottle",
-              "synonyms": []
+              "value": "Books"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "cake",
-              "synonyms": []
+              "value": "Broom"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "cap",
-              "synonyms": []
+              "value": "Brush"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "confetti",
-              "synonyms": []
+              "value": "Bucket"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "specscase",
-              "synonyms": []
+              "value": "Calendar"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "slippers",
-              "synonyms": []
+              "value": "Candles"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "earphones",
-              "synonyms": []
+              "value": "Carpet"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "shoes",
-              "synonyms": []
+              "value": "Chair"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "ball",
-              "synonyms": []
+              "value": "Chairs"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "football",
-              "synonyms": []
+              "value": "China"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bat",
-              "synonyms": []
+              "value": "Clock"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "gloves",
-              "synonyms": []
+              "value": "Coffee table"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "hanky",
-              "synonyms": []
+              "value": "Comb"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "flowers",
-              "synonyms": []
+              "value": "Comforter"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "papers",
-              "synonyms": []
+              "value": "Computer"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "admit-card",
-              "synonyms": []
+              "value": "Containers"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "cash",
-              "synonyms": []
+              "value": "Couch"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "copy",
-              "synonyms": []
+              "value": "Credenza"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "spoon",
-              "synonyms": []
+              "value": "Cup"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bowl",
-              "synonyms": []
+              "value": "Curtains"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "basketball",
-              "synonyms": []
+              "value": "Cushions"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "socks",
-              "synonyms": []
+              "value": "Desk"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "charger",
-              "synonyms": []
+              "value": "Dish towel"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "adapter",
-              "synonyms": []
+              "value": "Dishwasher"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "lamp",
-              "synonyms": []
+              "value": "Door stop"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bell",
-              "synonyms": []
+              "value": "Drapes"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "tape",
-              "synonyms": []
+              "value": "Dressers"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "calculator",
-              "synonyms": []
+              "value": "Drill"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "file",
-              "synonyms": []
+              "value": "Dryer"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "syringe",
-              "synonyms": []
+              "value": "Dust pan"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "medicine",
-              "synonyms": []
+              "value": "Duvet"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "thread",
-              "synonyms": []
+              "value": "End tables"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "needles",
-              "synonyms": []
+              "value": "Extension cord"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "headphones",
-              "synonyms": []
+              "value": "Fan"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "envelope",
-              "synonyms": []
+              "value": "Figurine"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "cards",
-              "synonyms": []
+              "value": "File cabinet"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bedsheet",
-              "synonyms": []
+              "value": "Fire extinguisher"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "pant",
-              "synonyms": []
+              "value": "Flashlight"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "trousers",
-              "synonyms": []
+              "value": "Flatware"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "shirt",
-              "synonyms": []
+              "value": "Forks"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "newspaper",
-              "synonyms": []
+              "value": "Furnace"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "pepsi",
-              "synonyms": []
+              "value": "Games"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "coke",
-              "synonyms": []
+              "value": "Glasses"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "hanger",
-              "synonyms": []
+              "value": "Hammer"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "pencil",
-              "synonyms": []
+              "value": "Heater"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "eraser",
-              "synonyms": []
+              "value": "Houseplant"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "sharpner",
-              "synonyms": []
+              "value": "IPhone"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "scale",
-              "synonyms": []
+              "value": "IPod"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "geometry",
-              "synonyms": []
+              "value": "Iron"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "salt",
-              "synonyms": []
+              "value": "Ironing board"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "bills",
-              "synonyms": []
+              "value": "Jewelry"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "glass",
-              "synonyms": []
+              "value": "Knives"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "extension",
-              "synonyms": []
+              "value": "Lamp"
             }
           },
           {
-            "id": "",
             "name": {
-              "value": "board",
-              "synonyms": []
+              "value": "Light bulbs"
+            }
+          },
+          {
+            "name": {
+              "value": "Light switch"
+            }
+          },
+          {
+            "name": {
+              "value": "Linens"
+            }
+          },
+          {
+            "name": {
+              "value": "Magnets"
+            }
+          },
+          {
+            "name": {
+              "value": "Markers"
+            }
+          },
+          {
+            "name": {
+              "value": "Mementos"
+            }
+          },
+          {
+            "name": {
+              "value": "Microwave"
+            }
+          },
+          {
+            "name": {
+              "value": "Mop"
+            }
+          },
+          {
+            "name": {
+              "value": "Mugs"
+            }
+          },
+          {
+            "name": {
+              "value": "Musical instruments"
+            }
+          },
+          {
+            "name": {
+              "value": "Napkins"
+            }
+          },
+          {
+            "name": {
+              "value": "Nick-knacks"
+            }
+          },
+          {
+            "name": {
+              "value": "Note paper"
+            }
+          },
+          {
+            "name": {
+              "value": "Oven"
+            }
+          },
+          {
+            "name": {
+              "value": "Paintings"
+            }
+          },
+          {
+            "name": {
+              "value": "Pans"
+            }
+          },
+          {
+            "name": {
+              "value": "Pants"
+            }
+          },
+          {
+            "name": {
+              "value": "Paper"
+            }
+          },
+          {
+            "name": {
+              "value": "Pen"
+            }
+          },
+          {
+            "name": {
+              "value": "Pencil"
+            }
+          },
+          {
+            "name": {
+              "value": "Phones"
+            }
+          },
+          {
+            "name": {
+              "value": "Photographs"
+            }
+          },
+          {
+            "name": {
+              "value": "Piano"
+            }
+          },
+          {
+            "name": {
+              "value": "Pictures"
+            }
+          },
+          {
+            "name": {
+              "value": "Pillows"
+            }
+          },
+          {
+            "name": {
+              "value": "Pitcher"
+            }
+          },
+          {
+            "name": {
+              "value": "Plants"
+            }
+          },
+          {
+            "name": {
+              "value": "Plastic plates"
+            }
+          },
+          {
+            "name": {
+              "value": "Plates"
+            }
+          },
+          {
+            "name": {
+              "value": "Pliers"
+            }
+          },
+          {
+            "name": {
+              "value": "Pots"
+            }
+          },
+          {
+            "name": {
+              "value": "Prescriptions"
+            }
+          },
+          {
+            "name": {
+              "value": "Radiator"
+            }
+          },
+          {
+            "name": {
+              "value": "Radio"
+            }
+          },
+          {
+            "name": {
+              "value": "Rags"
+            }
+          },
+          {
+            "name": {
+              "value": "Refrigerator"
+            }
+          },
+          {
+            "name": {
+              "value": "Rugs"
+            }
+          },
+          {
+            "name": {
+              "value": "Saucer"
+            }
+          },
+          {
+            "name": {
+              "value": "Saw"
+            }
+          },
+          {
+            "name": {
+              "value": "Scissors"
+            }
+          },
+          {
+            "name": {
+              "value": "Screw driver"
+            }
+          },
+          {
+            "name": {
+              "value": "Settee"
+            }
+          },
+          {
+            "name": {
+              "value": "Shades"
+            }
+          },
+          {
+            "name": {
+              "value": "Sheets"
+            }
+          },
+          {
+            "name": {
+              "value": "Shelf"
+            }
+          },
+          {
+            "name": {
+              "value": "Shirts"
+            }
+          },
+          {
+            "name": {
+              "value": "Smoke detector"
+            }
+          },
+          {
+            "name": {
+              "value": "Sneakers"
+            }
+          },
+          {
+            "name": {
+              "value": "Socks"
+            }
+          },
+          {
+            "name": {
+              "value": "Sofa"
+            }
+          },
+          {
+            "name": {
+              "value": "Speakers"
+            }
+          },
+          {
+            "name": {
+              "value": "Spoons"
+            }
+          },
+          {
+            "name": {
+              "value": "Suitcases"
+            }
+          },
+          {
+            "name": {
+              "value": "Supplies"
+            }
+          },
+          {
+            "name": {
+              "value": "Sweeper"
+            }
+          },
+          {
+            "name": {
+              "value": "Tablecloth"
+            }
+          },
+          {
+            "name": {
+              "value": "Tables"
+            }
+          },
+          {
+            "name": {
+              "value": "Telephone"
+            }
+          },
+          {
+            "name": {
+              "value": "Timers"
+            }
+          },
+          {
+            "name": {
+              "value": "Tissues"
+            }
+          },
+          {
+            "name": {
+              "value": "Toaster"
+            }
+          },
+          {
+            "name": {
+              "value": "Toilet paper"
+            }
+          },
+          {
+            "name": {
+              "value": "Toothbrush"
+            }
+          },
+          {
+            "name": {
+              "value": "Toothpaste"
+            }
+          },
+          {
+            "name": {
+              "value": "Towels"
+            }
+          },
+          {
+            "name": {
+              "value": "Toys"
+            }
+          },
+          {
+            "name": {
+              "value": "TV"
+            }
+          },
+          {
+            "name": {
+              "value": "Vacuum"
+            }
+          },
+          {
+            "name": {
+              "value": "Vase"
+            }
+          },
+          {
+            "name": {
+              "value": "Washer"
+            }
+          },
+          {
+            "name": {
+              "value": "Washing machine"
+            }
+          },
+          {
+            "name": {
+              "value": "end"
+            }
+          },
+          {
+            "name": {
+              "value": "wallet"
+            }
+          },
+          {
+            "name": {
+              "value": "items"
+            }
+          },
+          {
+            "name": {
+              "value": "list"
+            }
+          },
+          {
+            "name": {
+              "value": "register"
+            }
+          },
+          {
+            "name": {
+              "value": "keys"
+            }
+          },
+          {
+            "name": {
+              "value": "woollens"
+            }
+          },
+          {
+            "name": {
+              "value": "mobile"
+            }
+          },
+          {
+            "name": {
+              "value": "cover"
+            }
+          },
+          {
+            "name": {
+              "value": "bottle"
+            }
+          },
+          {
+            "name": {
+              "value": "cake"
+            }
+          },
+          {
+            "name": {
+              "value": "cap"
+            }
+          },
+          {
+            "name": {
+              "value": "confetti"
+            }
+          },
+          {
+            "name": {
+              "value": "specscase"
+            }
+          },
+          {
+            "name": {
+              "value": "slippers"
+            }
+          },
+          {
+            "name": {
+              "value": "earphones"
+            }
+          },
+          {
+            "name": {
+              "value": "shoes"
+            }
+          },
+          {
+            "name": {
+              "value": "ball"
+            }
+          },
+          {
+            "name": {
+              "value": "football"
+            }
+          },
+          {
+            "name": {
+              "value": "bat"
+            }
+          },
+          {
+            "name": {
+              "value": "gloves"
+            }
+          },
+          {
+            "name": {
+              "value": "hanky"
+            }
+          },
+          {
+            "name": {
+              "value": "flowers"
+            }
+          },
+          {
+            "name": {
+              "value": "papers"
+            }
+          },
+          {
+            "name": {
+              "value": "admit-card"
+            }
+          },
+          {
+            "name": {
+              "value": "cash"
+            }
+          },
+          {
+            "name": {
+              "value": "copy"
+            }
+          },
+          {
+            "name": {
+              "value": "spoon"
+            }
+          },
+          {
+            "name": {
+              "value": "bowl"
+            }
+          },
+          {
+            "name": {
+              "value": "basketball"
+            }
+          },
+          {
+            "name": {
+              "value": "charger"
+            }
+          },
+          {
+            "name": {
+              "value": "adapter"
+            }
+          },
+          {
+            "name": {
+              "value": "bell"
+            }
+          },
+          {
+            "name": {
+              "value": "tape"
+            }
+          },
+          {
+            "name": {
+              "value": "calculator"
+            }
+          },
+          {
+            "name": {
+              "value": "file"
+            }
+          },
+          {
+            "name": {
+              "value": "syringe"
+            }
+          },
+          {
+            "name": {
+              "value": "medicine"
+            }
+          },
+          {
+            "name": {
+              "value": "thread"
+            }
+          },
+          {
+            "name": {
+              "value": "needles"
+            }
+          },
+          {
+            "name": {
+              "value": "headphones"
+            }
+          },
+          {
+            "name": {
+              "value": "envelope"
+            }
+          },
+          {
+            "name": {
+              "value": "cards"
+            }
+          },
+          {
+            "name": {
+              "value": "bedsheet"
+            }
+          },
+          {
+            "name": {
+              "value": "pant"
+            }
+          },
+          {
+            "name": {
+              "value": "trousers"
+            }
+          },
+          {
+            "name": {
+              "value": "shirt"
+            }
+          },
+          {
+            "name": {
+              "value": "newspaper"
+            }
+          },
+          {
+            "name": {
+              "value": "pepsi"
+            }
+          },
+          {
+            "name": {
+              "value": "coke"
+            }
+          },
+          {
+            "name": {
+              "value": "hanger"
+            }
+          },
+          {
+            "name": {
+              "value": "eraser"
+            }
+          },
+          {
+            "name": {
+              "value": "sharpner"
+            }
+          },
+          {
+            "name": {
+              "value": "scale"
+            }
+          },
+          {
+            "name": {
+              "value": "geometry"
+            }
+          },
+          {
+            "name": {
+              "value": "salt"
+            }
+          },
+          {
+            "name": {
+              "value": "bills"
+            }
+          },
+          {
+            "name": {
+              "value": "glass"
+            }
+          },
+          {
+            "name": {
+              "value": "extension"
+            }
+          },
+          {
+            "name": {
+              "value": "board"
             }
           }
         ]
@@ -659,194 +1175,123 @@
         "name": "EventName",
         "values": [
           {
-            "id": "",
             "name": {
-              "value": "shopping",
-              "synonyms": []
+              "value": "shopping"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "birthday",
-              "synonyms": []
+              "value": "birthday"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "anniversary",
-              "synonyms": []
+              "value": "anniversary"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "practical",
-              "synonyms": []
+              "value": "practical"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "interview",
-              "synonyms": []
+              "value": "interview"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "meeting",
-              "synonyms": []
+              "value": "meeting"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "appointment",
-              "synonyms": []
+              "value": "appointment"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "conference",
-              "synonyms": []
+              "value": "conference"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "workshop",
-              "synonyms": []
+              "value": "workshop"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "class",
-              "synonyms": []
+              "value": "class"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "course",
-              "synonyms": []
+              "value": "course"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "sports",
-              "synonyms": []
+              "value": "sports"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "workout",
-              "synonyms": []
+              "value": "workout"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "wedding",
-              "synonyms": []
+              "value": "wedding"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "date",
-              "synonyms": []
+              "value": "date"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "festival",
-              "synonyms": []
+              "value": "festival"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "trip",
-              "synonyms": []
+              "value": "trip"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "vacation",
-              "synonyms": []
+              "value": "vacation"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "picnic",
-              "synonyms": []
+              "value": "picnic"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "travel",
-              "synonyms": []
+              "value": "travel"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "dinner",
-              "synonyms": []
+              "value": "dinner"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "evening-tea",
-              "synonyms": []
+              "value": "evening-tea"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "breakfast",
-              "synonyms": []
+              "value": "breakfast"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "lunch",
-              "synonyms": []
+              "value": "lunch"
             }
           },
           {
@@ -870,234 +1315,148 @@
         "name": "ItemLocation",
         "values": [
           {
-            "id": "",
             "name": {
-              "value": "drawer",
-              "synonyms": []
+              "value": "drawer"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "cupboard",
-              "synonyms": []
+              "value": "cupboard"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "table",
-              "synonyms": []
+              "value": "table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bag",
-              "synonyms": []
+              "value": "bag"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "suitcase",
-              "synonyms": []
+              "value": "suitcase"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bed",
-              "synonyms": []
+              "value": "bed"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "study-table",
-              "synonyms": []
+              "value": "study-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bed-drawer",
-              "synonyms": []
+              "value": "bed-drawer"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "sofa",
-              "synonyms": []
+              "value": "sofa"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "dressing-table",
-              "synonyms": []
+              "value": "dressing-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bathroom",
-              "synonyms": []
+              "value": "bathroom"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "dressing-room",
-              "synonyms": []
+              "value": "dressing-room"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "secret-location",
-              "synonyms": []
+              "value": "secret-location"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "shelf",
-              "synonyms": []
+              "value": "shelf"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "kitchen",
-              "synonyms": []
+              "value": "kitchen"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "fridge",
-              "synonyms": []
+              "value": "fridge"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "coffee-table",
-              "synonyms": []
+              "value": "coffee-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "side-table",
-              "synonyms": []
+              "value": "side-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "center-table",
-              "synonyms": []
+              "value": "center-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "showcase",
-              "synonyms": []
+              "value": "showcase"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "dinning-table",
-              "synonyms": []
+              "value": "dinning-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bookshelf",
-              "synonyms": []
+              "value": "bookshelf"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "crib",
-              "synonyms": []
+              "value": "crib"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "commode",
-              "synonyms": []
+              "value": "commode"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "settee",
-              "synonyms": []
+              "value": "settee"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "sofa table",
-              "synonyms": []
+              "value": "sofa table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bedside-table",
-              "synonyms": []
+              "value": "bedside-table"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bittle",
-              "synonyms": []
+              "value": "bittle"
             }
           },
-
           {
-            "id": "",
             "name": {
-              "value": "bucket",
-              "synonyms": []
+              "value": "bucket"
             }
           }
         ]
@@ -1117,8 +1476,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-FindItemIntent.IntentSlot-Item",
-              "confirmation": "Confirm.Intent-FindItemIntent.IntentSlot-Item"
+              "confirmation": "Confirm.Intent-FindItemIntent.IntentSlot-Item",
+              "elicitation": "Elicit.Intent-FindItemIntent.IntentSlot-Item"
             }
           }
         ]
@@ -1134,8 +1493,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Item",
-              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Item"
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Item",
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Item"
             }
           },
           {
@@ -1144,8 +1503,8 @@
             "confirmationRequired": true,
             "elicitationRequired": true,
             "prompts": {
-              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Place",
-              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Place"
+              "confirmation": "Confirm.Intent-StoreItemIntent.IntentSlot-Place",
+              "elicitation": "Elicit.Intent-StoreItemIntent.IntentSlot-Place"
             }
           }
         ]
