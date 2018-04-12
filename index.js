@@ -66,8 +66,72 @@ const handlers = {
     let searchFlag = false;
     let itemLocation = '';
 
+    if(!activeList.length) {
+      if(!searchFlag) {
+        console.log('Attempting to read data in Items table');
+        let params = {
+          TableName: itemsTableName,
+          Key:{
+            "itemName-userId": slots.Item.value + "-" + userId
+          }
+        };
+        documentClient.get(params, function(err, data) {
+          if (err) {
+            console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+            emitCopy(':tell', 'cannot connect to the server');
+          } else {
+            console.log("Found item:", JSON.stringify(data, null, 2));
+            if(data.Item) {
+              searchFlag = true;
+              itemLocation = data.Item.locationName;
+              emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
+
+              //deleting found item form itemsTable. Updation in historyTable Takes place below
+              let params = {
+                TableName: itemsTableName,
+                Key:{
+                  "itemName-userId": slots.Item.value + "-" + userId
+                }
+              };
+
+              documentClient.delete(params, function (err, data) {
+                if (err) {
+                  console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+                } else {
+                  console.log(`Deleted Item`, JSON.stringify(data, null, 2));
+                  updateHistoryOfItem(userId, itemName, itemLocation);
+                }
+              })
+
+            } else {
+              const getParams = {
+                TableName: historyTableName,
+                Key: {
+                  "itemName-userId": `${itemName}-${userId}`
+                }
+              };
+              documentClient.get(getParams, function (err, data) {
+                if(err) {
+                  console.log('error, nothing found');
+                  emitCopy(':tell', 'cannot connect to the server');
+                } else {
+                  if(data.Item) {
+                    emitCopy(":tell", `History tells me that the item might exist at ${data.Item.historyArray.join(". ")}`)
+                  } else {
+                    emitCopy(":tell", "Item not found")
+                  }
+                }
+              })
+            }
+          }
+        });
+      }
+    }
+
     //search in activeList with itemName
     for (let activeMember of activeList) {
+      if(searchFlag)
+        break;
       if(activeMember.itemName === itemName) {
         emitCopy(":tell", `${itemName} exists at ${activeMember.locationName}`);
         searchFlag = true;
@@ -79,67 +143,68 @@ const handlers = {
         updateHistoryOfItem(userId, itemName, itemLocation);
         break;
       }
-    }
+      if(activeMember === activeList[activeList.length-1]) {
+        // search in Items table using ItemName
+        if(!searchFlag) {
+          console.log('Attempting to read data in Items table');
+          let params = {
+            TableName: itemsTableName,
+            Key:{
+              "itemName-userId": slots.Item.value + "-" + userId
+            }
+          };
+          documentClient.get(params, function(err, data) {
+            if (err) {
+              console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+              emitCopy(':tell', 'cannot connect to the server');
+            } else {
+              console.log("Found item:", JSON.stringify(data, null, 2));
+              if(data.Item) {
+                searchFlag = true;
+                itemLocation = data.Item.locationName;
+                emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
 
-    //search in Items table using ItemName
-    if(!searchFlag) {
-      console.log('Attempting to read data in Items table');
-      let params = {
-        TableName: itemsTableName,
-        Key:{
-          "itemName-userId": slots.Item.value + "-" + userId
-        }
-      };
-      documentClient.get(params, function(err, data) {
-        if (err) {
-          console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-          emitCopy(':tell', 'cannot connect to the server');
-        } else {
-          console.log("Found item:", JSON.stringify(data, null, 2));
-          if(data.Item) {
-            searchFlag = true;
-            itemLocation = data.Item.locationName;
-            emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
+                //deleting found item form itemsTable. Updation in historyTable Takes place below
+                let params = {
+                  TableName: itemsTableName,
+                  Key:{
+                    "itemName-userId": slots.Item.value + "-" + userId
+                  }
+                };
 
-            //deleting found item form itemsTable. Updation in historyTable Takes place below
-            let params = {
-              TableName: itemsTableName,
-              Key:{
-                "itemName-userId": slots.Item.value + "-" + userId
-              }
-            };
+                documentClient.delete(params, function (err, data) {
+                  if (err) {
+                    console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
+                  } else {
+                    console.log(`Deleted Item`, JSON.stringify(data, null, 2));
+                    updateHistoryOfItem(userId, itemName, itemLocation);
+                  }
+                })
 
-            documentClient.delete(params, function (err, data) {
-              if (err) {
-                console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
               } else {
-                console.log(`Deleted Item`, JSON.stringify(data, null, 2));
-                updateHistoryOfItem(userId, itemName, itemLocation);
+                const getParams = {
+                  TableName: historyTableName,
+                  Key: {
+                    "itemName-userId": `${itemName}-${userId}`
+                  }
+                };
+                documentClient.get(getParams, function (err, data) {
+                  if(err) {
+                    console.log('error, nothing found');
+                    emitCopy(':tell', 'cannot connect to the server');
+                  } else {
+                    if(data.Item) {
+                      emitCopy(":tell", `History tells me that the item might exist at ${data.Item.historyArray.join(". ")}`)
+                    } else {
+                      emitCopy(":tell", "Item not found")
+                    }
+                  }
+                })
               }
-            })
-
-          } else {
-            const getParams = {
-              TableName: historyTableName,
-              Key: {
-                "itemName-userId": `${itemName}-${userId}`
-              }
-            };
-            documentClient.get(getParams, function (err, data) {
-              if(err) {
-                console.log('error, nothing found');
-                emitCopy(':tell', 'cannot connect to the server');
-              } else {
-                if(data.Item) {
-                  emitCopy(":tell", `History tells me that the item might exist at ${data.Item.historyArray.join(". ")}`)
-                } else {
-                  emitCopy(":tell", "Item not found")
-                }
-              }
-            })
-          }
+            }
+          });
         }
-      });
+      }
     }
   },
 
