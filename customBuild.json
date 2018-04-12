@@ -1316,6 +1316,681 @@
         "values": [
           {
             "name": {
+              "value": "armchair"
+            }
+          },
+          {
+            "name": {
+              "value": "armoire"
+            }
+          },
+          {
+            "name": {
+              "value": "bar stool"
+            }
+          },
+          {
+            "name": {
+              "value": "bassinet"
+            }
+          },
+          {
+            "name": {
+              "value": "beach chair"
+            }
+          },
+          {
+            "name": {
+              "value": "bean bag chair"
+            }
+          },
+          {
+            "name": {
+              "value": "bed table"
+            }
+          },
+          {
+            "name": {
+              "value": "bench"
+            }
+          },
+          {
+            "name": {
+              "value": "bentwood rocker"
+            }
+          },
+          {
+            "name": {
+              "value": "bergere"
+            }
+          },
+          {
+            "name": {
+              "value": "bookcase"
+            }
+          },
+          {
+            "name": {
+              "value": "breakfront"
+            }
+          },
+          {
+            "name": {
+              "value": "buffet"
+            }
+          },
+          {
+            "name": {
+              "value": "bunk bed"
+            }
+          },
+          {
+            "name": {
+              "value": "bureau"
+            }
+          },
+          {
+            "name": {
+              "value": "cabinet"
+            }
+          },
+          {
+            "name": {
+              "value": "canopy bed"
+            }
+          },
+          {
+            "name": {
+              "value": "captain's chair"
+            }
+          },
+          {
+            "name": {
+              "value": "card table"
+            }
+          },
+          {
+            "name": {
+              "value": "carpet"
+            }
+          },
+          {
+            "name": {
+              "value": "cart"
+            }
+          },
+          {
+            "name": {
+              "value": "chair"
+            }
+          },
+          {
+            "name": {
+              "value": "chaise lounge"
+            }
+          },
+          {
+            "name": {
+              "value": "chandelier"
+            }
+          },
+          {
+            "name": {
+              "value": "chest"
+            }
+          },
+          {
+            "name": {
+              "value": "chest of drawers"
+            }
+          },
+          {
+            "name": {
+              "value": "china cabinet"
+            }
+          },
+          {
+            "name": {
+              "value": "clothes valet"
+            }
+          },
+          {
+            "name": {
+              "value": "club chair"
+            }
+          },
+          {
+            "name": {
+              "value": "coffee table"
+            }
+          },
+          {
+            "name": {
+              "value": "console"
+            }
+          },
+          {
+            "name": {
+              "value": "cot"
+            }
+          },
+          {
+            "name": {
+              "value": "couch"
+            }
+          },
+          {
+            "name": {
+              "value": "cradle"
+            }
+          },
+          {
+            "name": {
+              "value": "credenza"
+            }
+          },
+          {
+            "name": {
+              "value": "cubbies"
+            }
+          },
+          {
+            "name": {
+              "value": "curio"
+            }
+          },
+          {
+            "name": {
+              "value": "curtains"
+            }
+          },
+          {
+            "name": {
+              "value": "cushion"
+            }
+          },
+          {
+            "name": {
+              "value": "deck chair"
+            }
+          },
+          {
+            "name": {
+              "value": "desk"
+            }
+          },
+          {
+            "name": {
+              "value": "desk chair"
+            }
+          },
+          {
+            "name": {
+              "value": "dining room table"
+            }
+          },
+          {
+            "name": {
+              "value": "director's chair"
+            }
+          },
+          {
+            "name": {
+              "value": "display cabinet"
+            }
+          },
+          {
+            "name": {
+              "value": "divan"
+            }
+          },
+          {
+            "name": {
+              "value": "drapery"
+            }
+          },
+          {
+            "name": {
+              "value": "drapes"
+            }
+          },
+          {
+            "name": {
+              "value": "dresser"
+            }
+          },
+          {
+            "name": {
+              "value": "easel"
+            }
+          },
+          {
+            "name": {
+              "value": "easy chair"
+            }
+          },
+          {
+            "name": {
+              "value": "end table"
+            }
+          },
+          {
+            "name": {
+              "value": "fateuil"
+            }
+          },
+          {
+            "name": {
+              "value": "file cabinet"
+            }
+          },
+          {
+            "name": {
+              "value": "folding chair"
+            }
+          },
+          {
+            "name": {
+              "value": "folding screen"
+            }
+          },
+          {
+            "name": {
+              "value": "footrest"
+            }
+          },
+          {
+            "name": {
+              "value": "footstool"
+            }
+          },
+          {
+            "name": {
+              "value": "four-poster bed"
+            }
+          },
+          {
+            "name": {
+              "value": "furnishings"
+            }
+          },
+          {
+            "name": {
+              "value": "furniture"
+            }
+          },
+          {
+            "name": {
+              "value": "futon"
+            }
+          },
+          {
+            "name": {
+              "value": "game table"
+            }
+          },
+          {
+            "name": {
+              "value": "garden bench"
+            }
+          },
+          {
+            "name": {
+              "value": "gateleg table"
+            }
+          },
+          {
+            "name": {
+              "value": "glider rocker"
+            }
+          },
+          {
+            "name": {
+              "value": "grandfather clock"
+            }
+          },
+          {
+            "name": {
+              "value": "hall tree"
+            }
+          },
+          {
+            "name": {
+              "value": "hammock"
+            }
+          },
+          {
+            "name": {
+              "value": "hassock"
+            }
+          },
+          {
+            "name": {
+              "value": "hat stand"
+            }
+          },
+          {
+            "name": {
+              "value": "headboard"
+            }
+          },
+          {
+            "name": {
+              "value": "highchair"
+            }
+          },
+          {
+            "name": {
+              "value": "hope chest"
+            }
+          },
+          {
+            "name": {
+              "value": "hutch"
+            }
+          },
+          {
+            "name": {
+              "value": "island"
+            }
+          },
+          {
+            "name": {
+              "value": "kitchen island"
+            }
+          },
+          {
+            "name": {
+              "value": "ladderback chair"
+            }
+          },
+          {
+            "name": {
+              "value": "lamp"
+            }
+          },
+          {
+            "name": {
+              "value": "lawn chair"
+            }
+          },
+          {
+            "name": {
+              "value": "lift chair"
+            }
+          },
+          {
+            "name": {
+              "value": "light"
+            }
+          },
+          {
+            "name": {
+              "value": "lintel"
+            }
+          },
+          {
+            "name": {
+              "value": "lounge chair"
+            }
+          },
+          {
+            "name": {
+              "value": "lounger"
+            }
+          },
+          {
+            "name": {
+              "value": "love seat"
+            }
+          },
+          {
+            "name": {
+              "value": "mantle"
+            }
+          },
+          {
+            "name": {
+              "value": "mattress"
+            }
+          },
+          {
+            "name": {
+              "value": "mirror"
+            }
+          },
+          {
+            "name": {
+              "value": "Murphy bed"
+            }
+          },
+          {
+            "name": {
+              "value": "nightstand"
+            }
+          },
+          {
+            "name": {
+              "value": "office chair"
+            }
+          },
+          {
+            "name": {
+              "value": "ottoman"
+            }
+          },
+          {
+            "name": {
+              "value": "pantry"
+            }
+          },
+          {
+            "name": {
+              "value": "park bench"
+            }
+          },
+          {
+            "name": {
+              "value": "patio chair"
+            }
+          },
+          {
+            "name": {
+              "value": "patio table"
+            }
+          },
+          {
+            "name": {
+              "value": "pew"
+            }
+          },
+          {
+            "name": {
+              "value": "piano bench"
+            }
+          },
+          {
+            "name": {
+              "value": "picnic table"
+            }
+          },
+          {
+            "name": {
+              "value": "pillow"
+            }
+          },
+          {
+            "name": {
+              "value": "porch swing"
+            }
+          },
+          {
+            "name": {
+              "value": "rack"
+            }
+          },
+          {
+            "name": {
+              "value": "recliner"
+            }
+          },
+          {
+            "name": {
+              "value": "rocking chair"
+            }
+          },
+          {
+            "name": {
+              "value": "room divider"
+            }
+          },
+          {
+            "name": {
+              "value": "rug"
+            }
+          },
+          {
+            "name": {
+              "value": "sconce"
+            }
+          },
+          {
+            "name": {
+              "value": "screen"
+            }
+          },
+          {
+            "name": {
+              "value": "seat"
+            }
+          },
+          {
+            "name": {
+              "value": "secretary"
+            }
+          },
+          {
+            "name": {
+              "value": "sectional sofa"
+            }
+          },
+          {
+            "name": {
+              "value": "shoji screen"
+            }
+          },
+          {
+            "name": {
+              "value": "sideboard"
+            }
+          },
+          {
+            "name": {
+              "value": "sleeper sofa"
+            }
+          },
+          {
+            "name": {
+              "value": "sofabed"
+            }
+          },
+          {
+            "name": {
+              "value": "stool"
+            }
+          },
+          {
+            "name": {
+              "value": "tansu"
+            }
+          },
+          {
+            "name": {
+              "value": "tea cart"
+            }
+          },
+          {
+            "name": {
+              "value": "throne"
+            }
+          },
+          {
+            "name": {
+              "value": "throw rug"
+            }
+          },
+          {
+            "name": {
+              "value": "trundle bed"
+            }
+          },
+          {
+            "name": {
+              "value": "tuffet"
+            }
+          },
+          {
+            "name": {
+              "value": "valet"
+            }
+          },
+          {
+            "name": {
+              "value": "vanity"
+            }
+          },
+          {
+            "name": {
+              "value": "Venetian blinds"
+            }
+          },
+          {
+            "name": {
+              "value": "vitrine"
+            }
+          },
+          {
+            "name": {
+              "value": "wardrobe"
+            }
+          },
+          {
+            "name": {
+              "value": "waste basket"
+            }
+          },
+          {
+            "name": {
+              "value": "waterbed"
+            }
+          },
+          {
+            "name": {
+              "value": "window shades"
+            }
+          },
+          {
+            "name": {
+              "value": "Windsor chair"
+            }
+          },
+          {
+            "name": {
+              "value": "wing chair"
+            }
+          },
+          {
+            "name": {
+              "value": "work table"
+            }
+          },
+          {
+            "name": {
+              "value": "writing desk"
+            }
+          },
+          {
+            "name": {
               "value": "drawer"
             }
           },
