@@ -17,7 +17,9 @@ const instructions = `Welcome to Stuffer.
                       To find an item say, find an item.
                       To list items for an event say, add event, name, and, add items. item one, item two, item three, end of list.
                       To retrieve items for an event say, list items.
-                      For any event, only five items can be added. Start now by adding an item. To hear this again, ask stuff locator to help.`
+                      For any event, only five items can be added.
+                        Start now by adding an item.
+                      To hear this again, ask stuff locator to help.`
 
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
@@ -29,8 +31,6 @@ let activeList = [];
 
 // handles all Intents
 const handlers = {
-
-  //After every findItemIntent remove element from activeList or from the Items table
 
   'FindItemIntent': function () {
     let emitCopy = this.emit;
@@ -325,6 +325,8 @@ const handlers = {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
 
+    console.log(this);
+    
     const searchParams = {
       TableName: timeStampTableName,
       Key: {
