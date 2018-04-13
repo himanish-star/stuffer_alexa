@@ -218,7 +218,7 @@ const handlers = {
   "HelpMessageIntent": function () {
     const { slots } = this.event.request.intent;
     let speechOutput, reprompt;
-    console.log(slots.MessageType.value);
+    
     if(slots.MessageType.value.toLowerCase() === "find item feature") {
       speechOutput = findIntentMessage;
       reprompt = speechOutput;
