@@ -217,18 +217,20 @@ const handlers = {
 
   "HelpMessageIntent": function () {
     const { slots } = this.event.request.intent;
-    if(slots.MessageType.value === "Find Item Feature") {
-      const speechOutput = findIntentMessage;
-      const reprompt = speechOutput;
-    } else if(slots.MessageType.value === "Store Item Feature") {
-      const speechOutput = storeIntentMessage;
-      const reprompt = speechOutput;
-    } else if(slots.MessageType.value === "List Event Feature") {
-      const speechOutput = listEventMessage;
-      const reprompt = speechOutput;
+    let speechOutput, reprompt;
+    console.log(slots.MessageType.value);
+    if(slots.MessageType.value.toLowerCase() === "find item feature") {
+      speechOutput = findIntentMessage;
+      reprompt = speechOutput;
+    } else if(slots.MessageType.value.toLowerCase() === "store item feature") {
+      speechOutput = storeIntentMessage;
+      reprompt = speechOutput;
+    } else if(slots.MessageType.value.toLowerCase() === "list event feature") {
+      speechOutput = listEventMessage;
+      reprompt = speechOutput;
     } else {
-      const speechOutput = createEventMessage;
-      const reprompt = speechOutput;
+      speechOutput = createEventMessage;
+      reprompt = speechOutput;
     }
     this.emit(':ask', speechOutput, reprompt);
   },
