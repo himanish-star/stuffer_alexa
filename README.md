@@ -26,6 +26,9 @@ Made with :heart: by :
 
  - Shikhar Agnihotri [@shikhar-scs](https://github.com/shikhar-scs)
  
+ ## Contribution 
+ Checkout out [guidelines](https://github.com/himanish-star/thingy-locator/blob/master/CONTRIBUTING.md) here. 
+ 
  ## License 
 ```
 Copyright (c) 2018 Stuffer
