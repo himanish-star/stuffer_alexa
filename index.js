@@ -38,12 +38,12 @@ let activeList = [];
 
 // handles all Intents
 const handlers = {
-
+  
   'FindItemIntent': function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-
+    
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
@@ -62,17 +62,17 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-
+      
       const slotToElicit = 'Item';
       const speechOutput = 'What item is to be found?';
       const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
+    
     const itemName = slots.Item.value;
     let searchFlag = false;
     let itemLocation = '';
-
+    
     if(!activeList.length) {
       if(!searchFlag) {
         console.log('Attempting to read data in Items table');
@@ -92,7 +92,7 @@ const handlers = {
               searchFlag = true;
               itemLocation = data.Item.locationName;
               emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
-
+              
               //deleting found item form itemsTable. Updation in historyTable Takes place below
               let params = {
                 TableName: itemsTableName,
@@ -100,7 +100,7 @@ const handlers = {
                   "itemName-userId": slots.Item.value + "-" + userId
                 }
               };
-
+              
               documentClient.delete(params, function (err, data) {
                 if (err) {
                   console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
@@ -109,7 +109,7 @@ const handlers = {
                   updateHistoryOfItem(userId, itemName, itemLocation);
                 }
               })
-
+              
             } else {
               const getParams = {
                 TableName: historyTableName,
@@ -134,7 +134,7 @@ const handlers = {
         });
       }
     }
-
+    
     //search in activeList with itemName
     for (let activeMember of activeList) {
       if(searchFlag)
@@ -143,7 +143,7 @@ const handlers = {
         emitCopy(":tell", `${itemName} exists at ${activeMember.locationName}`);
         searchFlag = true;
         itemLocation = activeMember.locationName;
-
+        
         const index = activeList.indexOf(activeMember);
         activeList.splice(index, 1);
         storeActiveList(userId);
@@ -170,7 +170,7 @@ const handlers = {
                 searchFlag = true;
                 itemLocation = data.Item.locationName;
                 emitCopy(":tell", `${data.Item.itemName} exists at ${data.Item.locationName}`);
-
+                
                 //deleting found item form itemsTable. Updation in historyTable Takes place below
                 let params = {
                   TableName: itemsTableName,
@@ -178,7 +178,7 @@ const handlers = {
                     "itemName-userId": slots.Item.value + "-" + userId
                   }
                 };
-
+                
                 documentClient.delete(params, function (err, data) {
                   if (err) {
                     console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
@@ -187,7 +187,7 @@ const handlers = {
                     updateHistoryOfItem(userId, itemName, itemLocation);
                   }
                 })
-
+                
               } else {
                 const getParams = {
                   TableName: historyTableName,
@@ -214,7 +214,7 @@ const handlers = {
       }
     }
   },
-
+  
   "HelpMessageIntent": function () {
     const { slots } = this.event.request.intent;
     let speechOutput, reprompt;
@@ -234,12 +234,12 @@ const handlers = {
     }
     this.emit(':ask', speechOutput, reprompt);
   },
-
+  
   'StoreItemIntent': function () {
-
+    
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-
+    
     if(!activeListFetchedStatus) {
       fetchActiveListAndCache(userId);
       fetchExistingTimeStamp(userId);
@@ -259,13 +259,13 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-
+      
       const slotToElicit = 'Item';
       const speechOutput = 'What item is to be stored?';
       const repromptSpeech = 'Please specify the item';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
+    
     //name of the place where the item is to be stored
     if (!slots.Place.value) {
       const slotToElicit = 'Place';
@@ -280,23 +280,23 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-
+      
       // slot status: denied -> reprompt for slot data
       const slotToElicit = 'Place';
       const speechOutput = 'Where can the item be found?';
       const repromptSpeech = 'Please specify the location';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
+    
     activeList.push({
       itemName: slots.Item.value,
       locationName: slots.Place.value
     });
-
+    
     storeActiveList(userId);
     this.emit(":tell", `item successfully stored`)
   },
-
+  
   'StoreEventItemIntent': function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
@@ -306,7 +306,7 @@ const handlers = {
     let itemThree = this.event.request.intent.slots.Itemthree.value;
     let itemFour = this.event.request.intent.slots.Itemfour.value;
     let itemFive = this.event.request.intent.slots.Itemfive.value;
-
+    
     let params = {
       TableName: eventsTableName,
       Item:{
@@ -319,7 +319,7 @@ const handlers = {
         "itemFiveName": itemFive
       }
     };
-
+    
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -330,12 +330,12 @@ const handlers = {
       }
     });
   },
-
+  
   'FindEventItemIntent': function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
     const { slots } = this.event.request.intent;
-
+    
     //name of the item
     if (!slots.Event.value) {
       const slotToElicit = 'Event';
@@ -350,13 +350,13 @@ const handlers = {
         const repromptSpeech = speechOutput;
         return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);
       }
-
+      
       const slotToElicit = 'Event';
       const speechOutput = 'What is the event name?';
       const repromptSpeech = 'Please specify the event';
       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);
     }
-
+    
     console.log('Attempting to read data in Events table');
     let params = {
       TableName: eventsTableName,
@@ -398,11 +398,11 @@ const handlers = {
       }
     });
   },
-
+  
   'AMAZON.CancelIntent': function () {
     this.emit(':tell', 'Goodbye!');
   },
-
+  
   'AMAZON.StopIntent': function () {
     this.emit(':tell', 'Goodbye!');
   },
@@ -416,7 +416,7 @@ const handlers = {
   'LaunchRequest':  function () {
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
-
+    
     console.log(this);
     
     const searchParams = {
@@ -438,7 +438,7 @@ const handlers = {
       }
     });
   }
-
+  
 };
 
 //function to update history
@@ -450,7 +450,7 @@ function updateHistoryOfItem(userId, itemName, itemLocation) {
       "itemName-userId": `${itemName}-${userId}`
     }
   };
-
+  
   documentClient.get(readParams, function (err, data) {
     if (err) {
       console.log('error, the history array of the item couldn\'t be fetched');
@@ -523,7 +523,7 @@ function storeActiveList(userId) {
 
 //moves all old items to masterDB
 function localALtoDBAL(userId, transferList) {
-
+  
   transferList.forEach(function (item) {
     const params = {
       TableName: itemsTableName,
@@ -534,7 +534,7 @@ function localALtoDBAL(userId, transferList) {
         "locationName": item.locationName
       }
     };
-
+    
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -576,7 +576,7 @@ function checkRenew(data, userId) {
         "timestamp": currentTimeStamp
       }
     };
-
+    
     documentClient.put(params, function(err, data) {
       if (err) {
         console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
@@ -598,7 +598,7 @@ function checkRenew(data, userId) {
           console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
           console.log("Added item:", JSON.stringify(data, null, 2));
-
+          
           // transfers local Active list items to larger ActiveList existing in DB. i.e. Items Table after every 3 days
           // empties the local ActiveList afterwards.
           localALtoDBAL(userId, activeList)
