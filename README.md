@@ -3,8 +3,7 @@
 # Stuffer <img src="https://user-images.githubusercontent.com/2917613/28090232-861702b0-6683-11e7-8379-1347e01c9411.png" height="50">
 
 ## Gotcha find ’em all !
-
- [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 
 Stuffer helps users keep track of their belongings in an intelligent way. 
 Simply ask Alexa to make note of an item and when prompted later, it would inform the user of the same.
@@ -19,9 +18,12 @@ Stuffer keeps track of all item's location stored in its database. When activate
 
 Multiple edge cases would occur in the implementation of such a Skill. However, all these cases have been taken care of
 
+## Developers 
+
 Made with :heart: by :
  - Soumya Himanish Mohapatra [@himanish-star](https://github.com/himanish-star) 
- - Prakriti Bansal [@PikkaPikkachu](https://github.com/PikkaPikkachu)
+ - Prakriti Bansal [@PikkaPikkachu](https://github.com/PikkaPikkachu) ![pikachu](https://cdn.emojidex.com/emoji/px32/pikachu.png "pikachu")
+
  - Shikhar Agnihotri [@shikhar-scs](https://github.com/shikhar-scs)
  
  ## License 
