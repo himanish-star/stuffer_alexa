@@ -19,7 +19,14 @@ const instructions = `Welcome to Stuffer.
                       To retrieve items for an event say, list items.
                       For any event, only five items can be added.
                         Start now by adding an item.
-                      To hear this again, ask stuff locator to help.`
+                      To hear this again, ask stuff locator to help.`;
+
+const helpMessage = `Having trouble there? The skill provides the following features - "find item feature", "store item feature", "create event feature" and "list event feature". So which feature do you want help in?`;
+
+const findIntentMessage = `To find an item, try saying, "find an item"`;
+const storeIntentMessage = `To store an item, try saying, "add an item"`;
+const createEventMessage = `To create an event, try saying, "create event Party and add the following items cap, balloon, cake end of list"`;
+const listEventMessage = `To list an event try saying, "list an event"`;
 
 
 const documentClient = new awsSDK.DynamoDB.DocumentClient();
@@ -208,6 +215,26 @@ const handlers = {
     }
   },
 
+  "HelpMessageIntent": function () {
+    const { slots } = this.event.request.intent;
+    let speechOutput, reprompt;
+    
+    if(slots.MessageType.value.toLowerCase() === "find item feature") {
+      speechOutput = findIntentMessage;
+      reprompt = speechOutput;
+    } else if(slots.MessageType.value.toLowerCase() === "store item feature") {
+      speechOutput = storeIntentMessage;
+      reprompt = speechOutput;
+    } else if(slots.MessageType.value.toLowerCase() === "list event feature") {
+      speechOutput = listEventMessage;
+      reprompt = speechOutput;
+    } else {
+      speechOutput = createEventMessage;
+      reprompt = speechOutput;
+    }
+    this.emit(':ask', speechOutput, reprompt);
+  },
+
   'StoreItemIntent': function () {
 
     const { userId } = this.event.session.user;
@@ -381,9 +408,9 @@ const handlers = {
   },
   
   'AMAZON.HelpIntent': function () {
-    const speechOutput = instructions;
-    const reprompt = instructions;
-    this.emit(':tell', speechOutput, reprompt);
+    const speechOutput = helpMessage;
+    const reprompt = helpMessage;
+    this.emit(':ask', speechOutput, reprompt);
   },
   
   'LaunchRequest':  function () {
