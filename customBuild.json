@@ -97,7 +97,7 @@
           }
         ],
         "samples": [
-          "{MessageItem}"
+          "{MessageType}"
         ]
       },
       {
