@@ -89,6 +89,18 @@
         ]
       },
       {
+        "name": "HelpMessageIntent",
+        "slots": [
+          {
+            "name": "MessageType",
+            "type": "MessageTypes"
+          }
+        ],
+        "samples": [
+          "{MessageItem}"
+        ]
+      },
+      {
         "name": "StoreItemIntent",
         "slots": [
           {
@@ -201,6 +213,30 @@
       }
     ],
     "types": [
+      {
+        "name": "MessageTypes",
+        "values": [
+          {
+            "name": {
+              "value": "Find Item Feature"
+            }
+          },
+          {
+            "name": {
+              "value": "Store Item Feature"
+            }
+          },
+          {
+            "name": {
+              "value": "Create Event Feature"
+            }
+          },{
+            "name": {
+              "value": "List Event Feature"
+            }
+          }
+        ]
+      },
       {
         "name": "ItemName",
         "values": [
