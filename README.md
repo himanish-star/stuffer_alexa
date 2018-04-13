@@ -26,6 +26,10 @@ Made with :heart: by :
 
  - Shikhar Agnihotri [@shikhar-scs](https://github.com/shikhar-scs)
  
+## YouTube Video
+ 
+ [![screenshot from 2018-04-13 17-02-14](https://user-images.githubusercontent.com/30361728/38732664-a2fb59fc-3f3c-11e8-992f-38718458db9b.png)](https://youtu.be/OpkD9-7idMQ)
+ 
  ## Contribution 
  Checkout out [guidelines](https://github.com/himanish-star/thingy-locator/blob/master/CONTRIBUTING.md) here. 
  
