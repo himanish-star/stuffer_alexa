@@ -210,6 +210,11 @@
         "samples": [
           "open stuff locator"
         ]
+      },
+      {
+        "name": "Unhandled",
+        "slots": [],
+        "samples": []
       }
     ],
     "types": [

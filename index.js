@@ -2,6 +2,7 @@
 
 const Alexa = require('alexa-sdk');
 const awsSDK = require('aws-sdk');
+const request = require('request');
 
 // Tables
 const itemsTableName = 'Items';
@@ -9,6 +10,7 @@ const timeStampTableName = 'TimeStamp';
 const activeListTableName = 'ActiveList';
 const historyTableName = 'HistoryOfItems';
 const eventsTableName = 'Events';
+const userInfoTableName = 'UsersInfo';
 
 const instructions = `Welcome to Stuffer.
                       The following features are available:  storing item. finding item.
@@ -414,31 +416,23 @@ const handlers = {
   },
   
   'LaunchRequest':  function () {
+    
     let emitCopy = this.emit;
     const { userId } = this.event.session.user;
+    const accessToken = this.event.session.user.accessToken;
     
     console.log(this);
-    
-    const searchParams = {
-      TableName: timeStampTableName,
-      Key: {
-        "userId": userId
-      }
-    };
-    documentClient.get(searchParams, function (err, data) {
-      if(err) {
-        console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
-        emitCopy(':tell', 'cannot connect to the server');
-      } else {
-        if(data.Item) {
-          emitCopy(":ask", `Hey, how do you want me to help you?`)
-        } else {
-          emitCopy(':ask', instructions);
-        }
-      }
-    });
-  }
+
+    // checkUserInfo(userId, accessToken, emitCopy);
+    storeUserInfo (userId, accessToken, emitCopy)
   
+  
+  },
+  
+  'Unhandled': function() {
+    this.emit(':ask', 'Sorry I didnt understand that. Ask stuff locator to help for assistance.');
+  }
+
 };
 
 //function to update history
@@ -609,8 +603,91 @@ function checkRenew(data, userId) {
   }
 }
 
-exports.handler = function (event, context, callback) {
+//checks if users info uis present in the userInfoTable, if not, makes an entry
+/*
+function checkUserInfo(userId, accessToken, emitCopy) {
+  
+  const searchParams = {
+    TableName: userInfoTableName,
+    Key: {
+      "userId": userId
+    }
+  };
+  
+  documentClient.get(searchParams, function (err, data) {
+    if(err) {
+      console.error ("Unable to find item. Error JSON:", JSON.stringify (err, null, 2));
+      storeUserInfo (userId, accessToken, emitCopy)
+    }
+  });
+}
+*/
+
+// stores the info after exchanging the ouath accessToken
+function storeUserInfo(userId, accessToken, emitCopy) {
+  
+  if (!accessToken) {
+    emitCopy(':tellWithLinkAccountCard', `Welcome to Stuffer, please login, for a better experience`);
+    return;
+  }
+  
+  let profileURL = 'https://api.amazon.com/user/profile?access_token=';
+  profileURL += accessToken;
+  
+  request(profileURL, function(error, response, body) {
+    if (response.statusCode === 200) {
+      const profile = JSON.parse(body);
+      const searchParams = {
+        TableName: userInfoTableName,
+        Item: {
+          "userId": userId,
+          "name": profile.name,
+          "email": profile.email
+        }
+      };
+  
+      documentClient.put(searchParams, function (err, data) {
+        if(err) {
+          console.error("Unable to store UserInfo. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+          welcomeNewUser(userId, emitCopy, profile.name.split(' ')[0])
+        }
+      });
+    } else {
+      emitCopy(':tell', "There was problem with the authentication. Please try again.");
+    }
+    
+  });
+}
+
+// if every thing works well, welcomes the new User
+function welcomeNewUser(userId, emitCopy, name) {
+  
+  const searchParams = {
+    TableName: timeStampTableName,
+    Key: {
+      "userId": userId
+    }
+  };
+  
+  documentClient.get(searchParams, function (err, data) {
+    if(err) {
+      console.error("Unable to find item. Error JSON:", JSON.stringify(err, null, 2));
+      emitCopy(':tell', 'cannot connect to the server');
+    } else {
+      if(data.Item) {
+        emitCopy(":ask", `Hey ${name}, how do you want me to help you?`)
+      } else {
+        emitCopy(':ask', instructions);
+      }
+    }
+  });
+}
+
+exports.myHandler = function (event, context, callback) {
   const alexa = Alexa.handler(event, context, callback);
+  const APP_ID = "amzn1.ask.skill.4e32f60b-02f6-45b2-9d88-0bf895ea52c7";
+  alexa.appId = APP_ID;
   alexa.registerHandlers(handlers);
   alexa.execute();
 };

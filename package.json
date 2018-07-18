@@ -4,7 +4,8 @@
   "main": "index.js",
   "dependencies": {
     "alexa-sdk": "^1.0.25",
-    "aws-sdk": "^2.213.1"
+    "aws-sdk": "^2.213.1",
+    "request": "^2.87.0"
   },
   "devDependencies": {},
   "scripts": {
